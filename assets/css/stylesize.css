@@ -1,0 +1,347 @@
+/* The custom radio button container */
+.custom-radio-button-container {
+	position: relative;
+	padding-left: 50px;
+	padding-bottom: 13px;
+	cursor: pointer;
+	font-size: 18px;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	color: #aaa;
+	margin-left: 10px;
+}
+
+/* Hide the default radio button */
+.custom-radio-button-container input {
+	/* position: absolute; */
+	opacity: 0;
+}
+
+/* Create a custom radio button */
+.custom-radio-button {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 28px;
+	width: 45px;
+	border-radius: 5px;
+	transition: background 350ms;
+	background-color: #ffffff;
+	border: 1px solid #808080;
+	color: #737373;
+}
+
+.custom-radio-button-no-stock {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 28px;
+	width: 45px;
+	border-radius: 5px;
+	transition: background 350ms;
+	background-color: #eee;
+	border: 1px solid #d9d9d9;
+	color: #bfbfbf;
+}
+
+/* Create the letters */
+
+.radio-1:after {
+	content: "1";
+	position: absolute;
+}
+
+.radio-32:after {
+	content: "32";
+	position: absolute;
+}
+
+.radio-32-5:after {
+	content: "32.5";
+	position: absolute;
+}
+
+.radio-33:after {
+	content: "33";
+	position: absolute;
+}
+
+.radio-33-5:after {
+	content: "33.5";
+	position: absolute;
+}
+
+.radio-34:after {
+	content: "34";
+	position: absolute;
+}
+
+.radio-34-5:after {
+	content: "34.5";
+	position: absolute;
+}
+
+.radio-36:after {
+	content: "36";
+	position: absolute;
+}
+
+.radio-36-5:after {
+	content: "36.5";
+	position: absolute;
+}
+
+.radio-35:after {
+	content: "35";
+	position: absolute;
+}
+
+.radio-35-5:after {
+	content: "35.5";
+	position: absolute;
+}
+
+.radio-35:after {
+	content: "35";
+	position: absolute;
+}
+
+.radio-37:after {
+	content: "37";
+	position: absolute;
+}
+
+.radio-37-5:after {
+	content: "37.5";
+	position: absolute;
+}
+
+.radio-38:after {
+	content: "38";
+	position: absolute;
+}
+
+.radio-38-5:after {
+	content: "38.5";
+	position: absolute;
+}
+
+.radio-39:after {
+	content: "39";
+	position: absolute;
+}
+
+.radio-39-5:after {
+	content: "39.5";
+	position: absolute;
+}
+
+.radio-40:after {
+	content: "40";
+	position: absolute;
+}
+
+.radio-40-5:after {
+	content: "40.5";
+	position: absolute;
+}
+
+.radio-41:after {
+	content: "41";
+	position: absolute;
+}
+
+.radio-42:after {
+	content: "42";
+	position: absolute;
+}
+
+.radio-43:after {
+	content: "43";
+	position: absolute;
+}
+
+.radio-44:after {
+	content: "44";
+	position: absolute;
+}
+
+.radio-45:after {
+	content: "45";
+	position: absolute;
+}
+
+.radio-46:after {
+	content: "46";
+	position: absolute;
+}
+
+.radio-47:after {
+	content: "47";
+	position: absolute;
+}
+
+.radio-48:after {
+	content: "48";
+	position: absolute;
+}
+
+.radio-49:after {
+	content: "49";
+	position: absolute;
+}
+
+.radio-50:after {
+	content: "50";
+	position: absolute;
+}
+
+.radio-41-5:after {
+	content: "41.5";
+	position: absolute;
+}
+
+.radio-42-5:after {
+	content: "42.5";
+	position: absolute;
+}
+
+.radio-43-5:after {
+	content: "43.5";
+	position: absolute;
+}
+
+.radio-44-5:after {
+	content: "44.5";
+	position: absolute;
+}
+
+.radio-45-5:after {
+	content: "45.5";
+	position: absolute;
+}
+
+.radio-46-5:after {
+	content: "46.5";
+	position: absolute;
+}
+
+.radio-47-5:after {
+	content: "47.5";
+	position: absolute;
+}
+
+.radio-48-5:after {
+	content: "48-5";
+	position: absolute;
+}
+
+.radio-49-5:after {
+	content: "49.5";
+	position: absolute;
+}
+
+.radio-50-5:after {
+	content: "50.5";
+	position: absolute;
+}
+
+.radio-s:after {
+	content: "S";
+	position: absolute;
+}
+
+.radio-S:after {
+	content: "S";
+	position: absolute;
+}
+
+.radio-L:after {
+	content: "L";
+	position: absolute;
+}
+
+.radio-l:after {
+	content: "L";
+	position: absolute;
+}
+
+.radio-XL:after {
+	content: "XL";
+	position: absolute;
+}
+
+.radio-xl:after {
+	content: "XL";
+	position: absolute;
+}
+
+.radio-M:after {
+	content: "M";
+	position: absolute;
+}
+
+.radio-m:after {
+	content: "m";
+	position: absolute;
+}
+
+.radio-XXL:after {
+	content: "XXL";
+	position: absolute;
+}
+
+.radio-xxl:after {
+	content: "xxl";
+	position: absolute;
+}
+
+.radio-Besar:after {
+	content: "Besar";
+	position: absolute;
+}
+
+.radio-Kecil:after {
+	content: "Kecil";
+	position: absolute;
+}
+
+.radio-ALL-SIZE:after {
+	content: "ALL SIZE";
+	position: absolute;
+}
+
+/* Position the letters */
+.custom-radio-button-container .custom-radio-button:after {
+	top: 3px;
+	left: 7px;
+}
+
+.custom-radio-button-container .custom-radio-button-no-stock:after {
+	top: 3px;
+	left: 7px;
+}
+
+/* On mouse-over, add a darker grey background color... */
+.custom-radio-button-container:hover input ~ .custom-radio-button {
+	background-color: #ffaa80;
+}
+
+/* ...and a lighter letter */
+.custom-radio-button-container:hover input ~ .custom-radio-button:after {
+	color: white;
+}
+
+/* When the radio button is checked, add a blue background... */
+.custom-radio-button-container input:checked ~ .custom-radio-button {
+	background-color: #ff4c3b;
+	/* blue: #2196F3 */
+}
+
+/* ...and a white letter */
+.custom-radio-button-container input:checked ~ .custom-radio-button:after {
+	display: block;
+	color: white;
+}

@@ -1,0 +1,24 @@
+{
+    "name": "restyler/inwidget",
+    "type": "library",
+    "description": "Show pictures from instagram.com on your website!",
+    "keywords": ["instagram","widget"],
+    "homepage": "https://inwidget.apiroad.net/",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Alexandr Kazarmshchikov",
+            "email": "aik@inwidget.ru"
+        },
+	{
+            "name": "restyler"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "php": ">=5.4.0",
+	    "ext-curl": "*",
+	    "ext-json": "*"
+    }
+}

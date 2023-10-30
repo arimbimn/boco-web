@@ -1,0 +1,3 @@
+<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
+
+ERROR - 2023-09-18 12:02:16 --> Query error: Duplicate entry 'sygotama@yahoo.com' for key 'uc_email' - Invalid query: INSERT INTO `users` (`nik`, `npwp`, `username`, `first_name`, `last_name`, `company`, `phone`, `tgl_lhr`, `bank`, `norek`, `email`, `password`, `ip_address`, `created_on`, `active`, `reseller`) VALUES ('3172026311520003', '', 'Sian2023', 'Clementina', 'Lugito', NULL, '0812943355351', '1952-11-23', 'BCA', '5820002883', 'sygotama@yahoo.com', '$2y$10$QnFY/au4uiEdSJLO3kJtveVscgvAwSFF46cYqlRi320ZrDmMeQ9fy', '120.188.4.31', 1695013336, 1, '1')

@@ -1,0 +1,149 @@
+$(document).ready(function() {
+    $('.option-select').chosen();
+    if(islogin == 1)
+    {
+        var val_provid;
+        function show_kab(val_provid)
+        {
+            $.ajax(
+                {
+                    type:"post",
+                    dataType:"json",
+                    url: baseurl+"auth/option_kabupaten",
+                    data:{provid:val_provid, '<?php echo $this->security->get_csrf_token_name(); ?>:':'<?php echo $this->security->get_csrf_hash(); ?>'},
+                    success:function(response)
+                    {
+                        $("#kab").html(response);
+                        $("#kab").trigger("chosen:updated");
+                    },
+                    error: function() 
+                    {
+                        alert("Invalid!");
+                    }
+                }
+            );
+        }
+
+        val_provid = $('#prov option:selected').val();
+        show_kab(val_provid);
+
+        $('#prov').change(function()
+        {
+            val_provid = $(this).val();
+            show_kab(val_provid);
+        });
+
+        var val_kabid;
+
+        function show_kec(val_kabid)
+        {
+            $.ajax(
+                {
+                    type:"post",
+                    dataType:"json",
+                    url: baseurl+"auth/option_kecamatan",
+                    data:{kabid:val_kabid, '<?php echo $this->security->get_csrf_token_name(); ?>:':'<?php echo $this->security->get_csrf_hash(); ?>'},
+                    success:function(responses)
+                    {
+                        $("#kec").html(responses);
+                        $("#kec").trigger("chosen:updated");
+                    },
+                    error: function() 
+                    {
+                        alert("Invalid!");
+                    }
+                }
+            );
+        }
+        
+        val_kabid = kabupatenid;
+        show_kec(val_kabid);
+
+        $('#kab').change(function()
+        {
+            val_kabid = $(this).val();
+            show_kec(val_kabid);
+        });
+    }
+
+    $('.mobile-version').hide();
+    $('.desktop-version').show();
+    $(window).resize(function() {
+        if($(window).width() <= 480){
+            $('.desktop-version').hide();
+            $('.mobile-version').show();
+        } else {
+            $('.mobile-version').hide();
+            $('.desktop-version').show();
+        }
+    });
+
+    // function GetFilters() {
+    //     $('input[type="checkbox"]').on('change', function (e) {
+    //         var data = {},
+    //             fdata = [],
+    //             loc = $('<a>', { href: window.location })[0];
+    //         $('input[type="checkbox"]').each(function (i) {
+    //             if (this.checked) {
+    //                 if (!data.hasOwnProperty(this.name)) {
+    //                     data[this.name] = [];
+    //                 }
+    //                 data[this.name].push(this.value);
+    //             }
+    //         });
+    //         var keys = Object.keys(data);
+    //         var fdata = "";
+    //         keys.forEach(function(key,i){
+    //             if (i>0) fdata += '&'; // if its not the first key add &
+    //             fdata += key+"="+data[key].join(',');
+    //         });
+    //         if (history.pushState) {
+    //             history.pushState(null, null, loc.pathname + '?' + fdata);
+    //         }
+    //     });
+    // }
+    // window.onload = GetFilters;
+
+
+    $('.filter').on('change', function()
+    {
+        var param_url;
+        var filtercategory = $(this).attr('data-filter');
+        var queryString = window.location.search;
+        var href = window.location.href;
+        var length_categoryid = $("input[name=category_id]").filter(':checked').length;
+        var length_size = $("input[name=size]").filter(':checked').length;
+        if(filtercategory == 'category')
+        {
+            if ($(this).is(':checked')) {
+                if(queryString == '' && length_categoryid <= 1)
+                {
+                    param_url = '?category_id='+$(this).val();
+                } else if (queryString != '' && length_categoryid > 1 && href.indexOf('category_id') != -1) {
+                    param_url = ','+$(this).val();
+                } else if(queryString != '' && length_categoryid <= 1) { 
+                    param_url = href+'&category_id='+$(this).val();;
+                }
+            } else if (!$(this).is(':checked')) {
+                if(length_categoryid <= 0)
+                {
+                    if(href.indexOf('category_id') != -1){
+                        param_url = href.replace('category_id='+$(this).val(),'');
+                        param_url = param_url.replace('&','');
+                    }
+                } else if(length_categoryid >= 2) {
+                    if(href.indexOf('category_id') != -1){
+                        param_url = href.replace($(this).val()+',','');
+                    }
+                } else if(length_categoryid == 1) {
+                    if(href.indexOf('category_id') != -1){
+                        param_url = href.replace($(this).val(),'');
+                        param_url = param_url.replace(',','');
+                    }
+                }
+            }
+        }
+        alert(param_url);
+        // window.history.replaceState(null, null, param_url);
+    });
+});
