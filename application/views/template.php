@@ -2,7 +2,7 @@
 <html lang="en" translate="no">
 
 <head>
-	<meta name="google" content="notranslate" />
+  <meta name="google" content="notranslate" />
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -16,6 +16,8 @@
   <!--Google font-->
   <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,900" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/css/css_compress.css">
+  <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/css/css_baru.css">
+  
   <!-- Icons -->
   <!--link rel="stylesheet" type="text/css" href="<!?= base_url() ?>assets/css/fontawesome.css">
 	
@@ -49,22 +51,34 @@
 
   <!-- latest jquery-->
   <!--script src="<!?= base_url() ?>assets/js/jquery-3.3.1.min.js"></script-->
-<script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js?ver=6.1.1' id='eget_js_jquery-js'></script>
+  <script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js?ver=6.1.1' id='eget_js_jquery-js'></script>
   <style>
     /*set a border on the images to prevent shifting*/
     #gallery_01 img {
       border: 2px solid white;
     }
   </style>
-<!-- Google Tag Manager -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-MC364SQ');</script>
-<!-- End Google Tag Manager -->
+  <!-- Google Tag Manager -->
+  <script>
+    (function(w, d, s, l, i) {
+      w[l] = w[l] || [];
+      w[l].push({
+        'gtm.start': new Date().getTime(),
+        event: 'gtm.js'
+      });
+      var f = d.getElementsByTagName(s)[0],
+        j = d.createElement(s),
+        dl = l != 'dataLayer' ? '&l=' + l : '';
+      j.async = true;
+      j.src =
+        'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+      f.parentNode.insertBefore(j, f);
+    })(window, document, 'script', 'dataLayer', 'GTM-MC364SQ');
+  </script>
+  <!-- End Google Tag Manager -->
 </head>
 <?php flush(); ?>
+
 <body>
   <a href="https://wa.me/<?= $this->fungsi->webinformation()->whatsapp ?>" class="wa-float" target="_blank"><i class="fa fa-whatsapp my-float"></i></a>
   <!-- header start -->
@@ -94,10 +108,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 <ul class="onhover-show-div">
                   <?php if ($this->ion_auth->logged_in()) { ?>
                     <li><a href="<?= base_url('users') ?>" data-lng="es"><?= lang('MyAccount') ?></a></li>
-                    <?php if($this->session->userdata('reseller') == '1'){ ?>
-                        <li><a href="<?= base_url('reseller/logout') ?>" data-lng="es"><?= lang('LogOut') ?></a></li>
-                    <?php }else{ ?>
-                        <li><a href="<?= base_url('auth/logout') ?>" data-lng="es"><?= lang('LogOut') ?></a></li>
+                    <?php if ($this->session->userdata('reseller') == '1') { ?>
+                      <li><a href="<?= base_url('reseller/logout') ?>" data-lng="es"><?= lang('LogOut') ?></a></li>
+                    <?php } else { ?>
+                      <li><a href="<?= base_url('auth/logout') ?>" data-lng="es"><?= lang('LogOut') ?></a></li>
                     <?php } ?>
                   <?php } else { ?>
                     Register
@@ -171,24 +185,24 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                     <li>
                       <a href="<?= base_url('/store') ?>"><?= lang('toko') ?></a>
                     </li>
-					<?php if($this->session->userdata('user_id')==''){?>
-					 <li>
-                      <a href="<?= base_url('/reseller') ?>">Entrepreneurship</a>
-						  <ul>
-							 <li>
-								<a href="<?= base_url('/login_reseller') ?>">Login Entrepreneurship</a>
-							 </li>
-							 <!--li>
+                    <?php if ($this->session->userdata('user_id') == '') { ?>
+                      <li>
+                        <a href="<?= base_url('/reseller') ?>">Entrepreneurship</a>
+                        <ul>
+                          <li>
+                            <a href="<?= base_url('/login_reseller') ?>">Login Entrepreneurship</a>
+                          </li>
+                          <!--li>
 								<a href="<!?= base_url('/reg_reseller') ?>">Daftar Entrepreneurship</a>
 							 </li-->
-						  </ul>
-                    </li>
-					<?php } ?>
-					<?php if ($this->ion_auth->logged_in()) { ?>
-					    <li>
-                          <a href="#"><small style="color: red;">Already login as <?= $this->session->userdata('username_nya') ?></small></a>
-                        </li>
-					<?php } ?>
+                        </ul>
+                      </li>
+                    <?php } ?>
+                    <?php if ($this->ion_auth->logged_in()) { ?>
+                      <li>
+                        <a href="#"><small style="color: red;">Already login as <?= $this->session->userdata('username_nya') ?></small></a>
+                      </li>
+                    <?php } ?>
                   </ul>
                 </nav>
               </div>
@@ -196,7 +210,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 <div class="icon-nav">
                   <ul>
                     <li class="onhover-div mobile-search">
-                      <div><img src="<?= str_replace(array('https://' , 'http://') , 'https://i1.wp.com/',base_url().'assets/images/icon/search.png')?>" onclick="openSearch()" class="img-fluid blur-up lazyload" alt=""> <i class="ti-search" style="color:#fff" onclick="openSearch()"></i></div>
+                      <div><img src="<?= str_replace(array('https://', 'http://'), 'https://i1.wp.com/', base_url() . 'assets/images/icon/search.png') ?>" onclick="openSearch()" class="img-fluid blur-up lazyload" alt=""> <i class="ti-search" style="color:#fff" onclick="openSearch()"></i></div>
                       <div id="search-overlay" class="search-overlay">
                         <div> <span class="closebtn" onclick="closeSearch()" title="Close Overlay">×</span>
                           <div class="overlay-content">
@@ -764,25 +778,26 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     function closeSearch() {
       document.getElementById("search-overlay").style.display = "none";
     }
-	<?php
-		if($this->session->userdata('user_id')){ ?>
-            var id="<?= ($this->session->userdata('user_id')) ? $this->session->userdata('user_id') : '' ?>";
-            var tgl="<?= date('Y-m-d') ?>";
-            var naikP=cek_naik(tgl,id);
     <?php
-        }
+    if ($this->session->userdata('user_id')) { ?>
+      var id = "<?= ($this->session->userdata('user_id')) ? $this->session->userdata('user_id') : '' ?>";
+      var tgl = "<?= date('Y-m-d') ?>";
+      var naikP = cek_naik(tgl, id);
+    <?php
+    }
     ?>
-function cek_naik(tgl,id){
-	var data='tgl='+tgl+'&id='+id;
-	var mem = $.ajax({
-				type:"POST",
-				url:"<?= smn_baseurl() ?>administrator/HeandelPayment/hitungNaikperingkat_ajax", ///"+kd_area
-				async: false,
-				data:data
-			}).responseText;
-								
-	return mem;
-}
+
+    function cek_naik(tgl, id) {
+      var data = 'tgl=' + tgl + '&id=' + id;
+      var mem = $.ajax({
+        type: "POST",
+        url: "<?= smn_baseurl() ?>administrator/HeandelPayment/hitungNaikperingkat_ajax", ///"+kd_area
+        async: false,
+        data: data
+      }).responseText;
+
+      return mem;
+    }
   </script>
 
   <?php
@@ -835,10 +850,9 @@ function cek_naik(tgl,id){
       })(jQuery);
     </script-->
   <?php } ?>
-<!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MC364SQ"
-height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MC364SQ" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
 </body>
 
 </html>

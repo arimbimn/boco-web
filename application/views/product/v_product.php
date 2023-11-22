@@ -23,7 +23,7 @@
 
 
  <!-- breadcrumb start -->
- <div class="breadcrumb-section">
+ <div class="breadcrumb-section mt-4">
    <div class="container">
      <div class="row">
        <div class="col-sm-6">
@@ -161,14 +161,15 @@
                <h3 class="collapse-block-title"><?= lang('size_produk') ?></h3>
                <div class="collection-collapse-block-content" style="display: none;">
                  <div class="collection-brand-filter">
-                   <?php foreach ($size as $itemsize) { 
-						if(strpos($itemsize->size, ',') == false && strpos($itemsize->size, '.') == false && strpos($itemsize->size, 'T') == false){
-					?>
-                     <div class="custom-control custom-checkbox collection-filter-checkbox">
-                       <input type="checkbox" class="custom-control-input filter size" name="size" id="size_<?= $itemsize->size ?>" value="<?= $itemsize->size ?>">
-                       <label class="custom-control-label" for="size_<?= $itemsize->size ?>"><?= $itemsize->size ?></label>
-                     </div>
-						<?php } } ?>
+                   <?php foreach ($size as $itemsize) {
+                      if (strpos($itemsize->size, ',') == false && strpos($itemsize->size, '.') == false && strpos($itemsize->size, 'T') == false) {
+                    ?>
+                       <div class="custom-control custom-checkbox collection-filter-checkbox">
+                         <input type="checkbox" class="custom-control-input filter size" name="size" id="size_<?= $itemsize->size ?>" value="<?= $itemsize->size ?>">
+                         <label class="custom-control-label" for="size_<?= $itemsize->size ?>"><?= $itemsize->size ?></label>
+                       </div>
+                   <?php }
+                    } ?>
                    <!-- <div class="custom-control custom-checkbox collection-filter-checkbox">
                      <input type="checkbox" class="custom-control-input filter size" name="size" id="size_two" value="39">
                      <label class="custom-control-label" for="size_two">39</label>
@@ -357,14 +358,14 @@
          }
 
        });
-	   
-	   var isMobileVersion = ".collection-mobile-back";
-       if($(isMobileVersion).is(":visible")){
-            mydivfilter(); //tambah ebe buat geser div filter
-                //alert("The paragraph  is visible.");
-        } else{
-                //alert("The paragraph  is hidden.");
-        }
+
+       var isMobileVersion = ".collection-mobile-back";
+       if ($(isMobileVersion).is(":visible")) {
+         mydivfilter(); //tambah ebe buat geser div filter
+         //alert("The paragraph  is visible.");
+       } else {
+         //alert("The paragraph  is hidden.");
+       }
      }
 
      function get_filter(class_name) {
@@ -530,14 +531,15 @@
        })
 
      }
-	function mydivfilter() {
-      var x = document.getElementById("divfilter");
-      x.style.left = "-365px";
-      /*if (x.style.left === "none") {
-        x.style.display = "block";
-      } else {
-        x.style.display = "none";
-      }*/
-    }
+
+     function mydivfilter() {
+       var x = document.getElementById("divfilter");
+       x.style.left = "-365px";
+       /*if (x.style.left === "none") {
+         x.style.display = "block";
+       } else {
+         x.style.display = "none";
+       }*/
+     }
    });
  </script>
