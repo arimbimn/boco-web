@@ -65,7 +65,7 @@
                <br>
                <input type="text" name='search' class="form-control search mt-1 p-1 border border-gray-300 rounded-md w-full focus:outline-none focus:ring focus:ring-[#cd212a] outline-0 text-center" placeholder="Search" <?php if (!empty($keyword)) { ?>value="<?= $keyword ?>" <?php } ?>>
                <br>
-               <button id='button_search' class="btn btn-outline-danger hover: outline-[#cd212a] py-1 font-thin text-[8] capitalize rounded-md">Search</button>
+               <button id='button_search' class="btn btn-outline-danger hover: outline-[#cd212a] py-1 text-[8] capitalize rounded-md">Search</button>
 
                <h3 class="collapse-block-title !capitalize"><?= lang('kategory_produk') ?></h3>
                <div class="collection-collapse-block-content">
