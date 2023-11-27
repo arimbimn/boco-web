@@ -19,9 +19,6 @@
    </section>
    <!-- Section ends -->
 
-
-
-
    <!-- order-detail section start -->
    <section class="section-b-space">
      <div class="container">
@@ -32,7 +29,7 @@
                <h4><?= lang('summary_order') ?></h4>
                <ul class="order-detail">
                  <li>order ID: <?= $order['kode_order'] ?></li>
-                 <li>Username: <?= $order['nama_lengkap'].' ('.$order['username'].')' ?></li>
+                 <li>Username: <?= $order['nama_lengkap'] . ' (' . $order['username'] . ')' ?></li>
                  <li><?= lang('date_order') ?>: <?= date('d F Y', strtotime($order['created_at'])) ?></li>
                  <li><?= lang('total_order') ?>: IDR <?= number_format($order['total_bayar'], 0, ',', '.')  ?></li>
                  <?php if ($order['status_bayar'] == 'PENDING') { ?>
@@ -66,57 +63,79 @@
            <div class="product-order">
              <h3>order details</h3>
 
-             <div class="table-responsive">
-               <table class="table cart-table table-responsive-xs">
-                 <thead>
-                   <tr class="table-head">
-                     <th scope="col">Image</th>
-                     <th scope="col"><?= lang('product_name_produk') ?></th>
-                     <th scope="col"><?= lang('quantity_produk') ?></th>
-                     <th scope="col"><?= lang('kode_barang_order') ?></th>
-                     <th scope="col"><?= lang('price_produk') ?></th>
-                   </tr>
-                 </thead>
-                 <?php if ($item_order) { ?>
-                   <tbody>
-                     <?php foreach ($item_order as $v_item) { ?>
-                       <?php $cekSize = $this->db->where(['id_product_attribute' => $v_item->id_product_attribute])->get('product_attribute')->row(); ?>
+             <div>
+               <?php if ($item_order) { ?>
+                 <div style=" border: 1px solid #ebebeb; ">
+                   <?php foreach ($item_order as $v_item) { ?>
 
-                       <tr>
-                         <td>
-                           <img src="<?= smn_baseurl() ?>uploads/product/<?= $v_item->image_one ?>" alt="" class="blur-up lazyload" width="100px">
-
-                         </td>
-                         <td>
-                           <?php if ($order['status_order'] == 'SELESAI') { ?>
-                             <a href="<?= base_url('/product/detail/') . $v_item->product_id ?>">Review Product</a>
-                           <?php } ?>
-                           <h5><?= $v_item->nama_barang ?></h5>
-                           <p><?php if ($cekSize) { ?>
+                     <?php
+                      $cekSize = $this->db->where(['id_product_attribute' => $v_item->id_product_attribute])
+                        ->get('product_attribute')
+                        ->row();
+                      $array_attribute = json_decode($v_item->array_attribute);
+                      ?>
+                     <div style="display: flex; gap:10px;padding:10px">
+                       <div style="width: 100px;height:100px">
+                         <img src="<?= smn_baseurl() ?>uploads/product/<?= $v_item->image_one ?>" style="object-fit: cover; object-position: center; width: 100%; height: 100%;">
+                       </div>
+                       <div>
+                         <?php if ($order['status_order'] == 'SELESAI') { ?>
+                           <a href="<?= base_url('/product/detail/') . $v_item->product_id ?>">Review Product</a>
+                         <?php } ?>
+                         <div style="font-weight: bold;"><?= $v_item->nama_barang ?></div>
+                         <div style="font-size: 12px;color:grey">
+                           <?php if ($cekSize) { ?>
+                             <div>
                                <?= lang('product_size') ?> : <?= $cekSize->size ?>
+                             </div>
+                             <div>
                                <?= lang('product_color') ?> : <?= $v_item->colour ?>
-                               <?php if ($v_item->is_indent == 1) { ?>
-                                 <span style="color:red;">Item Indent</span>
-                               <?php } ?>
+                             </div>
+                             <?php if ($v_item->is_indent == 1) { ?>
+                               <div style="color:red;">Item Indent</div>
                              <?php } ?>
-                           </p>
-                         </td>
-                         <td>
-                           <?= $v_item->qty ?>
-                           <p>Price Item <?= number_format($v_item->harga, 0, ',', '.') ?></p>
-                         </td>
-                         <td>
-                           <?= $v_item->barcode ?>
-                         </td>
-                         <td>
-                           IDR <?= number_format($v_item->sub_total, 0, ',', '.')  ?> <br>
-                           <?= lang('discount') ?> : <?= $v_item->diskon ?> %
-                         </td>
-                       </tr>
-                     <?php } ?>
-                   </tbody>
-                 <?php } ?>
-               </table>
+                           <?php } ?>
+                           <div>
+                             Quantity : <?= $v_item->qty ?>
+                           </div>
+                           <div>
+                             Price Item : <?= number_format($v_item->harga, 0, ',', '.') ?>
+                           </div>
+                           <div>
+                             Kode Item: <?= $v_item->barcode ?>
+                           </div>
+                         </div>
+                       </div>
+                       <div style="margin-left: auto;">
+                         <div style="font-weight: bold;">
+                           IDR <?= number_format($v_item->sub_total, 0, ',', '.')  ?>
+                         </div>
+                         <div style="font-size: 12px;color:grey">
+                           <div> <?= lang('discount') ?> : <?= $v_item->diskon ?> %</div>
+                           <div>
+                             Tarif Pengiriman: IDR <?= number_format(json_decode($v_item->array_attribute)->tarif_pengiriman); ?>
+                           </div>
+                         </div>
+                       </div>
+                     </div>
+                     <div style="padding:20px;background-color: #f8f8f8;display:flex; gap:10px">
+                       <div style="font-weight: bold;">
+                         Dikirim ke:
+                       </div>
+                       <div>
+                         <div>
+                           <b>
+                             Penerima ( <?php echo ($array_attribute->penerima) ?> )
+                           </b>
+                         </div>
+                         <div>
+                           <?php echo ($array_attribute->alamat) ?>
+                         </div>
+                       </div>
+                     </div>
+                   <?php } ?>
+                 </div>
+               <?php } ?>
              </div>
 
              <div class="total-sec">
@@ -134,28 +153,29 @@
                   } ?>
 
                <?php } ?>
+               <h5>Total Ongkir <span> IDR <?= number_format($order['total_ongkir'], 0, ',', '.')  ?></span></h5>
                <h5>Sub Total <span> IDR <?= number_format($order['subtotal'], 0, ',', '.')  ?> ( Include Ppn )</span></h5>
                <h5>Discount <span> IDR <?= number_format($order['diskon_voucher'], 0, ',', '.')  ?></span></h5>
-               <?php if($order['kode_voucher'] == 120){
-                        $adm=0;
-                        if($order['total_bayar'] != 0){ 
-                        $adm=$order['biaya_admin']; ?>
-                    <h5>Biaya admin <span> IDR <?= number_format($order['biaya_admin'], 0, ',', '.')  ?></span></h5>
-                        <?php } ?>
-                    <h5>Total <span> IDR <?= number_format($order['subtotal']-$order['diskon_voucher']+$adm, 0, ',', '.')  ?></span></h5>
-                    <p><small class="text-danger">Pembayaran menggunakan saldo Family Package</small></p>
-                    <h5>Family Package <span> IDR <?= ($order['total_bayar'] == 0) ? number_format($order['subtotal']-$order['diskon_voucher'], 0, ',', '.') : number_format(($order['subtotal']-$order['diskon_voucher'])-$order['total_bayar']+$order['biaya_admin'], 0, ',', '.')  ?></span></h5>
-               <?php }else if($order['kode_voucher'] == 170){
-                    $adm=0;
-                        if($order['total_bayar'] != 0){ 
-                        $adm=$order['biaya_admin']; ?>
-                    <h5>Biaya admin <span> IDR <?= number_format($order['biaya_admin'], 0, ',', '.')  ?></span></h5>
-                        <?php } ?>
-                    <h5>Total <span> IDR <?= number_format($order['subtotal']-$order['diskon_voucher']+$adm, 0, ',', '.')  ?></span></h5>
-                    <p><small class="text-danger">Pembayaran menggunakan saldo deposit</small></p>
-                    <h5>Saldo deposit <span> IDR <?= ($order['total_bayar'] == 0) ? number_format($order['subtotal']-$order['diskon_voucher'], 0, ',', '.') : number_format(($order['subtotal']-$order['diskon_voucher'])-$order['total_bayar']+$order['biaya_admin'], 0, ',', '.')  ?></span></h5>
-               <?php }else{ ?>
-                    <h5>Biaya admin <span> IDR <?= number_format($order['biaya_admin'], 0, ',', '.')  ?></span></h5>
+               <?php if ($order['kode_voucher'] == 120) {
+                  $adm = 0;
+                  if ($order['total_bayar'] != 0) {
+                    $adm = $order['biaya_admin']; ?>
+                   <h5>Biaya admin <span> IDR <?= number_format($order['biaya_admin'], 0, ',', '.')  ?></span></h5>
+                 <?php } ?>
+                 <h5>Total <span> IDR <?= number_format($order['subtotal'] - $order['diskon_voucher'] + $adm, 0, ',', '.')  ?></span></h5>
+                 <p><small class="text-danger">Pembayaran menggunakan saldo Family Package</small></p>
+                 <h5>Family Package <span> IDR <?= ($order['total_bayar'] == 0) ? number_format($order['subtotal'] - $order['diskon_voucher'], 0, ',', '.') : number_format(($order['subtotal'] - $order['diskon_voucher']) - $order['total_bayar'] + $order['biaya_admin'], 0, ',', '.')  ?></span></h5>
+                 <?php } else if ($order['kode_voucher'] == 170) {
+                  $adm = 0;
+                  if ($order['total_bayar'] != 0) {
+                    $adm = $order['biaya_admin']; ?>
+                   <h5>Biaya admin <span> IDR <?= number_format($order['biaya_admin'], 0, ',', '.')  ?></span></h5>
+                 <?php } ?>
+                 <h5>Total <span> IDR <?= number_format($order['subtotal'] - $order['diskon_voucher'] + $adm, 0, ',', '.')  ?></span></h5>
+                 <p><small class="text-danger">Pembayaran menggunakan saldo deposit</small></p>
+                 <h5>Saldo deposit <span> IDR <?= ($order['total_bayar'] == 0) ? number_format($order['subtotal'] - $order['diskon_voucher'], 0, ',', '.') : number_format(($order['subtotal'] - $order['diskon_voucher']) - $order['total_bayar'] + $order['biaya_admin'], 0, ',', '.')  ?></span></h5>
+               <?php } else { ?>
+                 <h5>Biaya admin <span> IDR <?= number_format($order['biaya_admin'], 0, ',', '.')  ?></span></h5>
                <?php } ?>
              </div>
              <div class="final-total">

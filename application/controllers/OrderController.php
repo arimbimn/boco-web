@@ -14,8 +14,6 @@ class OrderController extends CI_Controller
     }
   }
 
-
-
   public function orderDetail($id)
   {
     $data_order =  $this->M_order->get_orderDetail($id)->row_array();
