@@ -149,7 +149,8 @@
                                       </li>
                                       <li class="onhover-div mobile-setting">
                                           <?php if ($this->ion_auth->logged_in()) { ?>
-                                              <?php $notif = $this->M_notification->get_notification()->result();
+                                              <?php
+                                                $notif = $this->M_notification->get_notification()->result();
                                                 $notifCount = $this->M_notification->get_notification()->num_rows();
                                                 ?>
                                               <?php if ($notif) { ?>
@@ -167,6 +168,7 @@
                                           <?php  } else { ?>
                                               <div><img src="<?= base_url() ?>assets/images/icon/bell.png" class="img-fluid blur-up lazyload" alt=""> <i class="ti-bell" style="color:#fff"></i></div>
                                           <?php   } ?>
+
                                           <div class="show-div setting" style="max-width: 550px; height: 500px; overflow: auto;">
                                               <h6><?= lang('pemberitahuan_nav') ?></h6>
                                               <?php if ($this->ion_auth->logged_in()) { ?>
