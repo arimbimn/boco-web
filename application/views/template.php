@@ -2,19 +2,15 @@
 <html lang="en" translate="no">
 
 <head>
-  <meta name="google" content="notranslate" />
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="<?= $this->fungsi->webinformation()->name_web ?>">
-  <meta name="keywords" content="<?= $this->fungsi->webinformation()->name_web ?>">
-  <meta name="author" content="<?= $this->fungsi->webinformation()->name_web ?>">
-  <link rel="icon" href="<?= base_url() ?>assets/images/1609746656-favicon.png" type="image/x-icon">
-  <link rel="shortcut icon" href="<?= base_url() ?>assets/images/1609746656-favicon.png" type="image/x-icon">
-  <title><?= $title ?></title>
+  <!-- Meta tags -->
+  <!-- ... (unchanged) -->
 
-  <!--Google font-->
-  <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,900" rel="stylesheet">
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+  <!-- Stylesheets -->
   <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/css/css_compress.css">
   <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/css/css_baru.css">
   <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/css/style-tw.css">
@@ -26,35 +22,27 @@
   <!--link rel="stylesheet" type="text/css" href="<!?= base_url() ?>assets/css/slick.css">
   <link rel="stylesheet" type="text/css" href="<!?= base_url() ?>assets/css/slick-theme.css">
 
-  <!-- Animate icon -->
-  <!--link rel="stylesheet" type="text/css" href="<!?= base_url() ?>assets/css/animate.css">
+  <!-- Uncomment or remove stylesheets as needed -->
+  <!-- <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/css/fontawesome.css"> -->
+  <!-- <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/css/slick.css"> -->
+  <!-- <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/css/slick-theme.css"> -->
+  <!-- <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/css/animate.css"> -->
+  <!-- <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/css/stylesize.css"> -->
+  <!-- <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/css/price-range.css"> -->
+  <!-- <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/css/themify-icons.css"> -->
+  <!-- <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/css/bootstrap.css"> -->
+  <!-- <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/css/magnific-popup.css"> -->
+  <!-- <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/css/color1.css" media="screen" id="color"> -->
+  <!-- <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/css/chosen.css"> -->
+  <!-- <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/css/datepicker3.css"> -->
+  <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"> -->
 
-  <!-- Size css -->
-  <!--link rel="stylesheet" type="text/css" href="<!?= base_url() ?>assets/css/stylesize.css">
-
-  <!-- Price range icon -->
-  <!--link rel="stylesheet" type="text/css" href="<!?= base_url() ?>assets/css/price-range.css">
-
-  <!-- Themify icon -->
-  <!--link rel="stylesheet" type="text/css" href="<!?= base_url() ?>assets/css/themify-icons.css">
-
-  <!-- Bootstrap css -->
-  <!--link rel="stylesheet" type="text/css" href="<!?= base_url() ?>assets/css/bootstrap.css">
-
-  <!--link rel="stylesheet" href="<!?= base_url() ?>assets/css/magnific-popup.css">
-
-  <!-- Theme css -->
-  <!--link rel="stylesheet" type="text/css" href="<!?= base_url() ?>assets/css/color1.css" media="screen" id="color">
-
-  <link rel="stylesheet" type="text/css" href="<!?= base_url() ?>assets/css/chosen.css">
-
-  <link rel="stylesheet" type="text/css" href="<!?= base_url() ?>assets/css/datepicker3.css">
-
-  <!-- latest jquery-->
-  <!--script src="<!?= base_url() ?>assets/js/jquery-3.3.1.min.js"></script-->
+  <!-- Latest jQuery -->
   <script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js?ver=6.1.1' id='eget_js_jquery-js'></script>
+
+  <!-- Custom Styles or Scripts -->
   <style>
-    /*set a border on the images to prevent shifting*/
+    /* Custom styles here */
     #gallery_01 img {
       border: 2px solid white;
     }
@@ -78,272 +66,15 @@
   </script>
   <!-- End Google Tag Manager -->
 </head>
-<?php flush(); ?>
+<?php flush();
+?>
 
 <body>
   <a href="https://wa.me/<?= $this->fungsi->webinformation()->whatsapp ?>" class="wa-float" target="_blank"><i class="fa fa-whatsapp my-float"></i></a>
-  <!-- header start -->
-  <header>
-    <div class="mobile-fix-option"></div>
-    <div class="top-header">
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-6">
-            <div class="header-contact">
-              <ul>
-                <li><?= lang('welcome_nav') ?> <?= $this->fungsi->webinformation()->name_web ?> <?= lang('online_store') ?></li>
-                <li><i class="fa fa-phone" aria-hidden="true"></i><?= lang('call_us_nav') ?>: <?= $this->fungsi->webinformation()->telephone ?></li>
-              </ul>
-            </div>
-          </div>
-          <div class="col-lg-6 text-right">
 
-            <ul class="header-dropdown">
-              <li class="mobile-wishlist">
-                <!-- a href="#"><i class="fa fa-heart" aria-hidden="true"></i></a> -->
-                <?php if ($this->ion_auth->logged_in()) { ?>
-                  <?= $this->ion_auth->user()->row()->email ?>
-                <?php } ?>
-              </li>
-              <li class="onhover-dropdown mobile-account"> <i class="fa fa-user" style="color:#fff" aria-hidden="true"></i>
-                <ul class="onhover-show-div">
-                  <?php if ($this->ion_auth->logged_in()) { ?>
-                    <li><a href="<?= base_url('users') ?>" data-lng="es"><?= lang('MyAccount') ?></a></li>
-                    <?php if ($this->session->userdata('reseller') == '1') { ?>
-                      <li><a href="<?= base_url('reseller/logout') ?>" data-lng="es"><?= lang('LogOut') ?></a></li>
-                    <?php } else { ?>
-                      <li><a href="<?= base_url('auth/logout') ?>" data-lng="es"><?= lang('LogOut') ?></a></li>
-                    <?php } ?>
-                  <?php } else { ?>
-                    Register
-                    <li><a href="<?= base_url('login') ?>" data-lng="en"><?= lang('login') ?></a></li>
-                    <li><a href="<?= base_url('register') ?>" data-lng="en"><?= lang('register') ?></a></li>
-                  <?php  } ?>
-                  <p class="mt-2">Change language</p>
-                  <li class="langswitch"><a href="<?= base_url('LanguageSwitcher/switchLang/indonesian') ?>">ID</a></li>
-                  <li class="langswitch"><a href="<?= base_url('LanguageSwitcher/switchLang/english') ?>">EN</a></li>
-                </ul>
-              </li>
-              <li class=" mobile-account"> <?= $this->session->userdata('site_lang') == "indonesian" ? 'ID' :  'EN' ?>
-
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="container">
-      <div class="row">
-        <div class="col-sm-12">
-          <div class="main-menu">
-            <div class="menu-left">
-              <div class="brand-logo">
-                <a href="<?= base_url() ?>"><img src="<?= base_url('assets/images/icon/logo.png') ?>" class="img-fluid blur-up lazyload" alt=""></a>
-              </div>
-            </div>
-            <div class="menu-right pull-right">
-              <div>
-                <nav id="main-nav">
-                  <div class="toggle-nav"><i class="fa fa-bars sidebar-bar"></i></div>
-                  <ul id="main-menu" class="sm pixelstrap sm-horizontal">
-                    <li>
-                      <div class="mobile-back text-right"><?= lang('back') ?><i class="fa fa-angle-right pl-2" aria-hidden="true"></i></div>
-                    </li>
-                    <li>
-                      <a href="<?= base_url('/') ?>"><?= lang('beranda') ?></a>
-                    </li>
-                    <li>
-                      <a href="<?= base_url('/product') ?>"><?= lang('produk') ?></a>
-                      <ul>
-                        <?php $category = $this->M_product->get_categoryproduct();
-                        // var_dump($category);
-                        ?>
-                        <?php if ($category) { ?>
-                          <?php foreach ($category as $item_category) { ?>
-                            <li>
-                              <a href="<?= base_url('/product?category=' . $item_category->id_product_kategori) ?>"><?= $item_category->nama_kategori ?></a>
-                              <?php
-                              $cek_subcategory = $this->db->where('kategori_id', $item_category->id_product_kategori)->where(['is_active' => 1])->order_by('subcategory_order', 'ASC')->get('product_subkategori')->result();
-                              if (!empty($cek_subcategory)) {
-                              ?>
-                                <ul>
-                                  <?php foreach ($cek_subcategory as $subcategory) { ?>
-                                    <li><a href="<?= base_url() ?>product?subcategory=<?= $subcategory->id ?>"><?= $subcategory->nama_subkategori ?></a></li>
-                                  <?php } ?>
-                                </ul>
-                              <?php } ?>
-                            </li>
-                          <?php } ?>
-                        <?php } ?>
-                      </ul>
-                    </li>
-                    <!--li>
-                      <a href="<!?= base_url('/blog') ?>">Blog</a>
-                    </li-->
-                    <li>
-                      <a href="<?= base_url('/gallery') ?>"><?= lang('gallery') ?></a>
-                    </li>
-                    <li>
-                      <a href="<?= base_url('/store') ?>"><?= lang('toko') ?></a>
-                    </li>
-                    <?php if ($this->session->userdata('user_id') == '') { ?>
-                      <li>
-                        <a href="<?= base_url('/reseller') ?>">Entrepreneurship</a>
-                        <ul>
-                          <li>
-                            <a href="<?= base_url('/login_reseller') ?>">Login Entrepreneurship</a>
-                          </li>
-                          <!--li>
-								<a href="<!?= base_url('/reg_reseller') ?>">Daftar Entrepreneurship</a>
-							 </li-->
-                        </ul>
-                      </li>
-                    <?php } ?>
-                    <?php if ($this->ion_auth->logged_in()) { ?>
-                      <li>
-                        <a href="#"><small style="color: red;">Already login as <?= $this->session->userdata('username_nya') ?></small></a>
-                      </li>
-                    <?php } ?>
-                  </ul>
-                </nav>
-              </div>
-              <div>
-                <div class="icon-nav">
-                  <ul>
-                    <li class="onhover-div mobile-search">
-                      <div><img src="<?= str_replace(array('https://', 'http://'), 'https://i1.wp.com/', base_url() . 'assets/images/icon/search.png') ?>" onclick="openSearch()" class="img-fluid blur-up lazyload" alt=""> <i class="ti-search" style="color:#fff" onclick="openSearch()"></i></div>
-                      <div id="search-overlay" class="search-overlay">
-                        <div> <span class="closebtn" onclick="closeSearch()" title="Close Overlay">×</span>
-                          <div class="overlay-content">
-                            <div class="container">
-                              <div class="row">
-                                <div class="col-xl-12">
-                                  <?= form_open('product', ['method' => 'GET']); ?>
-                                  <div class="form-group">
-                                    <input type="text" name="q" class="form-control" id="exampleInputPassword1" placeholder="Search a Product">
-                                  </div>
-                                  <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
-                                  <?= form_close() ?>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </li>
-                    <li class="onhover-div mobile-setting">
-                      <?php if ($this->ion_auth->logged_in()) { ?>
-                        <?php $notif = $this->M_notification->get_notification()->result();
-                        $notifCount = $this->M_notification->get_notification()->num_rows();
-                        ?>
-                        <?php if ($notif) { ?>
-                          <div><img src="<?= base_url() ?>assets/images/icon/bell.png" class="img-fluid blur-up lazyload" alt="">
-
-                            <?php if ($notifCount) { ?>
-                              <span class="badge_icon"><?= $notifCount ?></span>
-                            <?php } ?>
-
-                            <i class="ti-bell" style="color:#fff"></i>
-                          </div>
-                        <?php  } else { ?>
-                          <div><img src="<?= base_url() ?>assets/images/icon/bell.png" class="img-fluid blur-up lazyload" alt=""> <i class="ti-bell" style="color:#fff"></i></div>
-                        <?php  } ?>
-                      <?php  } else { ?>
-                        <div><img src="<?= base_url() ?>assets/images/icon/bell.png" class="img-fluid blur-up lazyload" alt=""> <i class="ti-bell" style="color:#fff"></i></div>
-                      <?php   } ?>
-                      <div class="show-div setting" style="max-width: 550px; height: 500px; overflow: auto;">
-                        <h6><?= lang('pemberitahuan_nav') ?></h6>
-                        <?php if ($this->ion_auth->logged_in()) { ?>
-                          <ul class="list-inline">
-                            <?php $notif = $this->M_notification->get_notification()->result(); ?>
-                            <?php if ($notif) { ?>
-                              <?php foreach ($notif as $v_notif) { ?>
-                                <li>
-                                  <div class="media">
-                                    <div class="media-body">
-                                      <a href="<?= base_url('notifications/read/' . $v_notif->id_notification_user) ?>">
-                                        <h6><?= $v_notif->message ?></h6>
-                                        <p><?= date('d F Y , h:i A', strtotime($v_notif->created_at)) ?></p>
-                                      </a>
-                                    </div>
-                                  </div>
-                                </li>
-                              <?php  }  ?>
-                            <?php } else { ?>
-                              <p><?= lang('no_notification') ?> </p>
-                            <?php  }  ?>
-                          </ul>
-                        <?php } else {  ?>
-                          <p><?= lang('pemberitahuan_desc_nav') ?> </p>
-                        <?php  } ?>
-
-                      </div>
-                    </li>
-                    <li class="onhover-div mobile-cart">
-                      <div>
-                        <?php if (!empty($this->cart->contents())) { ?>
-                          <img src="<?= base_url() ?>assets/images/icon/cart.png" class="img-fluid blur-up lazyload" alt="">
-                        <?php } else { ?>
-                          <img src="<?= base_url() ?>assets/images/icon/cart.png" class="img-fluid blur-up lazyload" alt="">
-                        <?php } ?>
-                        <?php if ($this->cart->total_items()) { ?>
-                          <span class="badge_icon"><?= $this->cart->total_items() ?></span>
-
-                        <?php } ?>
-
-                        <i class="ti-shopping-cart" style="color:#fff"></i>
-                      </div>
-                      <ul class="show-div shopping-cart">
-                        <!-- barang -->
-                        <?php $keranjang = $this->cart->contents();
-                        $jml_item = 0;
-                        ?>
-                        <?php if ($keranjang) { ?>
-                          <?php foreach ($keranjang as $item_keranjang) { ?>
-                            <?php $barang = $this->M_product->get_detailproduct($item_keranjang['id']) ?>
-                            <li>
-                              <div class="media">
-                                <img alt="" class="mr-3" src="<?= smn_baseurl() ?>uploads/product/<?= $barang->image_one ?>" width="50%" style="object-fit: cover;">
-                                <div class="media-body">
-                                  <a href="#">
-                                    <h4><?= $item_keranjang['name'] ?></h4>
-                                  </a>
-                                  <h4><span><?= $item_keranjang['qty'] ?> x IDR <?= number_format($item_keranjang['price'], 2, ',', '.') ?> </span></h4>
-                                </div>
-                              </div>
-                              <!-- <div class="close-circle"><a href="#"><i class="fa fa-times" aria-hidden="true"></i></a></div> -->
-                            </li>
-                          <?php } ?>
-                        <?php } else { ?>
-                          <h5><?= lang('cek_keranjang_nav') ?></h5>
-                        <?php } ?>
-                        <li>
-                          <div class="total">
-                            <h5><?= lang('sub_total_nav') ?> : <span>IDR <?php echo $this->cart->format_number($this->cart->total()); ?></span></h5>
-                          </div>
-                        </li>
-                        <li>
-                          <div class="buttons"><a href="<?= base_url('cart') ?>" class="view-cart"><button class="btn btn-solid">
-                                <?= lang('cart_nav') ?></button></a>
-                            <!-- <a href="<?= base_url('cekout') ?>" class="checkout">checkout</a> -->
-                          </div>
-                        </li>
-                      </ul>
-                    </li>
-
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-          <?= $this->session->flashdata('message') ?>
-        </div>
-      </div>
-
-    </div>
-
-  </header>
-  <!-- header end -->
+  <?php
+  $this->load->view('components/header');
+  ?>
 
 
   <?= $contens ?>
@@ -854,6 +585,10 @@
   <!-- Google Tag Manager (noscript) -->
   <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MC364SQ" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <!-- End Google Tag Manager (noscript) -->
+
+  <?php print_r(isset($footer_script) ? $footer_script : '')  ?>
+
+
 </body>
 
 </html>

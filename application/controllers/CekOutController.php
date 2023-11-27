@@ -28,11 +28,26 @@ class CekOutController extends CI_Controller
     $this->load->model('M_voucher');
     $this->load->model('M_product');
     $this->load->model('M_reseller');
+    $this->load->model('Model_checkOngkir');
+    $this->load->model('Model_alamatPengiriman');
+    $this->load->helper('store_helper');
     date_default_timezone_set('Asia/Jakarta');
   }
 
   public function index()
   {
+
+    $date = date('Y-m-d');
+    $data = [
+      'title' => 'Checkout | Bocorocco Pillow Concept',
+      'voucher' => $this->M_voucher->getVoucherUser(),
+      'voucherUpgrade' => $this->M_voucher->getFreeUpgrade(),
+      'voucherUmum' => $this->M_voucher->getVoucherUmum(),
+      'voucherRefer' => $this->M_voucher->voucherRefer(),
+      'cekMember' => $this->db->where(['user_id' => $this->ion_auth->user()->row()->id])->where("DATE_FORMAT(masaberlaku,'%Y-%m-%d') >=", $date)->get('user_membership')->row(),
+    ];
+
+    // var_dump($this->ion_auth->user()->row()->first_name . ' ' . $this->ion_auth->user()->row()->last_name);
 
     if ($this->cart->contents() == null) {
       $this->session->set_flashdata('message', '<div class="alert alert-warning" role="alert">
@@ -94,7 +109,33 @@ class CekOutController extends CI_Controller
         }
       }
     }
+
     foreach ($this->cart->contents() as $items) {
+      $is_store = explode("-", $items['id_alamat']);
+      if ($is_store[0] == "G") {
+        $penerima_pengiriman = $this->ion_auth->user()->row()->first_name . ' ' . $this->ion_auth->user()->row()->last_name;
+        $pilihan_jasakirim = '';
+        $pengiriman_default = '';
+        foreach (get_store() as $store) {
+          if ($store['id_store'] == $is_store[1]) {
+            $alamat_pengiriman = $store['nama_store'];
+            break;
+          }
+          // Kalo ga ketemu storenya bakal apa ?
+        }
+      } else {
+        var_dump($this->Model_checkOngkir->getOngkir(''));
+        $dataAlamatPengiriman = $this->Model_alamatPengiriman->getById($items['id_alamat'])[0];
+        $id_subdistrict = $dataAlamatPengiriman->subdistrictId;
+        $penerima_pengiriman = $dataAlamatPengiriman->penerima;
+        $alamat_pengiriman = $dataAlamatPengiriman->alamat;
+        $pilihan_jasakirim = $this->Model_checkOngkir->getOngkir('')['rajaongkir']['results'];
+        $desiredCode = $pilihan_jasakirim[0]['code'];
+        $desiredService = $pilihan_jasakirim[0]['costs'][0]['service'];
+        $desiredCost = $pilihan_jasakirim[0]['costs'][0]['cost'][0]['value'];
+        $pengiriman_default = "$desiredCode,$desiredService,$desiredCost";
+      }
+
       $diskonItems = 0;
 
       $barang = $this->M_product->get_detailproduct($items['id']);
@@ -113,33 +154,64 @@ class CekOutController extends CI_Controller
         $totalDiskonPerbandingan = ($diskonMember / 100) *  $barang->harga;
         $hargaReal = $barang->harga - $totalDiskonPerbandingan;
       }
-      if ($items['options']['Diskon'] != 0) {
 
-        $data = array(
-          'rowid' => $items['rowid'],
-          'price' => $hargaReal,
-          'options' => [
-            'Size' => $items['options']['Size'],
-            'Color' => $items['options']['Color'],
-            'Diskon' => $diskon,
-            'Indent' => $items['options']['Indent'],
+      // if ($items['options']['Diskon'] != 0) {
+      // selalu update 
+
+      // $pengiriman = $items['options']['pengiriman'];
+
+      $update_data_cart = array(
+        'rowid' => $items['rowid'],
+        'price' => $hargaReal,
+        'id_alamat' => $items['id_alamat'],
+        'options' => [
+          'Size' => $items['options']['Size'],
+          'Color' => $items['options']['Color'],
+          'Diskon' => $diskon,
+          'Indent' => $items['options']['Indent'],
+          'alamat' => [
+            'alamat_pengiriman' => $alamat_pengiriman,
+            'penerima' => $penerima_pengiriman
           ],
-        );
-        $this->cart->update($data);
-      }
+          'pengiriman' => isset($items['options']['pengiriman']) ? $items['options']['pengiriman'] : $pengiriman_default,
+          'jasa_kirim' => $pilihan_jasakirim
+        ],
+      );
+      $this->cart->update($update_data_cart);
+      // }
     }
-    $date = date('Y-m-d');
-    $data = [
-      'title' => 'Checkout | Bocorocco Pillow Concept',
-      'voucher' => $this->M_voucher->getVoucherUser(),
-      'voucherUpgrade' => $this->M_voucher->getFreeUpgrade(),
-      'voucherUmum' => $this->M_voucher->getVoucherUmum(),
-      'voucherRefer' => $this->M_voucher->voucherRefer(),
-      'cekMember' => $this->db->where(['user_id' => $this->ion_auth->user()->row()->id])->where("DATE_FORMAT(masaberlaku,'%Y-%m-%d') >=", $date)->get('user_membership')->row(),
-    ];
-
     $this->template->load('template', 'cekout/v_cekout', $data);
   }
+
+  function ongkir_on_cart()
+  {
+    $i = 0;
+    $cart = $this->cart->contents();
+
+    foreach ($cart as $item) {
+      $item['options']['pengiriman'] = $this->input->post('pengiriman')[$i];
+
+      // echo "<pre>";
+      // var_dump($item['options']['pengiriman']);
+      // echo "</pre>";
+
+      $data = array(
+        'rowid' => $item['rowid'],
+        'options' =>  $item['options']
+      );
+      $this->cart->update($data);
+      $i++;
+    }
+
+    $result = [
+      'success' => true,
+      'total' => $this->cart->total(),
+      'data' => $this->cart->contents()
+    ];
+
+    echo json_encode($result);
+  }
+
   function cek_stok()
   {
     $hasil = "";
@@ -170,157 +242,82 @@ class CekOutController extends CI_Controller
   }
   public function cekoutCek()
   {
-    /*add ebe edit alamat*/
-    if ($this->input->post('address') != '') {
-      /*$prov=strlen($this->ion_auth->user()->row()->prov);
-        if($prov < 1){*/
-      /*$data_alamat = [
-                'address' => $this->input->post('address'),
-                'prov' => $this->input->post('prov'),
-                'kab' => $this->input->post('kab'),
-                'kec' => $this->input->post('kec'),
-                'kd_pos' => $this->input->post('kode_pos')
-            ];
-            $this->ion_auth->update($this->ion_auth->user()->row()->id, $data_alamat);*/
-      //}
-      $alamat = strlen($this->ion_auth->user()->row()->address);
-      if ($alamat < 1) {
-        $data_alamat = [
-          /*'first_name' => $this->input->post('first_name'),
-                    'last_name' => $this->input->post('last_name'),
-                    'phone' => $this->input->post('phone'),
-                    'email' => $this->input->post('email'),*/
-          'address' => $this->input->post('address'),
-          'kd_pos' => $this->input->post('kode_pos')
-        ];
-        $this->ion_auth->update($this->ion_auth->user()->row()->id, $data_alamat);
-      }
-      $session_data = [
-        'first_name_checkout'   => $this->input->post('first_name'),
-        'last_name_checkout'    => $this->input->post('last_name'),
-        'phone_checkout'        => $this->input->post('phone'),
-        'email_checkout'        => $this->input->post('email'),
-        'address_checkout'      => $this->input->post('address'),
-        'kode_pos_checkout'     => $this->input->post('kode_pos')
-      ];
-      $this->session->set_userdata($session_data);
-    }
-    /*end edit alamat*/
-
-    $this->form_validation->set_rules('total_amount', 'total_amount', 'required|trim');
-    // $this->form_validation->set_rules('email', 'email', 'required|trim');
-    // $this->form_validation->set_rules('address', 'address', 'required|trim');
-    // $this->form_validation->set_rules('kode_pos', 'kode_pos', 'required|trim');
-
-    if ($this->form_validation->run() == false) {
-      // $this->session->set_flashdata('message', '<div class="alert alert-warning" role="alert">
-      // Terjadi Kesalahan, Alamat atau Kode POS belum terisi.
-      // </div>');
-      // redirect('cekout');
-    } else {
-      //ini aktifkan validasi payment method
-      if ($this->input->post('total_amount') > 0) {
-        if (!$this->session->userdata('metode_admin')) {
-          $this->session->set_flashdata('message', '<div class="alert alert-warning" role="alert">Silahkan pilih metode pembayaran.</div>');
-          redirect('cekout');
-        }
-      }
-      /*start validasi SP hanya bisa dibeli 1x saja*/
-      $items_khusus = "950201169"; //FP:950201094,SP:950201169. ini aktifkan
-      $item_khusus_exclude_sepatu = explode(",", $items_khusus);
-      foreach ($this->cart->contents() as $items) {
-        if (in_array($items['id'], $item_khusus_exclude_sepatu, TRUE)) {
-          $cekUsage = $this->db->where(['user_id' => $this->ion_auth->user()->row()->id])->where(['voucher_id' => 170])->get('voucher_used')->row();
-          if ($cekUsage) {
-            $this->session->set_flashdata('message', '<div class="alert alert-warning" role="alert">
-                    Product ' . $items['name'] . ' Hanya bisa dibeli 1X Saja
-                    </div>');
-            return  redirect('cekout');
-          }
-        }
-      }
-      $items_khusus_fp = "950201094"; //FP:950201094
-      $item_khusus_exclude_sepatu = explode(",", $items_khusus_fp);
-      foreach ($this->cart->contents() as $items) {
-        if (in_array($items['id'], $item_khusus_exclude_sepatu, TRUE)) {
-          $cekUsage = $this->M_reseller->cek_produk_sales_fp($this->session->userdata('user_id'), $items['id']);
-          if ($cekUsage) {
-            $this->session->set_flashdata('message', '<div class="alert alert-warning" role="alert">
-                    Product ' . $items['name'] . ' Hanya bisa dibeli 1X Saja
-                    </div>');
-            return  redirect('cekout');
-          }
-        }
-      }
-      /*end validasi SP & FP hanya bisa dibeli 1x saja*/
-
-      $validasi_stok = $this->cek_stok();
-      if ($validasi_stok != '') {
-        $this->session->set_flashdata('message', '<div class="alert alert-warning" role="alert">' . $validasi_stok . '</div>');
+    //ini aktifkan validasi payment method
+    if ($this->input->post('total_amount') > 0) {
+      if (!$this->session->userdata('metode_admin')) {
+        $this->session->set_flashdata('message', '<div class="alert alert-warning" role="alert">Silahkan pilih metode pembayaran.</div>');
         redirect('cekout');
-      } else {
-        /*add ebe edit alamat ini aktifkan*/
-        /*$almt=strlen($this->ion_auth->user()->row()->address);
-            if($almt < 1){
-                 $data_alamat = [
-                  'address' => $this->input->post('address'),
-                  'kd_pos' => $this->input->post('kode_pos')
-                ];
-                $this->ion_auth->update($this->ion_auth->user()->row()->id, $data_alamat);
-            }*/
-        /*end edit alamat*/
+      }
+    }
+    /*start validasi SP hanya bisa dibeli 1x saja*/
+    $items_khusus = "950201169"; //FP:950201094,SP:950201169. ini aktifkan
+    $item_khusus_exclude_sepatu = explode(",", $items_khusus);
+    foreach ($this->cart->contents() as $items) {
+      if (in_array($items['id'], $item_khusus_exclude_sepatu, TRUE)) {
+        $cekUsage = $this->db->where(['user_id' => $this->ion_auth->user()->row()->id])->where(['voucher_id' => 170])->get('voucher_used')->row();
+        if ($cekUsage) {
+          $this->session->set_flashdata('message', '<div class="alert alert-warning" role="alert">
+                    Product ' . $items['name'] . ' Hanya bisa dibeli 1X Saja
+                    </div>');
+          return  redirect('cekout');
+        }
+      }
+    }
+    $items_khusus_fp = "950201094"; //FP:950201094
+    $item_khusus_exclude_sepatu = explode(",", $items_khusus_fp);
+    foreach ($this->cart->contents() as $items) {
+      if (in_array($items['id'], $item_khusus_exclude_sepatu, TRUE)) {
+        $cekUsage = $this->M_reseller->cek_produk_sales_fp($this->session->userdata('user_id'), $items['id']);
+        if ($cekUsage) {
+          $this->session->set_flashdata('message', '<div class="alert alert-warning" role="alert">
+                    Product ' . $items['name'] . ' Hanya bisa dibeli 1X Saja
+                    </div>');
+          return  redirect('cekout');
+        }
+      }
+    }
+    /*end validasi SP & FP hanya bisa dibeli 1x saja*/
 
-        $cekAmount = $this->input->post('total_amount');
-        $reffer = $this->input->post('reffer');
-        if ($reffer) {
-          if ($reffer == $this->ion_auth->user()->row()->email || $reffer == $this->ion_auth->user()->row()->username) {
-            $this->session->set_flashdata('message', '<div class="alert alert-warning" role="alert">
-			Reffer Tidak Bisa dengan Email Atau Username Account Anda
-			</div>');
-            return redirect('users/refer', 'refresh');
-          }
+    $validasi_stok = $this->cek_stok();
+    if ($validasi_stok != '') {
+      $this->session->set_flashdata('message', '<div class="alert alert-warning" role="alert">' . $validasi_stok . '</div>');
+      redirect('cekout');
+    } else {
+      $cekAmount = $this->input->post('total_amount');
+      $reffer = $this->input->post('reffer');
+      if ($reffer) {
+        if ($reffer == $this->ion_auth->user()->row()->email || $reffer == $this->ion_auth->user()->row()->username) {
+          $this->session->set_flashdata('message', '<div class="alert alert-warning" role="alert">Reffer Tidak Bisa dengan Email Atau Username Account Anda</div>');
+          return redirect('users/refer', 'refresh');
+        }
+        $cekRefer = $this->db->where(['email' => $reffer])->or_where(['username' => $reffer])->get('users')->row();
+        if ($cekRefer) {
+          $dataReferSave = [
+            'user_id' =>  $this->ion_auth->user()->row()->id,
+            'refertouser_id' => $cekRefer->id,
+            'refertouser_email' => $reffer,
+          ];
 
-          $cekRefer = $this->db->where(['email' => $reffer])->or_where(['username' => $reffer])->get('users')->row();
-          if ($cekRefer) {
+          $this->db->insert('users_refer', $dataReferSave);
 
-            $dataReferSave = [
-              'user_id' =>  $this->ion_auth->user()->row()->id,
-              'refertouser_id' => $cekRefer->id,
-              'refertouser_email' => $reffer,
-            ];
-
-            $this->db->insert('users_refer', $dataReferSave);
-
-            if ($cekAmount == 0) {
-              $this->gratisPembelian();
-            } else {
-              $this->saveCekoutXendit();
-            }
-            //  $this->session->set_flashdata('message', '<div class="alert alert-warning" role="alert">
-            // Email Reffer Oke
-            // </div>');
-            // redirect('cekout');
-          } else {
-            $this->session->set_flashdata('message', '<div class="alert alert-warning" role="alert">
-			  Email Referrer Tidak Tersedia
-			  </div>');
-            redirect('cekout');
-          }
-        } else {
           if ($cekAmount == 0) {
             $this->gratisPembelian();
           } else {
             $this->saveCekoutXendit();
           }
-          //  $this->session->set_flashdata('message', '<div class="alert alert-warning" role="alert">
-          //   Email Reffer Tidak Di isi
-          //   </div>');
-          //   redirect('cekout');
+        } else {
+          $this->session->set_flashdata('message', '<div class="alert alert-warning" role="alert">Email Referrer Tidak Tersedia</div>');
+          redirect('cekout');
+        }
+      } else {
+        if ($cekAmount == 0) {
+          $this->gratisPembelian();
+        } else {
+          $this->saveCekoutXendit();
         }
       }
     }
   }
-
 
   public function gratisPembelian()
   {
@@ -339,7 +336,13 @@ class CekOutController extends CI_Controller
       $method = '';
       if ($this->input->post('id_voucher') == 120) { //voucher deposit
         $method = 'DEPOSIT';
-        $this->send_email($this->ion_auth->user()->row()->id);
+        if (!$this->send_email($this->ion_auth->user()->row()->id)) {
+          // Handle the failure 
+          echo "Email sending failed!";
+        } else {
+          // The email was sent successfully
+          echo "Email sent successfully!";
+        }
       }
       if ($this->input->post('id_voucher') == 170) { //voucher singlepackage
         $method = 'DEPOSIT';
@@ -348,13 +351,14 @@ class CekOutController extends CI_Controller
         'user_id' => $this->ion_auth->user()->row()->id,
         'kode_order' => $this->input->post('kode_order'),
         'nama_order' => $this->input->post('first_name') . ' ' . $this->input->post('last_name'),
-        'phone_order' => $this->input->post('phone'),
-        'email_order' => $this->input->post('email'),
-        'alaman_order' => $this->input->post('address'),
-        'kode_pos' => $this->input->post('kode_pos'),
+        'phone_order' => '',
+        'email_order' => '',
+        'alaman_order' => '',
+        'kode_pos' => '',
         'status_bayar' => 'SETTLED',
         'status_order' => 'DITERIMA',
         'total_bayar' => $this->input->post('total_amount'),
+        'total_ongkir' => $this->input->post('total_ongkir'),
         'invoice_url' => '',
         'id_xendit' => '',
         'expiry_date' => '',
@@ -364,7 +368,7 @@ class CekOutController extends CI_Controller
         'id_reseller' => $reseller,
         'kode_voucher' => $this->input->post('id_voucher'),
         'payment_method' => $method,
-        'sts_read' => 1
+        'sts_read' => 1,
       ];
       $this->db->trans_start();
 
@@ -435,11 +439,44 @@ class CekOutController extends CI_Controller
       }
       /*end Insert kode voucher SP ke voucher_used*/
 
+
+
+      $store = $this->check_stock();
+
       $i = 1;
+
+
       foreach ($this->cart->contents() as  $items) {
+
+        // echo "<pre>";
+        // var_dump($items);
+        // echo "</pre>";
+
+        $selected_store = $store[$i - 1]['from'];
+
+        $pengiriman = explode(',', $items['options']['pengiriman']);
+
+        $arrayAttribute =
+          [
+            'penerima' => $items['options']['alamat']['penerima'],
+            'alamat' => $items['options']['alamat']['alamat_pengiriman'],
+            'jasa_pengiriman' => $pengiriman[0] . "," . $pengiriman[1],
+            'tarif_pengiriman' => $pengiriman[2],
+          ];
+
+        $query = $this->db->query("
+          SELECT id_stok 
+          FROM product_stok 
+          WHERE id_store = $selected_store 
+            AND id_product = '" . $items['id'] . "'
+            AND id_product_attribute = '" . $items['options']['Size'] . "'
+        ");
+        $get_stock_id = $query->row();
+
         $data_item = array(
           'order_id' =>  $is_id,
           'kode_order' => $this->input->post('kode_order'),
+          'stok_id' => $get_stock_id->id_stok,
           'product_id' => $items['id'],
           'qty' => $this->input->post('qty' . $i),
           'price_item' => $this->input->post('price_item' . $i),
@@ -448,6 +485,8 @@ class CekOutController extends CI_Controller
           'diskon' => $this->input->post('diskon' . $i),
           'id_product_attribute' => $this->input->post('id_product_attribute' . $i),
           'user_id' => $this->ion_auth->user()->row()->id,
+          'array_attribute' => json_encode($arrayAttribute),
+          'id_store' =>  $selected_store
         );
         $this->db->insert('order_items', $data_item);
         $i++;
@@ -536,6 +575,7 @@ class CekOutController extends CI_Controller
 
   public function saveCekoutXendit()
   {
+
     //ini aktifkan
     $adm_method = $this->session->userdata('metode_admin'); //strtoupper($this->session->userdata('metode_admin'));
     if ($adm_method === 'bank_transfer') {
@@ -557,8 +597,8 @@ class CekOutController extends CI_Controller
 
     $data['external_id'] = $this->input->post('kode_order');
     //$data['amount'] = (int)$this->input->post('total_amount'); //+(int)$adm,ini aktifkan
-    $data['amount'] = (int)$this->input->post('total_amount') + (int)$adm;
-    $data['payer_email'] = $this->input->post('email');
+    $data['amount'] = (int)$this->input->post('total_amount');
+    $data['payer_email'] = 'dzarrzoy@gmail.com';
     $data['description'] = 'Pesanan ' . $this->ion_auth->user()->row()->username . ' - ' . $this->ion_auth->user()->row()->first_name . ' ' . $this->ion_auth->user()->row()->last_name; //'Pesanan bocorocco';
     $data['payment_methods'] = $admin_method; //ini aktifkan
     // $data['invoice_duration'] = 86400;
@@ -606,18 +646,18 @@ class CekOutController extends CI_Controller
     }
     //==ebe
     $reseller = '';
-    /*if($this->session->userdata('reseller') != ""){
-		if($this->session->userdata('reseller') == "1"){
-			$reseller=$this->session->userdata('user_id');
-		}else{
-			$reseller=$this->session->userdata('resellerid');
-		}
-	}*/
-    /*if($this->session->userdata('reseller') == "1"){
-		$reseller=$this->session->userdata('user_id');
-	}else{
-		$reseller=$this->session->userdata('resellerid');
-	}*/
+    //   /*if($this->session->userdata('reseller') != ""){
+    // 	if($this->session->userdata('reseller') == "1"){
+    // 		$reseller=$this->session->userdata('user_id');
+    // 	}else{
+    // 		$reseller=$this->session->userdata('resellerid');
+    // 	}
+    // }*/
+    //   /*if($this->session->userdata('reseller') == "1"){
+    // 	$reseller=$this->session->userdata('user_id');
+    // }else{
+    // 	$reseller=$this->session->userdata('resellerid');
+    // }*/
     if ($this->session->userdata('resellerid')) {
       $reseller = $this->session->userdata('resellerid');
     }
@@ -664,13 +704,14 @@ class CekOutController extends CI_Controller
       'user_id' => $this->ion_auth->user()->row()->id,
       'kode_order' => $this->input->post('kode_order'),
       'nama_order' => $this->input->post('first_name') . ' ' . $this->input->post('last_name'),
-      'phone_order' => $this->input->post('phone'),
-      'email_order' => $this->input->post('email'),
-      'alaman_order' => $this->input->post('address'),
-      'kode_pos' => $this->input->post('kode_pos'),
+      'phone_order' => '',
+      'email_order' => '',
+      'alaman_order' => '',
+      'kode_pos' => '',
       'status_bayar' => $responseObject['status'],
       'status_order' => 'DITERIMA',
       'total_bayar' => $responseObject['amount'],
+      'total_ongkir' => $this->input->post('total_ongkir'),
       'biaya_admin' => $adm,
       'admin_method' => $this->session->userdata('metode_admin'),
       'invoice_url' => $invoice_url,
@@ -720,11 +761,42 @@ class CekOutController extends CI_Controller
       }
     }
 
+
+
+    $store = $this->check_stock();
+
     $i = 1;
     foreach ($this->cart->contents() as  $items) {
+
+      $selected_store = $store[$i - 1]['from'];
+
+      $pengiriman = explode(',', $items['options']['pengiriman']);
+
+      $arrayAttribute =
+        [
+          'penerima' => $items['options']['alamat']['penerima'],
+          'alamat' => $items['options']['alamat']['alamat_pengiriman'],
+          'jasa_pengiriman' => $pengiriman[0] . "," . $pengiriman[1],
+          'tarif_pengiriman' => $pengiriman[2],
+        ];
+
+      $query = $this->db->query("
+        SELECT id_stok 
+        FROM product_stok 
+        WHERE id_store = $selected_store 
+          AND id_product = '" . $items['id'] . "'
+          AND id_product_attribute = '" . $this->input->post('id_product_attribute' . $i) . "'
+      ");
+      $get_stock_id = $query->row();
+      // echo "<pre>";
+      // var_dump($selected_store );
+      // echo "</pre>";
+      // exit();
+
       $data_item = array(
         'order_id' =>  $is_id,
         'kode_order' => $this->input->post('kode_order'),
+        'stok_id' => $get_stock_id->id_stok,
         'product_id' => $items['id'],
         'is_indent' => $this->input->post('indent' . $i),
         'qty' => $this->input->post('qty' . $i),
@@ -733,7 +805,10 @@ class CekOutController extends CI_Controller
         'diskon' => $this->input->post('diskon' . $i),
         'id_product_attribute' => $this->input->post('id_product_attribute' . $i),
         'user_id' => $this->ion_auth->user()->row()->id,
+        'array_attribute' => json_encode($arrayAttribute),
+        'id_store' => $selected_store
       );
+
       $this->db->insert('order_items', $data_item);
       $i++;
     };
@@ -750,6 +825,129 @@ class CekOutController extends CI_Controller
 
     return redirect('order/detail/' . $is_id);
   }
+
+  // fungsi untuk memeriksa stok
+  public function check_stock()
+  {
+    $i = 0;
+    $arr_informasi_stock = [];
+    foreach ($this->cart->contents() as $cart_item) {
+      
+      // var_dump($this->input->post('qty')[$i]);
+      // echo "<br>";
+      $in_store_founded = false;
+      $stok = 0;
+      $id_product = $cart_item['id'];
+      $id_attribute_product = $cart_item['options']['Size'];
+      $qty_request = isset($this->input->post('qty')[$i]) ? $this->input->post('qty')[$i] : $cart_item['qty'];
+      $id_alamat = explode("-", $cart_item['id_alamat']);
+      // var_dump($id_alamat[0] == 'G');
+      if ($id_alamat[0] == 'G') {
+        // jika user memilih self pickup / ambil sendiri
+        $stok_product = $this->query_check_stock($id_alamat[1], $id_product, $id_attribute_product);
+        
+        if ($qty_request <= $stok_product) {
+          $in_store_founded = true;
+          //kondisi ketika barang ada / pas
+          $arr_informasi_stock[] = [
+            'id_product' => $cart_item['id'],
+            'id_attribute_product' => $cart_item['options']['Size'],
+            'stock_available' => true,
+            'stock' => $stok_product,
+            'from' => $id_alamat[1],
+            'msg' => 'Menemukan stock pada gudang yang dipilih'
+          ];
+
+          $update_data_cart = array(
+            'rowid' => $cart_item['rowid'],
+            'qty'   => $qty_request,
+          );
+          $this->cart->update($update_data_cart);
+        } else {
+          $in_store_founded = true;
+          $arr_informasi_stock[] = [
+            'id_product' => $cart_item['id'],
+            'id_attribute_product' => $cart_item['options']['Size'],
+            'stock_available' => false,
+            'stock' => $stok_product,
+            'code' => $id_alamat[1],
+            'msg' => "Stok tidak mencukupi, gudang hanya memiliki stok $stok_product"
+          ];
+        }
+      } else {
+        // Jika user memilih alamat pengiriman
+        // periksa setiap gudang
+
+        // echo "mencari stok bukan berdasarkan gudang";
+        $store_checked = null;
+        foreach (get_store() as $store) { // data list store di ambil dari helper
+          // var_dump($store['id_store']);
+          $stok_product = $this->query_check_stock($store['id_store'], $id_product, $id_attribute_product);
+          $store_checked = $store['id_store'];
+          if ($qty_request <= $stok_product) {
+            $in_store_founded = true;
+            //kondisi ketika barang ada / pas
+            $arr_informasi_stock[] = [
+              'id_product' => $cart_item['id'],
+              'id_attribute_product' => $cart_item['options']['Size'],
+              'stock_available' => true,
+              'stock' => $stok_product,
+              'from' => $store_checked,
+              'msg' => 'Menemukan stock pada gudang',
+            ];
+            $update_data_cart = array(
+              'rowid' => $cart_item['rowid'],
+              'qty'   => $qty_request,
+            );
+            $this->cart->update($update_data_cart);
+            var_dump($store_checked);
+            break;
+          } else if (isset($stok_product)) {
+            $in_store_founded = true;
+            // jika di temukan masih tidak ada stok ...
+            $arr_informasi_stock[] = [
+              'id_product' => $cart_item['id'],
+              'id_attribute_product' => $cart_item['options']['Size'],
+              'stock_available' => false,
+              'stock' => $stok_product,
+              'from' => $store_checked,
+              'msg' => "Stok pada gudang tidak mencukupi, stok tersisa $stok_product",
+            ];
+          }
+        }
+        // tidak di temukan di gudang manapun
+        if ($in_store_founded == false) {
+          // echo $id_alamat[0];
+          $stok_product = $this->query_check_stock($store['id_store'], $id_product, $id_attribute_product);
+          $arr_informasi_stock[] = [
+            'id_product' => $cart_item['id'],
+            'id_attribute_product' => $cart_item['options']['Size'],
+            'stock_available' => false,
+            'stock' => 0,
+            'from' => $store_checked,
+            'msg' => "Tidak menemukan stock di gudang manapun"
+          ];
+        }
+        // $stok_product = $this->query_check_stock($id_alamat[1], $id_product, $id_attribute_product);
+      }
+      $i++;
+    }
+    // echo "<pre>";
+    // print_r(($arr_informasi_stock));
+    // echo "</pre>";
+    return ($arr_informasi_stock);
+  }
+  private function query_check_stock($id_store, $id_product, $id_attribute_product)
+  {
+    $results = $this->db->select_sum('jumlah_stok')
+      ->where(['id_store' => $id_store])
+      ->where(['id_product' => $id_product])
+      ->where(['id_product_attribute' => $id_attribute_product])
+      ->get('product_stok')
+      ->row();
+    return $results->jumlah_stok;
+  }
+
   public function get_voucher_deposit()
   {
     $sts = 0;

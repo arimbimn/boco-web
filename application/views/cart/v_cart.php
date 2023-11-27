@@ -1,72 +1,3 @@
-<style>
-  /* Ini adalah CSS yang akan tampil di semua layar, termasuk desktop */
-
-  @media (min-width: 768px) {
-    .show-on-mobile {
-      display: none;
-      /* Menampilkan baris pada versi desktop */
-    }
-
-    .close-button {
-      position: absolute;
-      top: 10px;
-      right: 20px;
-      cursor: pointer;
-      font-size: 18px;
-      color: #ff0000;
-    }
-  }
-
-  /* Ini adalah CSS yang hanya akan tampil pada layar dengan lebar kurang dari atau sama dengan 768 piksel (versi mobile) */
-  @media (max-width: 768px) {
-    .show-on-mobile {
-      display: table-row;
-      /* Menampilkan baris pada versi mobile */
-    }
-
-    .dropdown {
-      display: block;
-      visibility: visible;
-    }
-
-    .ukuran-besar {
-      width: 300px;
-      height: 40px;
-      font-size: 18px;
-    }
-
-    .horizontal-container {
-      display: flex;
-      flex-direction: row;
-      /* Mengatur arah menjadi horizontal */
-      flex-wrap: nowrap;
-      /* Jangan pindah ke baris berikutnya */
-    }
-
-    .horizontal-item {
-      flex: 1;
-      /* Membagi lebar secara rata */
-      margin: 10px;
-      /* Jarak antar item */
-      border: 1px solid #ccc;
-      /* Garis pembatas antar item */
-      padding: 10px;
-    }
-
-    .close-button {
-      position: absolute;
-      top: 10px;
-      right: 20px;
-      cursor: pointer;
-      font-size: 18px;
-      color: #ff0000;
-    }
-
-
-    /* Anda juga dapat menambahkan CSS lainnya yang hanya berlaku di versi mobile di sini */
-
-  }
-</style>
 <!-- breadcrumb start -->
 <div class="breadcrumb-section">
   <div class="container">
@@ -89,414 +20,592 @@
 </div>
 <!-- breadcrumb End -->
 
-
 <!--section start-->
-<section class="cart-section section-b-space">
-  <div class="container">
-    <div class="row">
-      <!--div class="col-lg-12 col-sm-12 col-xs-12">
-        <button type="button" class="btn btn-danger float-right" data-toggle="modal" data-target="#myModal">
-          Tambah Alamat
-        </button>
-      </div-->
-      <?php if ($this->ion_auth->logged_in()) { ?>
-        <?php if ($option1) { ?>
-          <div class="col-12">
-            <div class="card">
-              <div class="card-body">
-                <div class="container">
-                  <div class="row card-data">
-                    <?php foreach ($option1 as $option2) : ?>
-                      <div class="col-md-4">
-                        <div class="card" data-card-id="<?= $option2->id ?>">
-                          <div class="card-body">
-                            <span class="close-button" onclick="closeCard(this)">X</span>
-                            <h5 class="card-title"><?= $option2->label_alamat ?></h5>
-                            <p class="card-text">
-                              <strong>Penerima:</strong> <span class="penerima"><?= $option2->penerima ?></span><br>
-                              <strong>Alamat:</strong> <span class="alamat"><?= $option2->alamat ?></span>
-                            </p>
-                            <button class="btn btn-outline-danger edit-card" data-toggle="modal" data-target="#editCardModal">Edit Alamat</button>
+<form id="cartform" action="<?= base_url('cart/update') ?>" method="post">
+  <section class="cart-section section-b-space">
+    <div class="container">
+      <div class="max-w-[1000px] mx-auto">
+
+        <div class="grid md:grid-cols-2 gap-[20px]">
+          <div class="grid gap-3 cart-items">
+            <?php
+            $i = 1;
+            $j = 0;
+            ?>
+            <?php foreach ($this->cart->contents() as $items) : ?>
+
+              <?php
+              $barang = $this->M_product->get_detailproduct($items['id']);
+              $totalStok = 0;
+              $cekTotal = $this->db->select_sum('jumlah_stok')
+                ->where(['id_store' => 100])
+                ->where(['id_product' => $items['id']])
+                ->where(['id_product_attribute' => $items['options']['Size']])
+                ->get('product_stok')
+                ->row();
+              if ($cekTotal->jumlah_stok >= 1) {
+                $totalStok = $cekTotal->jumlah_stok;
+              }
+              ?>
+
+              <!-- Card Product -->
+              <div id-product="<?php echo $items['id'] ?>" id-product-attribute="<?php echo $items['options']['Size'] ?>" class="relative grid bg-white border-2 border-[#e9e9e9] rounded-[10px] shadow-md overflow-hidden">
+                <!-- Delete Column -->
+                <div class="absolute top-0 right-0 p-3">
+                  <a href="<?= base_url('cart/del/' . $items['rowid']) ?>">
+                    <div class="bg-[#ff4a47] aspect-square w-[40px] flex justify-center items-center text-white rounded-[10px]">
+                      <i class="fa fa-trash-o fa-lg"></i>
+                    </div>
+                  </a>
+                </div>
+                <!-- Info -->
+                <div class="p-3">
+                  <div class="flex gap-4">
+                    <div>
+                      <div class=" aspect-square w-[60px] md:w-[100px] relative">
+                        <a href="<?= base_url() ?>product/detail/<?= $barang->id_product ?>">
+                          <img src="<?= smn_baseurl() ?>uploads/product/<?= $barang->image_one ?>" class=" object-cover w-full h-full absolute">
+                        </a>
+                      </div>
+                    </div>
+                    <div class="">
+                      <!-- Product Name -->
+                      <div class="text-[22px] font-bold">
+                        <a href="<?= base_url('product/detail/' . $items['id']) ?>">
+                          <?= $items['name'] ?>
+                        </a>
+                      </div>
+                      <!-- Detail -->
+                      <div class="text-[13px]">
+                        <?php if ($this->cart->has_options($items['rowid']) == TRUE) : ?>
+                          <p>
+                            <?php foreach ($this->cart->product_options($items['rowid']) as $option_name => $option_value) : ?>
+                              <?php if ($option_name != 'Diskon') { ?>
+                                <?php if ($option_name == 'Size') { ?>
+                                  <?php $size = $this->db->where(['id_product_attribute' => $option_value])->get('product_attribute')->row(); ?>
+                                  <?php if ($size) { ?>
+                                    <strong><?php echo $option_name; ?>:</strong> <?php echo $size->size ?><br />
+                                  <?php } else { ?>
+                                    <strong><?php echo $option_name; ?>:</strong> N/A<br />
+                                  <?php } ?>
+                                <?php } else if ($option_name == 'Color') { ?>
+                                  <strong><?php echo $option_name; ?>:</strong> <?php echo $option_value; ?><br />
+                                <?php } ?>
+                              <?php } ?>
+                            <?php endforeach; ?>
+                          </p>
+                        <?php endif; ?>
+                        <?php if ($items['options']['Indent'] != 0) {  ?>
+                          <p style="color:red;">item Indent <?= $barang->hari_indent ?> Days </p>
+                        <?php } ?>
+                      </div>
+
+                      <!-- Price Column -->
+                      <div class="pt-2 mt-2">
+                        <div class="font-bold text-[18px]">
+                          <?php if ($items['options']['Diskon'] != 0) {  ?>
+                            <p style="color:red;"> Diskon : <?= $items['options']['Diskon'] ?> % </p>
+                            <p>Price Item : IDR <?= number_format($barang->harga, 0, ',', '.') ?></p>
+                          <?php } ?>
+                          <div class="td-color subtotal-<?= $items['id'] ?>">
+                            IDR <?= number_format($items['subtotal'], 0, ',', '.') ?>
                           </div>
                         </div>
                       </div>
-                    <?php endforeach; ?>
-                  </div>
-                </div>
 
-                <div class="modal fade" id="editCardModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                  <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Edit Card Details</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                          <span aria-hidden="true">&times;</span>
-                        </button>
-                      </div>
-                      <div class="modal-body">
-                        <form id="editCardForm">
-                          <div class="form-group">
-                            <label for="editLabelAlamat">Label Alamat Pengiriman</label>
-                            <input type="text" class="form-control" id="editLabelAlamat" name="label_alamat">
-                          </div>
-                          <div class="form-group">
-                            <label for="editPenerima">Nama Penerima</label>
-                            <input type="text" class="form-control" id="editPenerima" name="penerima">
-                          </div>
-                          <div class="form-group">
-                            <label for="editAlamat">Alamat Tujuan</label>
-                            <input type="text" class="form-control" id="editAlamat" name="alamat">
-                          </div>
-                        </form>
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-                        <button type="button" class="btn btn-danger" id="updatealamat">Simpan Perubahan</button>
-                      </div>
                     </div>
                   </div>
                 </div>
+                <!-- Action -->
+                <div class="p-3 bg-grey flex gap-4">
+                  <div class="flex items-center gap-2">
+                    <div class="text-[#a4a4a4]">Address: </div>
+
+                    <select id="select_<?php echo $j; ?>" name="select_<?= $j ?>" class="select-alamat-pengiriman rounded-[10px] bg-[#e5e5e5] p-2 h-full w-[100px]">
+
+                      <?php foreach ($items['available_store'] as $store) : ?>
+                        <option value="G-<?php echo $store['id_store'] ?>" <?php echo $items['id_alamat'] == ("G-" . $store['id_store']) ? "selected" : '' ?>>
+                          <?php echo $store['nama_store'] ?> : Self Pickup
+                        </option>
+                      <?php endforeach; ?>
+
+                      <?php foreach ($list_alamat as $address) : ?>
+
+                        <?php
+                        // Selected dropdown
+                        $selected = false;
+                        if (isset($items['id_alamat'])) {
+                          if ($items['id_alamat'] == $address->id) {
+                            $selected = true;
+                          } else {
+                            $selected = false;
+                          }
+                        }
+                        ?>
+                        <option value="<?= $address->id ?>" <?php echo $selected ? "selected" : "" ?>>
+                          <?= $address->label_alamat . ' - ' . $address->penerima . ' - ' . $address->alamat ?>
+                        </option>
+                      <?php endforeach; ?>
+                    </select>
+                  </div>
+                  <!-- QTY & Select Address -->
+                  <div class="flex items-center gap-2">
+                    <?php
+                    // Get Total Stock & Max Stock
+                    $max_stock_htmlAttr = "";
+                    if ($totalStok >= 1) {
+                      $max_stock_htmlAttr = "max='$totalStok'";
+                    } else if ($barang->indent == 1) {
+                    } else {
+                      $max_stock_htmlAttr = "max='$totalStok'";
+                    }
+                    ?>
+                    <div class="text-[#a4a4a4]">Qty: </div>
+                    <input type="number" name="<?= $i ?>[qty]" class="input-number inputqty rounded-[10px] bg-[#e5e5e5] p-2 text-center w-[70px]" min="1" value="<?php echo $items['qty'] ?>" <?php echo $max_stock_htmlAttr ?>>
+                  </div>
+
+
+                </div>
+                <div class="trigger-info hidden">
+                  <div class="message p-3 py-2">
+
+                  </div>
+                </div>
+              </div>
+
+              <?php $i++; ?>
+
+            <?php endforeach; ?>
+            <div>
+              <div id="list-alamat-pengiriman" class="py-4">
+                <div class="d-flex justify-content-end">
+                  <a href="#" class="btn btn-solid linknext" data-toggle="modal" data-target="#tambahAlamatModal">
+                    Alamat Pengiriman
+                  </a>
+                </div>
               </div>
             </div>
+
+
+
           </div>
-        <?php } ?>
-        <div class="col-lg-12 col-sm-12 col-xs-12 d-flex justify-content-end mt-2 mb-2">
-          <button type="button" class="btn btn-danger " data-toggle="modal" data-target="#myModal">
-            Tambah Alamat
-          </button>
-        </div>
-        <hr />
-      <?php } ?>
-      <div class="col-sm-12">
-        <!-- Modal -->
-        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Masukkan Alamat Anda</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
+          <div>
+            <div class="font-bold text-[24px]">Ringkasan Belanja</div>
+            <div id="cart-summary" class="py-[20px]">
+              <!-- Ringkasan Belanja -->
+            </div>
+            <div class=" flex md:flex-row md:items-center md:gap-[20px] flex-col items-end justify-end ">
+              <div>
+                <!-- <?= lang('total_price_produk') ?> : -->
               </div>
-              <div class="modal-body">
-                <form>
-                  <div class="form-group">
-                    <label for="labelalamat">Label Alamat Pengiriman</label>
-                    <input type="text" class="form-control" id="labelalamat" placeholder="Masukkan Jenis Alamat">
-                  </div>
-                  <div class="form-group">
-                    <label for="namapenerima">Nama Penerima</label>
-                    <input type="text" class="form-control" id="namapenerima" placeholder="Masukkan Nama Penerima">
-                  </div>
-                  <div class="form-group">
-                    <label for="alamatpenerima">Alamat Tujuan</label>
-                    <input type="text" class="form-control ukuran-besar" id="alamatpenerima" placeholder="Masukkan Alamat Tujuan">
-                  </div>
-                </form>
+              <div class="total_all text-[32px]  font-bold ">
+                IDR <?= number_format($this->cart->total(), 0, ',', '.') ?>
               </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-                <button type="button" class="btn btn-danger" id="simpanData">Simpan</button>
-              </div>
+            </div>
+            <div class="flex justify-end mt-[20px]">
+              <button type="button" class="btn-checkout py-[10px] px-[25px] capitalize font-bold bg-[#5dc75d] text-white rounded-full">
+                <?= lang('check_out_produk') ?>
+              </button>
+              <!-- <a href="#" class="btn btn-solid linknext">
+                <?= lang('check_out_produk') ?>
+              </a> -->
             </div>
           </div>
         </div>
 
-        <form id="cartform" action="<?= base_url('cart/update') ?>" method="post">
-          <div class="table-responsive">
-            <table class="table cart-table table-responsive-xs">
-              <thead>
-                <tr class="table-head">
-                  <th scope="col"><?= lang('image_produk') ?></th>
-                  <th scope="col"><?= lang('product_name_produk') ?></th>
-                  <th scope="col"><?= lang('price_produk') ?></th>
-                  <th scope="col"><?= lang('quantity_produk') ?></th>
-                  <th scope="col"><?= lang('delete_produk') ?></th>
-                  <th scope="col">total</th>
-                </tr>
-              </thead>
-
-              <?php $i = 1;
-              $ii = 0; ?>
-
-              <?php foreach ($this->cart->contents() as $items) : ?>
-
-                <?php $i++; ?>
-
-                <?php $barang = $this->M_product->get_detailproduct($items['id']) ?>
-                <?php $totalStok = 0; ?>
-                <?php $cekTotal = $this->db->select_sum('jumlah_stok')->where(['id_store' => 100])->where(['id_product' => $items['id']])->where(['id_product_attribute' => $items['options']['Size']])->get('product_stok')->row(); ?>
-                <?php if ($cekTotal->jumlah_stok >= 1) {  ?>
-                  <?php $totalStok = $cekTotal->jumlah_stok ?>
-                <?php } ?>
-                <tbody>
-                  <tr style="height: 1px;">
-                    <td class="" style="height: inherit;">
-                      <!--div style="background-color: red; height: 100%;position: relative;"-->
-                      <div style="height: 100%;position: relative;">
-                        <a href="<?= base_url() ?>product/detail/<?= $barang->id_product ?>"><img src="<?= smn_baseurl() ?>uploads/product/<?= $barang->image_one ?>" alt="" style="object-fit: cover;"></a>
-                        <!--div class="mobile-cart-content" style="background-color: green;position: absolute;bottom: 0;width:100%;"-->
-                        <div class="mobile-cart-content" style="position: absolute;bottom: 0;width:100%">
-                          <b>Alamat pengiriman</b>
-                        </div>
-                      </div>
-                    </td>
-
-                    <td class="">
-                      <a href="<?= base_url('product/detail/' . $items['id']) ?>"><?= $items['name'] ?></a>
-                      <?php if ($this->cart->has_options($items['rowid']) == TRUE) : ?>
-                        <p>
-                          <?php foreach ($this->cart->product_options($items['rowid']) as $option_name => $option_value) : ?>
-                            <?php if ($option_name != 'Diskon') { ?>
-                              <?php if ($option_name == 'Size') { ?>
-                                <?php $size = $this->db->where(['id_product_attribute' => $option_value])->get('product_attribute')->row(); ?>
-                                <?php if ($size) { ?>
-                                  <strong><?php echo $option_name; ?>:</strong> <?php echo $size->size ?><br />
-                                <?php } else { ?>
-                                  <strong><?php echo $option_name; ?>:</strong> N/A<br />
-                                <?php } ?>
-                              <?php } else if ($option_name == 'Color') { ?>
-                                <strong><?php echo $option_name; ?>:</strong> <?php echo $option_value; ?><br />
-                              <?php } ?>
-                            <?php } ?>
-                          <?php endforeach; ?>
-                        </p>
-                      <?php endif; ?>
-                      <?php if ($items['options']['Indent'] != 0) {  ?>
-                        <p style="color:red;">item Indent <?= $barang->hari_indent ?> Days </p>
-                      <?php } ?>
-                      <div class="mobile-cart-content row">
-                        <div class="col-xs-3">
-                          <div class="qty-box">
-                            <div class="input-group">
-                              <input type="number" <?php if ($totalStok >= 1) {  ?> max="<?= $totalStok ?>" <?php } else if ($barang->indent == 1) { ?> <?php } else {  ?> max="<?= $totalStok ?>" <?php } ?> name="<?= $i ?>[qty]" class="form-control input-number inputqtymobile" min="1" value="<?= $items['qty'] ?>">
-
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-xs-3">
-                          <h2 class="td-color"><a href="<?= base_url('cart/del/' . $items['rowid']) ?>" class="icon"><i class="fa fa-trash-o fa-lg"></i></a>
-                          </h2>
-                        </div>
-                        <div class="col-xs-3">
-                          <h5 class="td-color subtotal-<?= $items['id'] ?>">IDR <?= number_format($items['subtotal'], 0, ',', '.') ?></h5>
-                        </div>
-                      </div>
-                      <div class="mobile-cart-content">
-                        <select id="select_<?php echo $ii; ?>" class="form-select col-12 form-control select-update selectmobile" aria-label="Default select example" name="select_<?= $ii ?>">
-                          <option value="<?= $items['alamat'] ?>" selected><?= $items['alamat'] != '' ? str_replace('#', ' - ', $items['alamat']) : 'Pilih alamat disini' ?></option>
-                          <option value="gudang 1"> Gudang 1 </option>
-                          <option value="gudang 2"> Gudang 2 </option>
-                          <?php foreach ($option1 as $option2) : ?>
-                            <option value="<?= $option2->penerima . '#' . $option2->label_alamat ?>"><?= $option2->label_alamat . ' - ' . $option2->penerima . ' - ' . $option2->alamat ?></option>
-                          <?php endforeach; ?>
-                        </select>
-                      </div>
-                    </td>
-                    <td>
-                      <h2>IDR <?= number_format($items['price'], 0, ',', '.') ?></h2>
-                      <?php if ($items['options']['Diskon'] != 0) {  ?>
-                        <p style="color:red;"> Diskon : <?= $items['options']['Diskon'] ?> % </p>
-                        <p>Price Item : IDR <?= number_format($barang->harga, 0, ',', '.') ?></p>
-                      <?php } ?>
-                    </td>
-                    <td>
-
-                      <div class="qty-box">
-                        <div class="input-group">
-                          <input type="number" <?php if ($totalStok >= 1) {  ?> max="<?= $totalStok ?>" <?php } else if ($barang->indent == 1) { ?> <?php } else {  ?> max="<?= $totalStok ?>" <?php } ?> name="<?= $i ?>[qty]" class="form-control input-number inputqty" min="1" value="<?= $items['qty'] ?>">
-                        </div>
-                      </div>
-                    </td>
-                    <td><a href="<?= base_url('cart/del/' . $items['rowid']) ?>" class="icon"><i class="fa fa-trash-o fa-lg"></i></a></td>
-
-                    <td>
-                      <h2 class="td-color subtotal-<?= $items['id'] ?>">IDR <?= number_format($items['subtotal'], 0, ',', '.') ?></h2>
-                    </td>
-                  </tr>
-                  <!--tr><td colspan="6"><b>Alamat pengiriman</b></td></tr-->
-                  <tr class="bg-light">
-                    <td colspan="6">
-                      <div>
-                        <h5>Alamat pengiriman <?= $items['name'] ?></h5>
-                      </div>
-                      <div>
-                        <select id="select_<?php echo $ii; ?>" class="form-select col-12 form-control select-update dropdown-divider selectdestop" aria-label="Default select example" name="select_<?= $ii ?>">
-                          <option value="<?= $items['alamat'] ?>" selected><?= $items['alamat'] != '' ? str_replace('#', ' - ', $items['alamat']) : 'Pilih alamat disini' ?></option>
-                          <option value="gudang 1"> Gudang 1 </option>
-                          <option value="gudang 2"> Gudang 2 </option>
-                          <?php foreach ($option1 as $option2) : ?>
-                            <option value="<?= $option2->penerima . '#' . $option2->label_alamat ?>"><?= $option2->label_alamat . ' - ' . $option2->penerima . ' - ' . $option2->alamat ?></option>
-                          <?php endforeach; ?>
-                        </select>
-                      </div>
-                    </td>
-                  </tr>
-
-                </tbody>
-
-                <?php $i++; ?>
-
-              <?php endforeach; ?>
-            </table>
+        <div class="mt-[30px] last:flex justify-between">
+          <div>
+            <div class="loadingupdate">Please Wait ... Update</div>
+            <div class="ketersediaanstok" style="color: red;"></div>
           </div>
-          <table class="table cart-table table-responsive-md">
-            <tfoot>
-              <tr>
-                <td><?= lang('total_price_produk') ?> :</td>
-                <td>
-                  <h2 class="total_all">IDR <?= number_format($this->cart->total(), 0, ',', '.') ?></h2>
-                </td>
-              </tr>
-            </tfoot>
-          </table>
+        </div>
+
       </div>
     </div>
-    <div class="row cart-buttons">
-      <div class="col-6">
+  </section>
+</form>
+<!--section end-->
 
-        <h3 class="loadingupdate">Please Wait ... Update</h3>
-        <h3 class="ketersediaanstok" style="color: red;"></h3>
+<!-- Modal Alamat Pengiriman -->
+<div class="modal fade" id="tambahAlamatModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Alamat Pengiriman</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
-      <?php echo form_close() ?>
-      <!-- <div class="col-3"><a href="<?= base_url('product') ?>" class="btn btn-solid">continue shopping</a></div> -->
-      <div class="col-6"><a href="#" class="btn btn-solid linknext"><?= lang('check_out_produk') ?></a></div>
-      <!--?= base_url('cekout') ?-->
+      <div class="modal-body">
+        <!-- List Alamat -->
+        <div class="onList" style="display: flex; gap: 10px; flex-direction: column;">
+          <?php
+          $i = 0;
+          ?>
+          <?php foreach ($list_alamat as $item) : ?>
+            <div class="card" data-card-id="<?= $item->id ?>">
+              <div class="card-body">
+                <!-- <span class="close-button" onclick="closeCard(this)">X</span> -->
+                <h5 class="card-title"><?= $item->label_alamat ?></h5>
+                <p class="card-text">
+                  <strong>Penerima:</strong> <span class="penerima"><?= $item->penerima ?></span><br>
+                  <strong>Alamat:</strong> <span class="alamat"><?= $item->alamat ?></span>
+                </p>
+                <div class="btn btn-outline-primary edit-card">Edit Alamat</div>
+                <div class="btn btn-outline-danger delete-card">Hapus</div>
+              </div>
+            </div>
+            <?php $i++; ?>
+          <?php endforeach; ?>
+
+
+          <?php if ($i < 3) : ?>
+            <div class="mt-3">
+              <button type="button" class="btn btn-outline-primary add-card">Tambah Alamat</button>
+            </div>
+          <?php endif; ?>
+        </div>
+        <!-- END - List Alamat -->
+
+        <!-- Form Edit -->
+        <div class="onEdit d-none" style="display:flex; flex-direction:column; gap:10px">
+          <form id="inputAlamat" method="post">
+            <div class="row" style="margin:0;gap:10px">
+              <input type="hidden" class="form-control" id="apID" name="id">
+              <div class="col p-0">
+                <label for="apLabel">Label</label>
+                <input type="text" class="form-control" id="apLabel" name="label">
+              </div>
+              <div>
+                <label for="apPenerima">Penerima</label>
+                <input type="text" class="form-control" id="apPenerima" name="receiver">
+              </div>
+            </div>
+            <div>
+              <label for="provinsiDropdown">Provinsi</label>
+              <select id="provinsiDropdown" class="form-control" name="province">
+                <option value="">Pilih Provinsi</option>
+              </select>
+            </div>
+            <div>
+              <label for="cityDropdown">Kab/Kota</label>
+              <select id="cityDropdown" class="form-control" name="city">
+                <option value="">Pilih Kab/Kota</option>
+              </select>
+            </div>
+            <div>
+              <label for="subdisctrictDropdown">Kecamatan</label>
+              <select id="subdisctrictDropdown" class="form-control" name="subdistrict">
+                <option value="">Pilih Kecamatan</option>
+              </select>
+            </div>
+            <div class="row" style="margin:0;">
+              <div style="width: 50%;">
+                <label for="apKodepos">Kode Pos</label>
+                <input type="text" class="form-control" id="apKodepos" name="postal_code">
+              </div>
+            </div>
+            <div>
+              <label for="apDetailAlamat">Detail Alamat</label>
+              <textarea class="form-control" id="apDetailAlamat" name="detail_address"></textarea>
+            </div>
+
+            <div>
+              <button type="submit" class="btn btn-outline-primary ">Simpan Alamat</button>
+              <div type="button" class="btn btn-outline-danger cancel-edit-card" data-toggle="modal" data-target="#editCardModal">Batal</div>
+            </div>
+          </form>
+
+
+        </div>
+        <!-- END - Form Edit -->
+      </div>
     </div>
   </div>
-</section>
-<!--section end-->
+</div>
 
 
 <script>
-  $(document).ready(function() {
-    $(".loadingupdate").hide();
-  });
-  $(".selectdestop").on("change", function() {
-    var arr;
-    if ($("select").hasClass("selectdestop")) {
-      arr = $('.selectdestop').map(function() {
+  // Cart Update
+  $(".loadingupdate").hide();
+
+  // Ketika Select Alamat
+  $(".select-alamat-pengiriman").on("change", function() {
+    var arrayIdAlamat;
+    if ($("select").hasClass("select-alamat-pengiriman")) {
+      arrayIdAlamat = $('.select-alamat-pengiriman').map(function() {
         return this.value
       }).get();
     }
-    postCart_alamat(arr);
-  });
-  $(".selectmobile").on("change", function() {
-    var arr;
-    if ($("select").hasClass("selectmobile")) {
-      arr = $('.selectmobile').map(function() {
-        return this.value
-      }).get();
-    }
-    postCart_alamat(arr);
+    update_alamat(arrayIdAlamat);
   });
 
-  function postCart_alamat(arr) {
-    console.log(arr);
+  function update_alamat(data) {
+    // dipush tanpa id, diupdate sesuai urutan
     $.ajax({
-      url: "<?= base_url('CartController/updateCart_address') ?>",
+      url: "<?= base_url('CartController/update_address') ?>",
       type: "post",
       data: {
-        alamat: arr,
+        id_alamat: data,
       },
       success: function(res, status) {
         var result = JSON.parse(res);
-        if (result.success == false) {
-          $(".loadingupdate").hide();
-
-        } else {
-          $(".loadingupdate").hide();
-        }
       },
-      error: function(xhr) {}
+      error: function(xhr) {},
+      complete: function() {
+        window.location.reload()
+      }
     })
-    // console.log(arr);
   }
-  $('.linknext').click(function() {
-    var isValid = true;
 
-    $(".select-update").each(function() {
-      if ($(this).val() === "") {
-        isValid = false;
+  // Alamat Pengiriman
+  getProvince()
+
+  $('#provinsiDropdown').change(function() {
+    var selectedProvinceId = $(this).val();
+    if (selectedProvinceId) {
+      getCity(selectedProvinceId);
+    } else {
+      $('#cityDropdown').empty();
+      $('#subdisctrictDropdown').empty();
+    }
+  });
+  $('#cityDropdown').change(function() {
+    var selectedCityId = $(this).val();
+    if (selectedCityId) {
+      getSubDistrict(selectedCityId);
+    } else {
+      $('#subdisctrictDropdown').empty();
+    }
+  });
+
+  $('.onList .add-card').on('click', function() {
+    $('.onList').addClass('d-none');
+    $('.onEdit').removeClass('d-none');
+  });
+
+  $('.onList .edit-card').on('click', function() {
+    let card = event.target.closest('.card');
+    if (card) {
+      let cardId = card.getAttribute('data-card-id');
+      $('.onList').addClass('d-none');
+      $('.onEdit').removeClass('d-none');
+      getAlamatPengirimanByID(cardId)
+    }
+  });
+
+  $('.onList .delete-card').on('click', function() {
+    let card = event.target.closest('.card');
+    if (card) {
+      let cardId = card.getAttribute('data-card-id');
+      // $('.onList').addClass('d-none');
+      // $('.onEdit').removeClass('d-none');
+      deleteAlamatPengirimanByID(cardId);
+      window.location.reload();
+    }
+  });
+
+  $('.cancel-edit-card').on('click', function() {
+    $('.onList').removeClass('d-none');
+    $('.onEdit').addClass('d-none');
+  });
+
+  $('#inputAlamat').submit(function(e) {
+    e.preventDefault(); // Mencegah perilaku default dari form submit
+
+    var $form = $(this);
+    var $submitButton = $form.find('button[type="submit"]');
+    $submitButton.prop('disabled', true); // Menonaktifkan tombol submit
+
+    var formData = $(this).serialize(); // Mengambil data form     
+
+    var extraData = {
+      'province_name': $form.find('#provinsiDropdown').find(':selected').text(),
+      'city_name': $form.find('#provinsiDropdown').find(':selected').text(),
+      'subdistrict_name': $form.find('#provinsiDropdown').find(':selected').text(),
+    };
+
+    $.ajax({
+      type: 'POST',
+      url: 'ControllerAlamatPengiriman/add',
+      data: formData + '&' + $.param(extraData),
+      success: function(response) {
+        // console.log(response);
+        alert('Berhasil menambahkan alamat.')
+        window.location.reload();
+
+      },
+      error: function() {
+        console.log('Error submitting form');
+      },
+      complete: function() {
+        $submitButton.prop('disabled', false); // Mengaktifkan kembali tombol submit
+
       }
     });
+  });
 
-    if (isValid === false) {
-      alert("Alamat pengiriman harus diisi!");
-      return false;
-    }
+  function getAlamatPengirimanByID(id) {
+    $.ajax({
+      type: 'GET',
+      url: `<?php echo base_url() ?>ControllerAlamatPengiriman/get?id=${id}`,
+      dataType: 'json',
+      success: function(response) {
+        response = (response)[0]
+        $('#apLabel').val(response.label_alamat)
+        $('#apPenerima').val(response.penerima)
+        // $('#apProvinsi').val(response.id)
+        // $('#apKabKota').val(response.id)
+        // $('#apKec').val(response.id)
+        // $('#apKodepos').val(response.id)
+      },
+    });
+  }
 
+  function deleteAlamatPengirimanByID(id) {
+    $.ajax({
+      url: `<?php echo base_url() ?>ControllerAlamatPengiriman/delete`,
+      dataType: 'json',
+      type: 'POST',
+      data: {
+        'id': id,
+      },
+      success: function(response) {
+        // console.log(response);
+        alert('Berhasil menghapus alamat.')
+      },
+    });
+  }
+
+  function getProvince() {
+    $.ajax({
+      url: `<?php echo base_url() ?>ControllerCheckOngkir/getProvince`,
+      type: 'GET',
+      dataType: 'json',
+      cache: true,
+      success: function(response) {
+        response = response.results
+        var dropdown = $('#provinsiDropdown');
+        dropdown.empty();
+        dropdown.append($('<option>').val('').text('Pilih Provinsi'));
+        $.each(response, function(key, item) {
+          dropdown.append($('<option>').val(item.province_id).text(item.province));
+        });
+      },
+      error: function() {
+        // console.log('Error fetching data');
+      }
+    });
+  }
+
+  function getCity(provinceId) {
+    $.ajax({
+      url: `<?php echo base_url() ?>ControllerCheckOngkir/getCity?province=${provinceId}`,
+      type: 'GET',
+      dataType: 'json',
+      cache: true,
+      success: function(response) {
+        response = response.results
+        var dropdown = $('#cityDropdown');
+        dropdown.empty();
+        dropdown.append($('<option>').val('').text('Pilih Kab/Kota'));
+        $.each(response, function(key, item) {
+          dropdown.append($('<option>').val(item.city_id).text(`${item.type} ${item.city_name}`));
+        });
+      },
+      error: function() {
+        // console.log('Error fetching data');
+      }
+    });
+  }
+
+  function getSubDistrict(cityId) {
+    $.ajax({
+      url: `<?php echo base_url() ?>ControllerCheckOngkir/getSubdistrict?city=${cityId}`,
+      type: 'GET',
+      dataType: 'json',
+      cache: true,
+      success: function(response) {
+        response = response.results
+        var dropdown = $('#subdisctrictDropdown');
+        dropdown.empty();
+        dropdown.append($('<option>').val('').text('Pilih Kecamatan'));
+        $.each(response, function(key, item) {
+          dropdown.append($('<option>').val(item.subdistrict_id).text(item.subdistrict_name));
+        });
+      },
+      error: function() {
+        // console.log('Error fetching data');
+      }
+    });
+  }
+
+  $(document).ready(function() {
+    $(".loadingupdate").hide();
+  });
+
+  $('.linknext').click(function() {
     var arr;
     if ($("input").hasClass("inputqty")) {
       arr = $('.inputqty').map(function() {
         return this.value
       }).get();
     }
-    if ($("input").hasClass("inputqtymobile")) {
-      arr = $('.inputqtymobile').map(function() {
-        return this.value
-      }).get();
-    }
-    $(".loadingupdate").show();
-    //alert(arr);
-    postCart(arr);
-  });
-  $('.inputqty').on('keyup change', function() {
-    var arr = $('.inputqty').map(function() {
-      return this.value
-    }).get();
+
     $(".loadingupdate").show();
     //alert(arr);
     postCart(arr);
   });
 
-  $('.inputqtymobile').on('keyup change', function() {
-    var arrmobile = $('.inputqtymobile').map(function() {
-      return this.value
-    }).get();
-    $(".loadingupdate").show();
-    postCart(arrmobile);
-  });
-
-  function postCart(arr) {
-    console.log(arr);
-    $.ajax({
-      url: "<?= base_url('CartController/updateCartNew') ?>",
-      type: "post",
-      data: {
-        qty: arr,
-      },
-      success: function(res, status) {
-        var result = JSON.parse(res);
-        if (result.success == false) {
-          $(".loadingupdate").hide();
-          var stock = result.stock;
-          // alert("stok Hanya Tersedia" + stock)
-          $(".ketersediaanstok").show();
-
-          $('.ketersediaanstok').text("Stock is not enough, available stock :  " + stock);
-          $(".linknext").attr('href', '#');
-        } else {
-          var entries = Object.entries(result.data);
-          $(".total_all").text(format1(result.total, 'IDR '));
-          entries.forEach(function(message) {
-            $(".subtotal-" + message[1].id).text(format1(message[1].subtotal, 'IDR '));
-          });
-          var link = "<?= base_url('cekout') ?>";
-          $(".linknext").attr('href', link);
-          $(".loadingupdate").hide();
-          $(".ketersediaanstok").hide();
-        }
+  // $('.inputqty').on('keyup change', function() {
+  //   var arr = $('.inputqty').map(function() {
+  //     return this.value
+  //   }).get();
+  //   $(".loadingupdate").show();
+  //   postCart(arr);
+  // });
 
 
-      },
-      error: function(xhr) {
+  // function postCart(arr) {
+  //   console.log(arr);
+  //   $.ajax({
+  //     url: "<?= base_url('CartController/updateCartNew') ?>",
+  //     type: "post",
+  //     data: {
+  //       qty: arr,
+  //     },
+  //     success: function(res, status) {
+  //       var result = JSON.parse(res);
+  //       console.log(res)
+  //       if (result.success == false) {
+  //         $(".loadingupdate").hide();
+  //         var stock = result.stock;
+  //         // alert("stok Hanya Tersedia" + stock)
+  //         $(".ketersediaanstok").show();
 
-      }
-    })
+  //         $('.ketersediaanstok').text("Stock is not enough, available stock :  " + stock);
+  //         $(".linknext").attr('href', '#');
+  //       } else {
+  //         var entries = Object.entries(result.data);
+  //         $(".total_all").text(format1(result.total, 'IDR '));
+  //         entries.forEach(function(message) {
+  //           $(".subtotal-" + message[1].id).text(format1(message[1].subtotal, 'IDR '));
+  //         });
+  //         var link = "<?= base_url('cekout') ?>";
+  //         $(".linknext").attr('href', link);
+  //         $(".loadingupdate").hide();
+  //         $(".ketersediaanstok").hide();
+  //       }
 
-    // console.log(arr);
-  }
+
+  //     },
+  //     error: function(xhr) {
+
+  //     }
+  //   })
+
+  //   // console.log(arr);
+  // }
 
   function format1(n, currency) {
     return currency + n.toFixed(2).replace(/./g, function(c, i, a) {
@@ -506,190 +615,4 @@
   $.get("<?php echo base_url('CekOutController/set_session_voucher') ?>", function(result) {
     console.log(result);
   });
-
-
-  $('#simpanData').click(function() {
-    var lbl_alamat = $('#labelalamat').val();
-    var penerima = $('#namapenerima').val();
-    var alamat_penerima = $('#alamatpenerima').val();
-    $.ajax({
-      url: '<?php echo base_url() ?>CartController/save_alamat_pengiriman',
-      type: 'POST',
-      data: {
-        'lbl_alamat': lbl_alamat,
-        'penerima': penerima,
-        'alamat_penerima': alamat_penerima
-      },
-      dataType: 'json',
-      cache: false,
-      success: function(result) {
-        if (result) {
-          //$('#resultContainer').text('Data Baru: ' + result.label_alamat + ' - ' + result.penerima + "-" + result.alamat);
-          var selectElements = $(".select-update");
-
-          selectElements.each(function() {
-            var select = $(this);
-            select.empty();
-            select.append($('<option>').text("Pilih data"));
-            $.each(result, function(key, value) {
-              select.append($('<option>').text(value.label_alamat + "-" + value.penerima + "-" + value.alamat).val(value.id));
-            });
-          });
-          alert('berhasil tersimpan');
-        } else {
-          alert('gagal tersimpan');
-        }
-      },
-      error: function(result) {
-        alert("Error");
-      }
-    });
-    tampil_alamat();
-    $('#myModal').modal('hide');
-
-  });
-
-  function tampil_alamat() {
-    $.ajax({
-      url: '<?php echo base_url() ?>CartController/get_alamat_div',
-      type: 'POST',
-      dataType: 'json',
-      cache: false,
-      success: function(result) {
-        if (result) {
-          //$('#resultContainer').text('Data Baru: ' + result.label_alamat + ' - ' + result.penerima + "-" + result.alamat);
-          var selectElements = $(".card-data");
-
-          selectElements.each(function() {
-            var div = $(this);
-            div.empty();
-            $.each(result, function(key, value) {
-              var cardHTML = '<div class="col-md-4">' +
-                '<div class="card" data-card-id="' + value.id + '">' +
-                '<div class="card-body">' +
-                '<h5 class="card-title">' + value.label_alamat + '</h5>' +
-                '<p class="card-text">' +
-                '<strong>Penerima:</strong> <span class="penerima">' + value.penerima + '</span><br>' +
-                '<strong>Alamat:</strong> <span class="alamat">' + value.alamat + '</span>' +
-                '</p>' +
-                '<button class="btn btn-outline-danger edit-card" data-toggle="modal" data-target="#editCardModal">Edit Alamat</button>' +
-                '</div>' +
-                '</div>' +
-                '</div>';
-
-              div.append(cardHTML);
-            });
-          });
-          //alert('berhasil tersimpan');
-        } else {
-          //alert('gagal tersimpan');
-        }
-      },
-      error: function(result) {
-        alert("Error");
-      }
-    });
-  }
-
-
-  // coba
-  // Add a click event listener to the "Edit" button in the card
-  $('.edit-card').click(function() {
-    // Find the closest card element to the clicked "Edit" button
-    var card = $(this).closest('.card');
-
-    // Get the data from the card's elements
-    var lbl_alamat = card.find('.card-title').text();
-    var penerima = card.find('.penerima').text();
-    var alamat_penerima = card.find('.alamat').text();
-
-    // Set the values in the modal's input fields
-    $('#editLabelAlamat').val(lbl_alamat);
-    $('#editPenerima').val(penerima);
-    $('#editAlamat').val(alamat_penerima);
-
-    // Store the card element in a variable for later use
-    var cardToUpdate = card.data('card-id');
-
-    // Store the card element in a variable for later use
-    $('#editCardModal').data('cardToUpdate', cardToUpdate);
-
-    // Show the modal
-    $('#editCardModal').modal('show');
-  });
-
-  // Add an event listener for the "Update" button in the modal
-  $('#updatealamat').click(function() {
-
-    // Get the card element that was stored when clicking the "Edit" button
-    var cardToUpdate = $('#editCardModal').data('cardToUpdate');
-
-    // Get the updated values from the modal's input fields
-    var lbl_alamat = $('#editLabelAlamat').val();
-    var penerima = $('#editPenerima').val();
-    var alamat_penerima = $('#editAlamat').val();
-
-    // The rest of your AJAX update logic remains the same
-    $.ajax({
-      url: '<?php echo base_url() ?>CartController/update_alamat_pengiriman',
-      type: 'POST',
-      data: {
-        'row_id': cardToUpdate, // Send the row ID for identification
-        'lbl_alamat': lbl_alamat,
-        'penerima': penerima,
-        'alamat_penerima': alamat_penerima
-      },
-      dataType: 'json',
-      cache: false,
-      success: function(result) {
-        if (result) {
-          // Update the specific card content with the new data
-          var updatedCard = $('.card[data-card-id="' + cardToUpdate + '"]');
-          updatedCard.find('.card-title').text(lbl_alamat);
-          updatedCard.find('.penerima').text(penerima);
-          updatedCard.find('.alamat').text(alamat_penerima);
-
-          alert('Alamat berhasil diubah');
-        } else {
-          alert('Alamat gagal diubah');
-        }
-      },
-      error: function(result) {
-        alert('Error');
-      }
-    });
-    // Close the modal, assuming this is how the modal is hidden
-    $('#editCardModal').modal('hide');
-  });
-
-  function closeCard(button) {
-    const card = button.parentElement.parentElement;
-    card.style.display = 'none';
-
-    var cardId = button.closest('.card').getAttribute('data-card-id');
-    //alert(cardId);
-
-    $.ajax({
-      url: '<?php echo base_url() ?>CartController/hapus_alamat_pengiriman',
-      type: 'POST',
-      data: {
-        'row_id': cardId, // Send the row ID for identification
-      },
-      dataType: 'json',
-      cache: false,
-      success: function(result) {
-        if (result) {
-          // Update the specific card content with the new data
-
-
-          alert('Alamat berhasil dihapus');
-        } else {
-          alert('Alamat gagal dihapus');
-        }
-      },
-      error: function(result) {
-        alert('Error');
-      }
-    });
-  }
 </script>

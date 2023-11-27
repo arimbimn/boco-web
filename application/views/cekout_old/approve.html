@@ -1,0 +1,125 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+        <style>
+            * {
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+
+            table
+            {
+                width: 100%;
+            }
+    
+            .row {
+                margin-right: -15px !important;
+                margin-left: -15px !important;
+            }
+    
+            .text-center {
+                text-align: center !important;
+            }
+    
+            .mt-10 {
+                margin-top: 10px !important;
+            }
+    
+            .mb-20 {
+                margin-bottom: 20px !important;
+            }
+    
+            .info-order {
+                margin: 0px !important;
+            }
+    
+            .box {
+                padding: 5px !important;
+                border: 1px solid #ddd;
+                background-color: #f3f3f3;
+            }
+    
+            .text-right {
+                text-align: right;
+                margin-right: 30px;
+            }
+    
+            .tb_product tr td {
+                padding: 5px 10px 5px  !important;
+                border-collapse: collapse;
+                border: 0.5px solid #dee2e6;
+            }
+			.label {
+			  color: green;
+			}
+        </style>
+    </head>
+    
+    <body>
+        <div class="text-center mb-20 mt-10">
+            {logo}
+        </div>
+        <br />
+        <table class="box">
+            <tbody>
+                <tr>
+                    <td>
+                        <h2>
+                            Selamat status Keanggotaan Entrepreneurship anda sudah <span class="label">AKTIF</span>
+                        </h2>
+                        <br>
+                        <strong>
+                            Berikut adalah kode keanggotaan yang dapat Anda gunakan atau dibagikan kepada teman/saudara pada saat berbelanja di website bocorocco-online.com
+                        </strong>
+                        <!--br>
+                        <strong>
+                            Order Status : 
+                        </strong-->
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <br />
+        <br />
+        <!--table>
+            <tbody>
+                <tr>
+                    <td>
+                        To :
+                        <br>
+                        <strong>{nama_order}</strong>
+                        <br>
+                        {alamat}
+                        {kode_pos}
+                        {email}
+                        {phone}
+                    </td>
+                    <td>
+                        From :
+                        <br>
+                        <strong>{nama_store}</strong>
+                        <br>
+                        {alamat_store}
+                        {kota_store}
+                        {email_store}
+                        {phone_store}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <br />
+        <br /-->
+        <table class="tb_product">
+			<thead>
+			  <tr><th>Kode keanggotaan anda:</th></tr>
+			</thead>
+            <tbody>
+                <tr>
+                    <td width="" class="text-center"><strong class='label'>{voucher}</strong></td>
+                </tr>
+            </tbody>
+        </table>
+    </body>
+</html>

@@ -8,6 +8,8 @@ class CartController extends CI_Controller
   {
     parent::__construct();
     $this->load->model('M_product');
+    $this->load->model('Model_alamatPengiriman');
+    $this->load->helper('store_helper');
   }
 
   public function index()
@@ -93,22 +95,248 @@ class CartController extends CI_Controller
     //   }
     // }
 
-
     // $diskonItems = 0;
     // $cekDiskonItem = $this->db->where(['product_id' => $detail_product->id_product])->where("DATE_FORMAT(exp_date,'%Y-%m-%d') >=", date('Y-m-d'))->get('discount_items')->row();
     // if ($cekDiskonItem) {
     //   $diskonItems = $cekDiskonItem->jumlah;
     // }
 
-
-
     $data = [
       'title' => 'Cart | Bocorocco Pillow Concept',
-    ];
-    $data['option1'] = $this->M_product->ambil_data_alamat();
+      'list_alamat' => $this->Model_alamatPengiriman->getAll(),
 
+      'footer_script' => $this->load->view('cart/footer_script', '', true)
+    ];
+
+    $this->set_available_store();
+    $this->set_default_address();
 
     $this->template->load('template', 'cart/v_cart', $data);
+  }
+
+  // Mendapatkan Ringkasan Belanja pada Halaman Cart
+  public function getCartSummary()
+  {
+    $data = array();
+    $data = [
+      'cart' => $this->cart->contents()
+    ];
+    $this->load->view('cart/summary', $data);
+  }
+
+  // fungsi untuk memeriksa stok
+  public function check_stock()
+  {
+    $i = 0;
+    $arr_informasi_stock = [];
+    foreach ($this->cart->contents() as $cart_item) {
+      // var_dump($this->input->post('qty')[$i]);
+      // echo "<br>";
+      $in_store_founded = false;
+      $stok = 0;
+      $id_product = $cart_item['id'];
+      $id_attribute_product = $cart_item['options']['Size'];
+      $qty_request = isset($this->input->post('qty')[$i]) ? $this->input->post('qty')[$i] : $cart_item['qty'];
+      $id_alamat = explode("-", $cart_item['id_alamat']);
+      // var_dump($id_alamat[0] == 'G');
+      if ($id_alamat[0] == 'G') {
+        // jika user memilih self pickup / ambil sendiri
+        $stok_product = $this->query_check_stock($id_alamat[1], $id_product, $id_attribute_product);
+        if ($qty_request <= $stok_product) {
+          $in_store_founded = true;
+          //kondisi ketika barang ada / pas
+          $arr_informasi_stock[] = [
+            'id_product' => $cart_item['id'],
+            'id_attribute_product' => $cart_item['options']['Size'],
+            'stock_available' => true,
+            'stock' => $stok_product,
+            'from' => $id_alamat[1],
+            'msg' => 'Menemukan stock pada gudang yang dipilih'
+          ];
+
+          $update_data_cart = array(
+            'rowid' => $cart_item['rowid'],
+            'qty'   => $qty_request,
+          );
+          $this->cart->update($update_data_cart);
+        } else {
+          $in_store_founded = true;
+          $arr_informasi_stock[] = [
+            'id_product' => $cart_item['id'],
+            'id_attribute_product' => $cart_item['options']['Size'],
+            'stock_available' => false,
+            'stock' => $stok_product,
+            'code' => $id_alamat[1],
+            'msg' => "Stok tidak mencukupi, gudang hanya memiliki stok $stok_product"
+          ];
+        }
+      } else {
+        // Jika user memilih alamat pengiriman
+        // periksa setiap gudang
+
+        // echo "mencari stok bukan berdasarkan gudang";
+        $store_checked = null;
+        foreach (get_store() as $store) { // data list store di ambil dari helper
+          // var_dump($store['id_store']);
+          $stok_product = $this->query_check_stock($store['id_store'], $id_product, $id_attribute_product);
+          $store_checked = $store['id_store'] + "," + $store_checked;
+          if ($qty_request <= $stok_product) {
+            $in_store_founded = true;
+            //kondisi ketika barang ada / pas
+            $arr_informasi_stock[] = [
+              'id_product' => $cart_item['id'],
+              'id_attribute_product' => $cart_item['options']['Size'],
+              'stock_available' => true,
+              'stock' => $stok_product,
+              'from' => $store_checked,
+              'msg' => 'Menemukan stock pada gudang',
+            ];
+            $update_data_cart = array(
+              'rowid' => $cart_item['rowid'],
+              'qty'   => $qty_request,
+            );
+            $this->cart->update($update_data_cart);
+            break;
+          } else if (isset($stok_product)) {
+            $in_store_founded = true;
+            // jika di temukan masih tidak ada stok ...
+            $arr_informasi_stock[] = [
+              'id_product' => $cart_item['id'],
+              'id_attribute_product' => $cart_item['options']['Size'],
+              'stock_available' => false,
+              'stock' => $stok_product,
+              'from' => $store_checked,
+              'msg' => "Stok pada gudang tidak mencukupi, stok tersisa $stok_product",
+            ];
+          }
+        }
+        // tidak di temukan di gudang manapun
+        if ($in_store_founded == false) {
+          // echo $id_alamat[0];
+          $stok_product = $this->query_check_stock($store['id_store'], $id_product, $id_attribute_product);
+          $arr_informasi_stock[] = [
+            'id_product' => $cart_item['id'],
+            'id_attribute_product' => $cart_item['options']['Size'],
+            'stock_available' => false,
+            'stock' => 0,
+            'from' => $store_checked,
+            'msg' => "Tidak menemukan stock di gudang manapun"
+          ];
+        }
+        // $stok_product = $this->query_check_stock($id_alamat[1], $id_product, $id_attribute_product);
+      }
+      $i++;
+    }
+    // echo "<pre>";
+    // print_r(($arr_informasi_stock));
+    // echo "</pre>";
+    print_r(json_encode($arr_informasi_stock));
+  }
+
+  private function query_check_stock($id_store, $id_product, $id_attribute_product)
+  {
+    $results = $this->db->select_sum('jumlah_stok')
+      ->where(['id_store' => $id_store])
+      ->where(['id_product' => $id_product])
+      ->where(['id_product_attribute' => $id_attribute_product])
+      ->get('product_stok')
+      ->row();
+    return $results->jumlah_stok;
+  }
+
+  // set default alamat ke cart session
+  public function set_default_address()
+  {
+    $arr_alamat_pengiriman = $this->Model_alamatPengiriman->getAll();
+    if ($arr_alamat_pengiriman) {
+      // supaya tidak berat (di load ketika buka) buatkan kondisi
+      // $arr_alamat_pengiriman = $this->Model_alamatPengiriman->getAll();
+      //
+      foreach ($this->cart->contents() as $cart_item) {
+        if ($cart_item['id_alamat'] == null) {
+          $data = array(
+            'rowid' => $cart_item['rowid'],
+            'id_alamat' => $arr_alamat_pengiriman[0]->id,
+          );
+          $this->cart->update($data);
+        }
+      }
+    }
+  }
+  // set available store ke cart session
+  public function set_available_store()
+  {
+    foreach ($this->cart->contents() as $cart_item) {
+      $temp_store_avaiilable_stock = array();
+      $id_product = $cart_item['id'];
+      $id_attribute_product = $cart_item['options']['Size'];
+      $qty_request = $cart_item['qty'];
+      foreach (get_store() as $store) { // data list store di ambil dari helper
+        $product_query = $this->db->select_sum('jumlah_stok')
+          ->where(['id_store' => $store['id_store']])
+          ->where(['id_product' => $id_product])
+          ->where(['id_product_attribute' => $id_attribute_product])
+          ->get('product_stok')
+          ->row();
+        $product_stock = $product_query->jumlah_stok;
+        if ($qty_request <= $product_stock) {
+          // tambah parameter jumlah stok pada setiap store
+          $jumlah_stock = [
+            'stock_item' => $product_stock,
+          ];
+          $temp_store_avaiilable_stock[] = array_merge($jumlah_stock, $store);
+        }
+      }
+      $data = array(
+        'rowid' => $cart_item['rowid'],
+        'available_store' => $temp_store_avaiilable_stock,
+      );
+      // Bisa di fungsikan untuk mengecek stok dan store
+      // Jika available storenya tidak ada bisa di pastikan stoknya tidak ada.
+      $this->cart->update($data);
+    }
+  }
+  // Fungsi menggantikan updateCart_address()
+  public function update_address()
+  {
+    $i = 0;
+    foreach ($this->cart->contents() as  $items) {
+      $id_alamat = $this->input->post('id_alamat')[$i];
+      $data = array(
+        'rowid' => $items['rowid'],
+        'id_alamat' => $id_alamat,
+      );
+      $this->cart->update($data);
+      $i++;
+    }
+    $result = [
+      'success' => true,
+      'total' => $this->cart->total(),
+      // 'data' => $this->cart->contents()
+    ];
+    echo json_encode($result);
+  }
+
+  public function updateCart_address()
+  {
+    $i = 0;
+    foreach ($this->cart->contents() as  $items) {
+      $id_alamat = $this->input->post('id_alamat')[$i];
+      // $full_address = $this->ModelAlamatPengiriman->getByID($id_alamat)[0];
+      // exit();
+      $data = array(
+        'rowid' => $items['rowid'],
+        'id_alamat' => $id_alamat,
+      );
+      $this->cart->update($data);
+      $i++;
+    }
+    $result = [
+      'success' => true,
+      'total' => $this->cart->total(),
+      'data' => $this->cart->contents()
+    ];
+    echo json_encode($result);
   }
 
 
@@ -134,7 +362,8 @@ class CartController extends CI_Controller
         'Diskon' => $this->input->post('diskon'),
         'Indent' => $this->input->post('indent'),
       ],
-      'alamat'    => '',
+      'id_alamat' => '',
+      'available_store' => null
     );
 
     $this->cart->insert($data);
@@ -153,7 +382,6 @@ class CartController extends CI_Controller
     </div>');
     redirect('cart');
   }
-
 
   public function updateCart()
   {
@@ -175,16 +403,83 @@ class CartController extends CI_Controller
 
   public function updateCartNew()
   {
+
+
     // $qty  = $this->input->post('qty')[0];
     $i = 0;
     foreach ($this->cart->contents() as $items) {
-
 
       $barang = $this->M_product->get_detailproduct($items['id']);
       $productSize = $this->M_product->getSizeProduct($items['id']);
 
       $totalStok = 0;
-      $cekTotal = $this->db->select_sum('jumlah_stok')->where(['id_store' => 100])->where(['id_product' => $items['id']])->where(['id_product_attribute' => $items['options']['Size']])->get('product_stok')->row();
+
+      $list_store = [
+        100, //gudang online
+        23,
+        200 //gudang online jakarta
+      ];
+
+      $is_store = explode("-", $items['id_alamat']);
+      $selected_store = 100;
+      if ($is_store[0] == "G") {
+        switch ($is_store[1]) {
+          case 0:
+            $selected_store = $list_store[$is_store[1]];
+            break;
+          case 1:
+            $selected_store = $list_store[$is_store[1]];
+            break;
+          default:
+            // $selected_store = 100;
+            break;
+        }
+      }
+
+      $cekTotal = $this->db->select_sum('jumlah_stok')
+        ->where(['id_store' => $selected_store])
+        ->where(['id_product' => $items['id']])
+        ->where(['id_product_attribute' => $items['options']['Size']])
+        ->get('product_stok')
+        ->row();
+
+      // var_dump($cekTotal);
+
+      // Periksa stiap gudang jika gudang yang di pilih stoknya habis
+      if ($this->input->post('qty')[$i] > $cekTotal->jumlah_stok) {
+        // cari berdasarkan list
+        foreach ($list_store as $id_store) {
+          $cekTotal = $this->db->select_sum('jumlah_stok')
+            ->where(['id_store' => $id_store])
+            ->where(['id_product' => $items['id']])
+            ->where(['id_product_attribute' => $items['options']['Size']])
+            ->get('product_stok')
+            ->row();
+
+          // Kondisi ketika menemukan stok pada store yang di cari
+          if ($this->input->post('qty')[$i] <= $cekTotal->jumlah_stok) {
+            $selected_store = $id_store;
+            // var_dump($cekTotal->jumlah_stok);
+            break;
+          }
+        }
+      }
+
+      // set id_store ke session cart
+      $store_key = array_search($selected_store, $list_store);
+      // echo $store_key;
+      $item_data = array(
+        'rowid' => $items['rowid'],
+        'id_alamat' => "G-$store_key",
+      );
+      $this->cart->update($item_data);
+
+      // echo "<pre>";
+      // print_r($this->cart->contents());
+      // echo "</pre>";
+
+      // exit();
+
       if ($cekTotal->jumlah_stok >= 1) {
         $totalStok = $cekTotal->jumlah_stok;
       }
@@ -232,86 +527,5 @@ class CartController extends CI_Controller
     ];
 
     echo json_encode($result);
-  }
-  public function updateCart_address()
-  {
-    $i = 0;
-    foreach ($this->cart->contents() as  $items) {
-      //var_dump($this->input->post('alamat')[$i]);exit();
-      $data = array(
-        'rowid' => $items['rowid'],
-        'alamat'   => $this->input->post('alamat')[$i]
-      );
-      //var_dump($data);exit();
-      $this->cart->update($data);
-      $i++;
-    }
-
-    $result = [
-      'success' => true,
-      'total' => $this->cart->total(),
-      'data' => $this->cart->contents()
-    ];
-
-    echo json_encode($result);
-  }
-  function save_alamat_pengiriman()
-  {
-    $lbl_alamat = $this->input->post('lbl_alamat');
-    $penerima = $this->input->post('penerima');
-    $alamat_penerima = $this->input->post('alamat_penerima');
-    $data_detail = array(
-      'label_alamat' => $lbl_alamat,
-      'penerima' => $penerima,
-      'alamat' => $alamat_penerima,
-    );
-    $this->M_product->insert_data($data_detail);
-    $data = $this->M_product->ambil_data_alamat();
-    echo json_encode($data);
-
-    // $new_data = $this->db->get_where('tb_alamat_pengiriman', array('id' => $this->db->insert_id()))->row();
-    // echo json_encode($new_data);
-  }
-  public function get_alamat_div()
-  {
-    $data = $this->M_product->ambil_data_alamat();
-    echo json_encode($data);
-  }
-  public function ambil_alamat()
-  {
-    $this->load->model('M_product');
-    $data['option1'] = $this->M_product->get_data();
-    $this->load->view('v_cart', $data);
-  }
-
-  // public function horizontal()
-  // {
-  //   $data['cards'] = $this->M_product->get_cards();
-  //   $this->load->view('horizontal_cards', $data);
-  // }
-
-  function update_alamat_pengiriman()
-  {
-    $lbl_alamat = $this->input->post('lbl_alamat');
-    $id = $this->input->post('row_id');
-    $penerima = $this->input->post('penerima');
-    $alamat_penerima = $this->input->post('alamat_penerima');
-    $data_detail = array(
-      'label_alamat' => $lbl_alamat,
-      'penerima' => $penerima,
-      'alamat' => $alamat_penerima,
-    );
-    //$this->M_product->insert_data($data_detail);
-    $this->M_product->update_data_alamat($id, $data_detail);
-    $data = $this->M_product->ambil_data_alamat();
-    echo json_encode($data);
-  }
-  function hapus_alamat_pengiriman()
-  {
-    $id = $this->input->post('row_id');
-    //$this->M_product->insert_data($data_detail);
-    $this->M_product->hapus_data_alamat($id);
-    $data = $this->M_product->ambil_data_alamat();
-    echo json_encode($data);
   }
 }
