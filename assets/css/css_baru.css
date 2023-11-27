@@ -31,7 +31,7 @@
   padding-top: 80px !important;
 }
 
-.title1 .h4 {
+.title1 h4 {
   color: #cd212a !important;
 }
 
@@ -52,4 +52,78 @@
 
 .card-type .card-body {
   flex: 1 !important;
+}
+
+.section-b-space {
+  background-color: #f4f2f2;
+}
+
+.filter-main-btn span {
+  border-radius: 8px !important;
+  background-color: #cd212a !important;
+}
+
+.sm-horizontal .mobile-back {
+  font-weight: lighter !important;
+}
+
+.pixelstrap li a {
+  font-weight: lighter !important;
+}
+
+.collection-mobile-back span {
+  font-weight: lighter !important;
+}
+
+.collection-collapse-block .collapse-block-title {
+  font-weight: lighter !important;
+}
+
+.img-wrapper {
+  border-radius: 12px;
+}
+
+.product-box .img-wrapper,
+.product-wrap .img-wrapper {
+  object-fit: cover !important;
+}
+
+.container-service {
+  background-color: #cd212a;
+  margin-right: 0px;
+  margin-left: 0px;
+  display: table-row-group;
+}
+
+.media img {
+  filter: grayscale(100%) contrast(100%) brightness(45.5) !important;
+  display: inline-block;
+}
+
+.account-sidebar {
+  font-size: 12px !important;
+  font-weight: lighter !important;
+  border-radius: 8px !important;
+}
+
+@media (max-width: 768px) {
+  .collection-product-wrapper .product-wrapper-grid .product-box {
+    max-height: 290px;
+  }
+}
+
+/* trial discount badge */
+/* .discount-badge-trial .container-discount {
+  margin-top: 10px;
+  background-color: #f4f2f2;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+.discount-badge-trial .container-discount .gambar-statis {
+  margin-top: 20px;
+} */
+
+.wave {
+  display: inline-block;
+  transform: rotate(45deg);
 }

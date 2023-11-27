@@ -154,42 +154,38 @@ $CI = &get_instance();
         <div class="product-4 product-m no-arrow">
           <?php foreach ($recommended as $recomen) { ?>
             <div class="product-box">
-              <div class="card card-type">
-                <div class="card-body">
-                  <div class="img-wrapper">
-                    <div class="front">
-                      <a href="<?= base_url() ?>product/detail/<?= $recomen->id_product ?>"><amp-img src="<?= smn_baseurl() ?>uploads/product/<?= $recomen->image_one ?>" class="img-fluid blur-up lazyload bg-img" alt=""></amp-img></a>
-                    </div>
-                    <div class="back">
-                      <a href="<?= base_url() ?>product/detail/<?= $recomen->id_product ?>"><amp-img src="<?= smn_baseurl() ?>uploads/product/<?= $recomen->image_two ?>" class="img-fluid blur-up lazyload bg-img" alt=""></amp-img></a>
-                    </div>
-                    <div class="cart-info cart-wrap">
-                      <!-- <a href="javascript:void(0)" title="Add to Wishlist">
+              <div class="img-wrapper">
+                <div class="front">
+                  <a href="<?= base_url() ?>product/detail/<?= $recomen->id_product ?>"><amp-img src="<?= smn_baseurl() ?>uploads/product/<?= $recomen->image_one ?>" class="img-fluid blur-up lazyload bg-img" alt=""></amp-img></a>
+                </div>
+                <div class="back">
+                  <a href="<?= base_url() ?>product/detail/<?= $recomen->id_product ?>"><amp-img src="<?= smn_baseurl() ?>uploads/product/<?= $recomen->image_two ?>" class="img-fluid blur-up lazyload bg-img" alt=""></amp-img></a>
+                </div>
+                <div class="cart-info cart-wrap">
+                  <!-- <a href="javascript:void(0)" title="Add to Wishlist">
                      <i class="ti-heart" aria-hidden="true"></i>
                    </a> -->
 
-                      <a href="<?= base_url() ?>add_to_compare/<?= $recomen->id_product ?>" title="Compare"><i class="ti-reload" aria-hidden="true"></i></a>
-                    </div>
-                  </div>
-                  <div class="product-detail">
-                    <div class="rating three-star">
-                      <?php
-                      $recomen_rating = $this->db->select('AVG(rating) as avg_rating')->where('product_id', $recomen->id_product)->get('product_reviews')->row()->avg_rating;
-                      for ($usrating = 1; $usrating <= 5; $usrating++) { ?>
-                        <i class="fa fa-star <?php if ($usrating <= $recomen_rating) {
-                                                echo "active";
-                                              } ?>"></i>
-                      <?php } ?>
-                    </div>
-                    <a href="<?= base_url() ?>product/detail/<?= $recomen->id_product ?>">
-                      <h6><?= $recomen->nama_barang ?></h6>
-                    </a>
-                    <h4>Rp. <?= number_format($recomen->harga, 0) ?></h4>
-                    <ul class="color-variant">
-                      <li class="bg-light0" style="background-color:<?= $recomen->colour_picker ?>;"></li>
-                    </ul>
-                  </div>
+                  <a href="<?= base_url() ?>add_to_compare/<?= $recomen->id_product ?>" title="Compare"><i class="ti-reload" aria-hidden="true"></i></a>
                 </div>
+              </div>
+              <div class="product-detail">
+                <div class="rating three-star">
+                  <?php
+                  $recomen_rating = $this->db->select('AVG(rating) as avg_rating')->where('product_id', $recomen->id_product)->get('product_reviews')->row()->avg_rating;
+                  for ($usrating = 1; $usrating <= 5; $usrating++) { ?>
+                    <i class="fa fa-star <?php if ($usrating <= $recomen_rating) {
+                                            echo "active";
+                                          } ?>"></i>
+                  <?php } ?>
+                </div>
+                <a href="<?= base_url() ?>product/detail/<?= $recomen->id_product ?>">
+                  <h6><?= $recomen->nama_barang ?></h6>
+                </a>
+                <h4>Rp. <?= number_format($recomen->harga, 0) ?></h4>
+                <ul class="color-variant">
+                  <li class="bg-light0" style="background-color:<?= $recomen->colour_picker ?>;"></li>
+                </ul>
               </div>
             </div>
           <?php } ?>
@@ -456,7 +452,7 @@ $CI = &get_instance();
 
 <?php if ($fiture) { ?>
   <!-- service layout -->
-  <div class="container">
+  <div class="container container-service">
     <section class="service border-section small-section">
       <div class="row">
         <?php foreach ($fiture as $item_fiture) { ?>

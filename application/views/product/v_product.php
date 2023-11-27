@@ -23,12 +23,12 @@
 
 
  <!-- breadcrumb start -->
- <div class="breadcrumb-section mt-4">
+ <div class="breadcrumb-section">
    <div class="container">
      <div class="row">
        <div class="col-sm-6">
          <div class="page-title">
-           <h2><?= lang('title_produk') ?></h2>
+           <h2 class=" !font-bold"><?= lang('title_produk') ?></h2>
          </div>
        </div>
        <div class="col-sm-6">
@@ -44,6 +44,7 @@
  </div>
  <!-- breadcrumb end -->
 
+
  <!-- section start -->
  <section class="section-b-space ratio_asos">
    <div class="collection-wrapper">
@@ -55,18 +56,18 @@
        </div>
        <div class="row">
 
-         <div class="col-sm-3 collection-filter" id="divfilter">
+         <div class="col-sm-3 collection-filter " id="divfilter">
            <!-- side-bar colleps block stat -->
-           <div class="collection-filter-block">
+           <div class="collection-filter-block rounded-md">
              <!-- brand filter start -->
-             <div class="collection-mobile-back"><span class="filter-back"><i class="fa fa-angle-left" aria-hidden="true"></i> back</span></div>
+             <div class="collection-mobile-back"><span class="filter-back !capitalize"><i class="fa fa-angle-left" aria-hidden="true"></i> back</span></div>
              <div class="collection-collapse-block open">
                <br>
-               <input type="text" name='search' class="form-control search" <?php if (!empty($keyword)) { ?>value="<?= $keyword ?>" <?php } ?>>
+               <input type="text" name='search' class="form-control search mt-1 p-1 border border-gray-300 rounded-md w-full focus:outline-none focus:ring focus:ring-[#cd212a] outline-0 text-center" placeholder="Search" <?php if (!empty($keyword)) { ?>value="<?= $keyword ?>" <?php } ?>>
                <br>
-               <button id='button_search'>Search</button>
+               <button id='button_search' class="btn btn-outline-danger hover: outline-[#cd212a] py-1 font-thin text-[8] capitalize rounded-md">Search</button>
 
-               <h3 class="collapse-block-title"><?= lang('kategory_produk') ?></h3>
+               <h3 class="collapse-block-title !capitalize"><?= lang('kategory_produk') ?></h3>
                <div class="collection-collapse-block-content">
                  <div class="collection-brand-filter">
                    <?php
@@ -165,7 +166,7 @@
                       if (strpos($itemsize->size, ',') == false && strpos($itemsize->size, '.') == false && strpos($itemsize->size, 'T') == false) {
                     ?>
                        <div class="custom-control custom-checkbox collection-filter-checkbox">
-                         <input type="checkbox" class="custom-control-input filter size" name="size" id="size_<?= $itemsize->size ?>" value="<?= $itemsize->size ?>">
+                         <input type="checkbox" class="custom-control-input filter size font-thin font-sans capitalize font-[12]  py-1" name="size" id="size_<?= $itemsize->size ?>" value="<?= $itemsize->size ?>">
                          <label class="custom-control-label" for="size_<?= $itemsize->size ?>"><?= $itemsize->size ?></label>
                        </div>
                    <?php }
@@ -201,10 +202,11 @@
                <div class="collection-collapse-block-content">
                  <div class="wrapper mt-3">
                    <div class="range-slider">
-                     <input type="text" class="js-range-slider filter price" value="" />
+                     <!-- <input type="text" class="js-range-slider filter price" value="" /> -->
 
-                     <input type="hidden" class="js-input-from filter input_from">
-                     <input type="hidden" class="js-input-to filter input_to" />
+                     <input type="number" class="js-input-from filter input_from mt-1 p-1 border border-gray-300 rounded-md w-full focus: outline-[#cd212a] text-center" placeholder="Min">
+                     <p class=" text-center font-bold text-lg"> - </p>
+                     <input type="number" class="js-input-to filter input_to mt-1 p-1 border border-gray-300 rounded-md w-full focus: outline-[#cd212a] text-center" placeholder="Max">
                    </div>
                  </div>
                </div>
@@ -262,9 +264,9 @@
 
                    <div class="product-wrapper-grid">
                      <div class="row margin-res" id="tampilkan">
-
                      </div>
                    </div>
+
                    <div class="product-pagination">
                      <div class="theme-paggination-block">
                        <div class="row">
@@ -301,6 +303,66 @@
      </div>
  </section>
  <!-- section End -->
+
+
+ <!-- trial section start -->
+
+ <section class="discount-badge-trial">
+   <div class=" container pt-4 pb-4 bg-[#f4f2f2]">
+     <div class="row">
+       <div class="col-12">
+         ini trial discount badge
+         <div class="row">
+           <div class="col-12">
+             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+               <div class="col border p-2 group">
+                 <span class="absolute text-white ml-1 mt-1 px-2 py-1 bg-[#cd212a] rounded-md">
+                   <!-- <div class="px-1" style="font-weight: bold; text-align: center; font-size: xx-small;"> Mega</div>
+                   <div class="bg-white rounded text-red-500 px-1 mr-0" style="color: red; text-align: center; font-weight: bold; font-size: xx-small;">Sale</div> -->
+                   <div class="px-1 font-bold text-xs"> 20% off</div>
+                 </span>
+                 <img src="https://via.placeholder.com/300" alt="Gambar 1" class="mb-4 !w-full">
+                 <h3 class=" font-bold text-black text-center text-sm py-1">D. FIRENZE 14 NERO</h3>
+                 <p class=" text-red-500 text-xs text-center">
+                   <span class="line-through text-[grey]">IDR 4,990,000 </span>
+                   <span class="">20%</span>
+                 </p>
+                 <p class=" text-black text-center py-2">
+                   IDR 3,992,000
+                 </p>
+               </div>
+               <div class="col border p-2 group">
+                 <span class="absolute px-0 py-0">
+                   <img src="assets/diskon-label.png" alt="discount label" class="ml-1 w-8">
+                 </span>
+                 <img src="https://via.placeholder.com/300" alt="Gambar 2" class="mb-4 w-full">
+                 <h3 class=" font-bold text-black text-center text-sm py-1">D. TORINO 03 NERO SCURO</h3>
+                 <p class=" text-red-500 text-xs text-center">
+                   <span class="line-through text-[grey]">IDR 3,990,000 </span>
+                   <span class="">70%</span>
+                 </p>
+                 <p class=" text-black text-center py-2">
+                   IDR 1,197,000
+                 </p>
+               </div>
+               <div class="col border p-2 group">
+                 <img src="https://via.placeholder.com/300" alt="Gambar 3" class="mb-4 w-full">
+                 <p class="text-center">Deskripsi Gambar 3</p>
+               </div>
+               <div class="col border p-2 group">
+                 <img src="https://via.placeholder.com/300" alt="Gambar 4" class="mb-4 w-full">
+                 <p class="text-center">Deskripsi Gambar 1</p>
+               </div>
+             </div>
+           </div>
+         </div>
+       </div>
+     </div>
+   </div>
+ </section>
+ <!-- trial section end -->
+
+
 
  <script>
    $(document).ready(function() {

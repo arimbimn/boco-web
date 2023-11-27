@@ -7657,6 +7657,7 @@ mark,
 .img-fluid {
   max-width: 100%;
   height: auto;
+  object-fit: cover;
 }
 .img-thumbnail {
   padding: 0.25rem;
@@ -11237,7 +11238,7 @@ input[type="button"].btn-block {
   display: flex;
   padding-left: 0;
   list-style: none;
-  border-radius: 0.25rem;
+  border-radius: 8px;
 }
 .page-link {
   position: relative;
@@ -15032,6 +15033,7 @@ a.text-dark:focus {
 .product-buttons {
   position: absolute;
   bottom: 0;
+  display: none;
 }
 .h-200 {
   height: 200px;
@@ -15520,7 +15522,7 @@ section,
   padding-bottom: 120px;
 }
 .p-t-0 {
-  padding-top: 0;
+  padding-top: 32px;
 }
 hr.style1 {
   width: 75px;
@@ -15880,7 +15882,7 @@ button.btn.btn-outline:active {
   text-align: center;
 }
 .title1 h4 {
-  color: var(--theme-deafult);
+  color: #cd212a;
   padding-bottom: 10px;
   margin-bottom: 0;
   margin-top: -3px;
@@ -15894,7 +15896,7 @@ button.btn.btn-outline:active {
   position: absolute;
   height: 5px;
   width: 70px;
-  background-color: var(--theme-deafult);
+  background-color: #cd212a;
   content: "";
   left: 0;
   right: 0;
@@ -18184,7 +18186,7 @@ header.marketplace .top-header .header-dropdown li a i {
   padding-right: 15px;
 }
 .blog-details h4 {
-  color: var(--theme-deafult);
+  color: #cd212a;
   margin-top: 25px;
   line-height: 1;
   margin-bottom: 0;
@@ -18267,10 +18269,13 @@ header.marketplace .top-header .header-dropdown li a i {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.03em;
+  color: #fff;
 }
 .service-block p {
   text-transform: capitalize;
   margin-bottom: 0;
+  color: #fff !important;
+  font-weight: lighter;
 }
 .service-block + .service-block {
   border-left: 1px solid #ddd;
@@ -19706,7 +19711,7 @@ header.marketplace .top-header .header-dropdown li a i {
 }
 .theme-tab .tab-title .current a,
 .theme-tab .tab-title2 .current a {
-  color: var(--theme-deafult);
+  color: #cd212a;
 }
 .theme-tab .tab-title li,
 .theme-tab .tab-title2 li {
@@ -24072,7 +24077,7 @@ footer.footer-christmas .social-white i:hover {
 }
 .breadcrumb-section .breadcrumb a {
   color: #555;
-  font-weight: 600;
+  font-weight: lighter;
 }
 .about-head {
   margin-bottom: 20px;
@@ -24310,11 +24315,11 @@ footer.footer-christmas .social-white i:hover {
   .collection-brand-filter
   .collection-filter-checkbox
   label {
-  text-transform: uppercase;
+  /* text-transform: uppercase; */
   cursor: pointer;
-  font-size: 12px;
+  /* font-size: 12px; */
   color: #777;
-  font-weight: 600;
+  /* font-weight: 600; */
   letter-spacing: 0.5px;
 }
 .collection-collapse-block
@@ -24878,6 +24883,7 @@ footer.footer-christmas .social-white i:hover {
 }
 .collection-product-wrapper .product-wrapper-grid .product-box {
   margin-top: 50px;
+  max-height: 360px;
 }
 .collection-product-wrapper
   .product-wrapper-grid
@@ -39423,8 +39429,9 @@ body.dark {
     margin-right: -10px;
   }
   .margin-res > div {
-    padding-left: 10px;
-    padding-right: 10px;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-bottom: 0px;
   }
   .portfolio-section.metro-section .product-box .product-detail {
     width: 95%;
@@ -39441,6 +39448,7 @@ body.dark {
   }
   .collection-product-wrapper .product-wrapper-grid .product-box {
     margin-top: 20px;
+    max-height: 300px !important;
   }
   .subscribe h4 {
     display: block;
