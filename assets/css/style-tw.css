@@ -780,6 +780,10 @@ video {
   max-height: 70px;
 }
 
+.max-h-\[300px\] {
+  max-height: 300px;
+}
+
 .\!w-full {
   width: 100% !important;
 }
@@ -908,6 +912,10 @@ video {
 
 .overflow-hidden {
   overflow: hidden;
+}
+
+.overflow-y-scroll {
+  overflow-y: scroll;
 }
 
 .rounded {
@@ -1227,6 +1235,10 @@ video {
   line-height: 2rem;
 }
 
+.text-\[10px\] {
+  font-size: 10px;
+}
+
 .\!font-bold {
   font-weight: 700 !important;
 }
@@ -1241,6 +1253,10 @@ video {
 
 .font-thin {
   font-weight: 100;
+}
+
+.font-normal {
+  font-weight: 400;
 }
 
 .uppercase {

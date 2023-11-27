@@ -1,0 +1,3 @@
+node_modules/
+application/config/config.php
+application/config/database.php

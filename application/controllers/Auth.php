@@ -19,7 +19,7 @@ class Auth extends CI_Controller
     $this->form_validation->set_error_delimiters($this->config->item('error_start_delimiter', 'ion_auth'), $this->config->item('error_end_delimiter', 'ion_auth'));
 
     $this->lang->load('auth');
-	$this->load->model('ion_auth_model');
+    $this->load->model('ion_auth_model');
   }
 
   /**
@@ -111,7 +111,9 @@ class Auth extends CI_Controller
         'type' => 'password',
       ];
 
-      $this->template->load('template', 'auth_template/v_login', $this->data);
+      // $this->template->load('template', 'auth_template/v_login', $this->data);
+      $this->template->load('template', 'auth_template/v_login2', $this->data);
+
 
 
       // $this->_render_page('auth' . DIRECTORY_SEPARATOR . 'login', $this->data);
@@ -131,11 +133,11 @@ class Auth extends CI_Controller
     // redirect them to the login page
     redirect('auth/login', 'refresh');
   }
-function clear_cache()
-    {
-        $this->output->set_header("Cache-Control: no-store, no-cache, must-revalidate, no-transform, max-age=0, post-check=0, pre-check=0");
-        $this->output->set_header("Pragma: no-cache");
-    }
+  function clear_cache()
+  {
+    $this->output->set_header("Cache-Control: no-store, no-cache, must-revalidate, no-transform, max-age=0, post-check=0, pre-check=0");
+    $this->output->set_header("Pragma: no-cache");
+  }
   /**
    * Change password
    */
@@ -818,31 +820,31 @@ function clear_cache()
     }
   }
 
-public function reg($res)
+  public function reg($res)
   {
-	  
-	  //$vres=(isset($res)? $res : 'tidak ada');  
-	$row = $this->ion_auth_model->get_by_username(strtolower($res)); //ebe
-        if ($row) {
-            /*$data = array(
+
+    //$vres=(isset($res)? $res : 'tidak ada');  
+    $row = $this->ion_auth_model->get_by_username(strtolower($res)); //ebe
+    if ($row) {
+      /*$data = array(
 			'id_user' => $row->id,
 			'bank' => $this->input->post('bank'),
 			'norek' => $this->input->post('norek'),
 			);
 			$this->session->set_userdata('last_check', time());
 			$this->ion_auth_model->insert($data);*/
-			//$t=$row->email;
-			$session_data = [
-				'reselleremail' => $row->email,
-				'resellerid'    => $row->id,
-				'reselleruser'  => $row->username,
-			];
-			$this->session->set_userdata($session_data);
-			//$this->session->set_userdata('reselleremail', $t);
-		}
-		redirect("/register");
-		//echo $this->session->userdata('reselleremail');
-		//var_dump($t);exit();
+      //$t=$row->email;
+      $session_data = [
+        'reselleremail' => $row->email,
+        'resellerid'    => $row->id,
+        'reselleruser'  => $row->username,
+      ];
+      $this->session->set_userdata($session_data);
+      //$this->session->set_userdata('reselleremail', $t);
+    }
+    redirect("/register");
+    //echo $this->session->userdata('reselleremail');
+    //var_dump($t);exit();
   }
   public function register()
   {
@@ -894,8 +896,8 @@ public function reg($res)
         'phone' => $this->input->post('phone'),
         'username' => $this->input->post('username'),
         'tgl_lhr' => $tgl_lhr,
-		//==ebe add
-		/*if($this->session->userdata('resellerid')){
+        //==ebe add
+        /*if($this->session->userdata('resellerid')){
 			'reseller' => $this->session->userdata('resellerid')
 		}*/
       ];
@@ -1012,25 +1014,25 @@ public function reg($res)
     // if ($tables['users'])
 
     if ($user->email != $this->input->post('email')) {
-		$this->form_validation->set_rules('email', $this->lang->line('create_user_validation_email_label'), 'trim|required|valid_email|is_unique[' . $tables['users'] . '.email]');
+      $this->form_validation->set_rules('email', $this->lang->line('create_user_validation_email_label'), 'trim|required|valid_email|is_unique[' . $tables['users'] . '.email]');
     } else {
-		$this->form_validation->set_rules('email', $this->lang->line('create_user_validation_email_label'), 'trim|required|valid_email');
+      $this->form_validation->set_rules('email', $this->lang->line('create_user_validation_email_label'), 'trim|required|valid_email');
     }
 
-	if ($user->phone != $this->input->post('phone')) {
-		$this->form_validation->set_rules('phone', $this->lang->line('edit_user_validation_phone_label'), 'trim|required|is_unique[' . $tables['users'] . '.phone]');
-    } else  {
-		$this->form_validation->set_rules('phone', $this->lang->line('edit_user_validation_phone_label'), 'trim|required');
+    if ($user->phone != $this->input->post('phone')) {
+      $this->form_validation->set_rules('phone', $this->lang->line('edit_user_validation_phone_label'), 'trim|required|is_unique[' . $tables['users'] . '.phone]');
+    } else {
+      $this->form_validation->set_rules('phone', $this->lang->line('edit_user_validation_phone_label'), 'trim|required');
     }
 
     // validate form input
-	$this->form_validation->set_rules('nik', 'nik', 'trim|required|callback_validate_nik');
+    $this->form_validation->set_rules('nik', 'nik', 'trim|required|callback_validate_nik');
     $this->form_validation->set_message('validate_nik', 'NIK sudah terdaftar ganti dengan NIK yang lain.');
-	/*if($this->input->post('npwp') !=''){
+    /*if($this->input->post('npwp') !=''){
 		$this->form_validation->set_rules('npwp', 'npwp', 'trim|required|callback_validate_npwp');
 		$this->form_validation->set_message('validate_npwp', 'NPWP sudah terdaftar ganti dengan NPWP yang lain.');
 	}*/
-	
+
     $this->form_validation->set_rules('first_name', $this->lang->line('edit_user_validation_fname_label'), 'trim|required');
     $this->form_validation->set_rules('last_name', $this->lang->line('edit_user_validation_lname_label'), 'trim|required');
     //$this->form_validation->set_rules('phone', $this->lang->line('edit_user_validation_phone_label'), 'trim');
@@ -1074,7 +1076,7 @@ public function reg($res)
           'kab' => $this->input->post('kab'),
           'kec' => $this->input->post('kec'),
           'jns_kelamin' => $this->input->post('jns_kelamin'),
-		  'nik' => $this->input->post('nik'),
+          'nik' => $this->input->post('nik'),
           'npwp' => $this->input->post('npwp')
           // 'tgl_lhr' => $this->input->post('tgl_lhr'),
         ];
@@ -1108,7 +1110,7 @@ public function reg($res)
           // redirect them back to the admin page if admin, or to the base url if non admin
           $this->session->set_flashdata('message', $this->ion_auth->errors());
           //$this->redirectUser();
-		  redirect('usersedit/' . $id);
+          redirect('usersedit/' . $id);
         }
       }
     }
@@ -1215,7 +1217,7 @@ public function reg($res)
 
   function validate_age($tgl_lahir)
   {
-	 // Konversi tanggal_lahir menjadi objek DateTime
+    // Konversi tanggal_lahir menjadi objek DateTime
     /*$tanggal_lahir_obj = date_create($tgl_lahir);
 
     if ($tanggal_lahir_obj === false) {
@@ -1230,22 +1232,22 @@ public function reg($res)
       return TRUE;
     }
   }
-    function validate_nik($val)
+  function validate_nik($val)
   {
-  $cek=$this->ion_auth_model->validate_reseller_edit_user($val,'nik',$this->session->userdata('user_id'));
-	 if($cek){
-		return FALSE;
-	 }else{
-	    return TRUE;
-	 }
+    $cek = $this->ion_auth_model->validate_reseller_edit_user($val, 'nik', $this->session->userdata('user_id'));
+    if ($cek) {
+      return FALSE;
+    } else {
+      return TRUE;
+    }
   }
   function validate_npwp($val)
   {
-  $cek=$this->ion_auth_model->validate_reseller_edit_user($val,'npwp',$this->session->userdata('user_id'));
-	 if($cek){
-		return FALSE;
-	 }else{
-	    return TRUE;
-	 }
+    $cek = $this->ion_auth_model->validate_reseller_edit_user($val, 'npwp', $this->session->userdata('user_id'));
+    if ($cek) {
+      return FALSE;
+    } else {
+      return TRUE;
+    }
   }
 }
