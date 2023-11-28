@@ -145,3 +145,5 @@ ERROR - 2023-11-28 15:28:11 --> Query error: You have an error in your SQL synta
         SET main_address = 1
         WHERE id = '116';
         
+ERROR - 2023-11-28 15:57:06 --> Severity: Notice --> Undefined offset: 1 D:\xampp2\htdocs\boco-web\application\controllers\CekOutController.php 468
+ERROR - 2023-11-28 15:57:06 --> Severity: Notice --> Undefined offset: 2 D:\xampp2\htdocs\boco-web\application\controllers\CekOutController.php 469
