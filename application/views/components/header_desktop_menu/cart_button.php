@@ -25,7 +25,7 @@
 
      <div class="hidden absolute right-0 z-50 group-hover:block">
          <div class="mt-2 space-y-2 bg-white shadow-lg rounded-md">
-             <div class="block w-[300px] p-3">
+             <div class="flex flex-col gap-3 w-[300px] p-3">
 
                  <?php if ($keranjang) { ?>
                      <?php foreach ($keranjang as $item_keranjang) { ?>

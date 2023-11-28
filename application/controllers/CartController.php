@@ -247,22 +247,27 @@ class CartController extends CI_Controller
   // set default alamat ke cart session
   public function set_default_address()
   {
-    $arr_alamat_pengiriman = $this->Model_alamatPengiriman->getAll();
-    if ($arr_alamat_pengiriman) {
-      // supaya tidak berat (di load ketika buka) buatkan kondisi
-      // $arr_alamat_pengiriman = $this->Model_alamatPengiriman->getAll();
-      //
+    $user_id = ($this->session->userdata['user_id']);
+    $query = $this->db->query("
+        SELECT * 
+        FROM tb_alamat_pengiriman
+        WHERE user_id = '{$user_id}' AND main_address = 1
+        ")->result();
+
+    // Jika Ada alamat default maka set ke dalam session
+    if (!empty($query)) {
       foreach ($this->cart->contents() as $cart_item) {
         if ($cart_item['id_alamat'] == null) {
           $data = array(
             'rowid' => $cart_item['rowid'],
-            'id_alamat' => $arr_alamat_pengiriman[0]->id,
+            'id_alamat' => $query[0]->id,
           );
           $this->cart->update($data);
         }
       }
     }
   }
+  
   // set available store ke cart session
   public function set_available_store()
   {
@@ -302,6 +307,8 @@ class CartController extends CI_Controller
     $i = 0;
     foreach ($this->cart->contents() as  $items) {
       $id_alamat = $this->input->post('id_alamat')[$i];
+      // var_dump($id_alamat);
+      // exit();
       $data = array(
         'rowid' => $items['rowid'],
         'id_alamat' => $id_alamat,
@@ -312,7 +319,7 @@ class CartController extends CI_Controller
     $result = [
       'success' => true,
       'total' => $this->cart->total(),
-      // 'data' => $this->cart->contents()
+      'data' => $this->cart->contents()
     ];
     echo json_encode($result);
   }
