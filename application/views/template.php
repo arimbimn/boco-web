@@ -105,16 +105,16 @@
         </section>
       </div>
     </div>
-    <section class="section-b-space light-layout">
+    <section class="section-b-space light-layout bg-[#008C45]">
       <div class="container">
         <div class="row footer-theme partition-f">
           <div class="col-lg-4 col-md-6">
             <div class="footer-title footer-mobile-title">
-              <h4>about</h4>
+              <h4 class="!text-white">about</h4>
             </div>
             <div class="footer-contant">
-              <div class="footer-logo"><img src="<?= smn_baseurl() ?>uploads/webinformations/<?= $this->fungsi->webinformation()->image_logo ?>" alt=""></div>
-              <p><?= $this->fungsi->webinformation()->description_web ?></p>
+              <div class="footer-logo w-100 h-50"><img src="<?= smn_baseurl() ?>uploads/webinformations/<?= $this->fungsi->webinformation()->image_logo ?>" alt=""></div>
+              <p class="!text-white"><?= $this->fungsi->webinformation()->description_web ?></p>
               <div class="footer-social">
                 <ul>
                   <li><a href="<?= $this->fungsi->webinformation()->facebook ?>"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
@@ -129,18 +129,17 @@
           <div class="col offset-xl-1">
             <div class="sub-title">
               <div class="footer-title">
-                <h4><?= lang('MyAccount') ?></h4>
+                <h4 class="!text-white"><?= lang('MyAccount') ?></h4>
               </div>
               <div class="footer-contant">
                 <ul>
                   <?php if ($this->ion_auth->logged_in()) { ?>
-                    <li><a href="<?= base_url('users') ?>" data-lng="es"><?= lang('MyAccount') ?></a></li>
-                    <li><a href="<?= base_url('auth/logout') ?>" data-lng="es"><?= lang('LogOut') ?></a></li>
+                    <li><a class="!text-white" href="<?= base_url('users') ?>" data-lng="es"><?= lang('MyAccount') ?></a></li>
+                    <li><a class="!text-white" href="<?= base_url('auth/logout') ?>" data-lng="es"><?= lang('LogOut') ?></a></li>
                   <?php } else { ?>
-                    <li><a href="<?= base_url('login') ?>" data-lng="en"><?= lang('login') ?></a></li>
-                    <li><a href="<?= base_url('register') ?>" data-lng="en"><?= lang('register') ?></a></li>
+                    <li><a class="!text-white" href="<?= base_url('login') ?>" data-lng="en"><?= lang('login') ?></a></li>
+                    <li><a class="!text-white" href="<?= base_url('register') ?>" data-lng="en"><?= lang('register') ?></a></li>
                   <?php  } ?>
-
                 </ul>
               </div>
             </div>
@@ -148,7 +147,7 @@
           <div class="col">
             <div class="sub-title">
               <div class="footer-title">
-                <h4><?= lang('why_shoosus_nav') ?></h4>
+                <h4 class="!text-white"><?= lang('why_shoosus_nav') ?></h4>
               </div>
               <div class="footer-contant">
                 <ul>
@@ -156,7 +155,7 @@
                   $all_pages = $this->db->where('active', 1)->order_by('order_number', 'ASC')->get('pages')->result();
                   foreach ($all_pages as $pages) {
                   ?>
-                    <li><a href="<?= base_url() ?>pages/<?= $pages->slug ?>"><?= $pages->title ?></a></li>
+                    <li><a class="!text-white" href="<?= base_url() ?>pages/<?= $pages->slug ?>"><?= $pages->title ?></a></li>
                   <?php } ?>
                 </ul>
               </div>
@@ -165,15 +164,15 @@
           <div class="col">
             <div class="sub-title">
               <div class="footer-title">
-                <h4><?= lang('store_information_nav') ?></h4>
+                <h4 class="!text-white"><?= lang('store_information_nav') ?></h4>
               </div>
               <div class="footer-contant">
-                <ul class="contact-list">
-                  <li><i class="fa fa-map-marker"></i><?= $this->fungsi->webinformation()->alamat ?>
+                <ul class="contact-list !text-white">
+                  <li class="!text-white"><i class="fa fa-map-marker !text-white"></i><?= $this->fungsi->webinformation()->alamat ?>
                   </li>
-                  <li><i class="fa fa-phone"></i><?= lang('call_us_nav') ?>: <?= $this->fungsi->webinformation()->telephone ?></li>
-                  <li><i class="fa fa-envelope-o"></i><?= lang('email_us_nav') ?>: <a href="#"><?= $this->fungsi->webinformation()->email ?></a></li>
-                  <li><i class="fa fa-fax"></i>Fax: <?= $this->fungsi->webinformation()->fax ?></li>
+                  <li class="!text-white"><i class="fa fa-phone !text-white"></i><?= lang('call_us_nav') ?>: <?= $this->fungsi->webinformation()->telephone ?></li>
+                  <li class="!text-white"><i class="fa fa-envelope-o !text-white"></i><?= lang('email_us_nav') ?>: <a class="!text-white" href="#"><?= $this->fungsi->webinformation()->email ?></a></li>
+                  <li class="!text-white"><i class="fa fa-fax !text-white"></i>Fax: <?= $this->fungsi->webinformation()->fax ?></li>
                 </ul>
               </div>
             </div>

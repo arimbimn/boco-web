@@ -987,7 +987,7 @@ class Auth extends CI_Controller
       // $this->_render_page('auth' . DIRECTORY_SEPARATOR . 'create_user', $this->data);
     }
 
-    $this->template->load('template', 'auth_template/v_register', $this->data);
+    $this->template->load('template', 'auth_template/v_register2', $this->data);
 
     // echo 'oke';
   }
