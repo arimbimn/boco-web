@@ -22,7 +22,7 @@
   <!-- breadcrumb End -->
 
   <!-- section start -->
-  <section class="section-b-space">
+  <div class="py-[50px]" >
     <div class="container">
       <div class="checkout-page">
         <div class="checkout-form">
@@ -35,14 +35,14 @@
           <input type="hidden" name="kode_order" value="<?= $kode_order ?>" placeholder="" required>
 
 
-          <div>
+          <div class="max-w-[1100px] m-auto">
             <div class="text-[32px] font-bold mb-3">
               Billing Details
             </div>
             <div class="grid md:grid-cols-2 gap-[20px]">
               <div>
                 <!-- Order Items -->
-                <div>
+                <div class="flex flex-col gap-3">
                   <?php foreach ($this->cart->contents() as $items) : ?>
                     <?php
                     $barang = $this->M_product->get_detailproduct($items['id']);
@@ -59,7 +59,6 @@
                     ?>
 
                     <div class="relative grid gap-3 bg-white border-2 border-[#e9e9e9] rounded-[10px] shadow-md overflow-hidden">
-
 
                       <div class="p-3">
                         <div class="flex gap-4">
@@ -606,7 +605,7 @@
                     <div class="form-group">
                       <!-- <div class="field-label">Kode Voucher </div> -->
 
-                      <input type="hidden" name="kode_voucher" <?php if ($this->session->userdata('refferemail')) { ?> value="<?= $this->session->userdata('refferemail') ?>" <?php } elseif ($this->session->userdata('reselleruser')) {  ?> value="<?= $this->session->userdata('reselleruser') ?>" <?php } ?> id="kode_voucher" placeholder="<?= lang('code_voucher') ?>" required <?= $sp_disable ?>>
+                      <input type="text" name="kode_voucher" <?php if ($this->session->userdata('refferemail')) { ?> value="<?= $this->session->userdata('refferemail') ?>" <?php } elseif ($this->session->userdata('reselleruser')) {  ?> value="<?= $this->session->userdata('reselleruser') ?>" <?php } ?> id="kode_voucher" placeholder="<?= lang('code_voucher') ?>" required <?= $sp_disable ?>>
                       <?php if ($this->session->userdata('reseller') != "") {
                         $sembunyi = 'hidden';
                       ?>
@@ -653,7 +652,7 @@
         </div>
       </div>
     </div>
-  </section>
+  </div>
   <!-- section end -->
   <!-- Modal -->
   <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">

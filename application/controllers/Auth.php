@@ -111,8 +111,8 @@ class Auth extends CI_Controller
         'type' => 'password',
       ];
 
-      // $this->template->load('template', 'auth_template/v_login', $this->data);
-      $this->template->load('template', 'auth_template/v_login2', $this->data);
+      $this->template->load('template', 'auth_template/v_login', $this->data);
+      // $this->template->load('template', 'auth_template/v_login2', $this->data);
 
 
 

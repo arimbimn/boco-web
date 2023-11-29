@@ -16,11 +16,11 @@
   <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/css/style-tw.css">
 
   <!-- Icons -->
-  <!--link rel="stylesheet" type="text/css" href="<!?= base_url() ?>assets/css/fontawesome.css">
+  <!-- link rel="stylesheet" type="text/css" href="<!?= base_url() ?>assets/css/fontawesome.css"> -->
 	
   <!--Slick slider css-->
-  <!--link rel="stylesheet" type="text/css" href="<!?= base_url() ?>assets/css/slick.css">
-  <link rel="stylesheet" type="text/css" href="<!?= base_url() ?>assets/css/slick-theme.css">
+  <!-- <link rel="stylesheet" type="text/css" href="<!?= base_url() ?>assets/css/slick.css"> -->
+  <!-- <link rel="stylesheet" type="text/css" href="<!?= base_url() ?>assets/css/slick-theme.css"> -->
 
   <!-- Uncomment or remove stylesheets as needed -->
   <!-- <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/css/fontawesome.css"> -->

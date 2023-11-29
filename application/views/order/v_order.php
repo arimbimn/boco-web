@@ -20,7 +20,7 @@
    <!-- Section ends -->
 
    <!-- order-detail section start -->
-   <section class="section-b-space">
+   <div class="py-[50px]">
      <div class="container">
        <div class="row">
          <div class="col-lg-6">
@@ -199,5 +199,5 @@
 
        </div>
      </div>
-   </section>
+   </div>
    <!-- Section ends -->

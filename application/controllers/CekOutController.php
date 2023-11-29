@@ -28,14 +28,18 @@ class CekOutController extends CI_Controller
     $this->load->model('M_voucher');
     $this->load->model('M_product');
     $this->load->model('M_reseller');
+
     $this->load->model('Model_checkOngkir');
     $this->load->model('Model_alamatPengiriman');
+
     $this->load->helper('store_helper');
+
     date_default_timezone_set('Asia/Jakarta');
   }
 
   public function index()
   {
+
 
     $date = date('Y-m-d');
     $data = [
@@ -49,137 +53,138 @@ class CekOutController extends CI_Controller
 
     // var_dump($this->ion_auth->user()->row()->first_name . ' ' . $this->ion_auth->user()->row()->last_name);
 
-    if ($this->cart->contents() == null) {
-      $this->session->set_flashdata('message', '<div class="alert alert-warning" role="alert">
-        Tidak ada Produck Belanja
-        </div>');
-      redirect('/cart');
-    }
-
-    // $cekMember = $this->db->where(['user_id' => $this->ion_auth->user()->row()->id])->where("DATE_FORMAT(masaberlaku,'%Y-%m-%d') >=", date('Y-m-d'))->get('user_membership')->row();
-
-    // if ($cekMember) {
-    //   foreach ($this->cart->contents() as $items) {
-
-    //     $barang = $this->M_product->get_detailproduct($items['id']);
-    //     if ($items['options']['Diskon'] != 0) {
-    //       if ($cekMember->peringkat_member == 'GOLD') {
-    //         $diskon = 10;
-    //         $totalDiskon = ($diskon / 100) * $barang->harga;
-    //         $totalHarga = $barang->harga  - $totalDiskon;
-    //       } else if ($cekMember->peringkat_member == 'PLATINUM') {
-    //         $diskon = 15;
-    //         $totalDiskon = ($diskon / 100) * $barang->harga;
-    //         $totalHarga = $barang->harga  - $totalDiskon;
-    //       } else if ($cekMember->peringkat_member == 'DIAMOND') {
-    //         $diskon = 20;
-    //         $totalDiskon = ($diskon / 100) * $barang->harga;
-    //         $totalHarga = $barang->harga  - $totalDiskon;
-    //       }
-    //     } else {
-    //       $diskon = 0;
-    //       $totalHarga = $barang->harga;
-    //     }
-
-    //     $data = array(
-    //       'rowid' => $items['rowid'],
-    //       'price' => $totalHarga,
-    //       'options' => [
-    //         'Size' => $items['options']['Size'],
-    //         'Color' => $items['options']['Color'],
-    //         'Diskon' => $diskon,
-    //         'Indent' => $items['options']['Indent'],
-    //       ],
-    //     );
-
-    //     $this->cart->update($data);
-    //   }
-    // }
-
-    $diskonMember = 0;
-    if ($this->ion_auth->logged_in()) {
-      $cekMember = $this->db->where(['user_id' => $this->ion_auth->user()->row()->id])->where("DATE_FORMAT(masaberlaku,'%Y-%m-%d') >=", date('Y-m-d'))->get('user_membership')->row();
-      if ($cekMember) {
-        if ($cekMember->peringkat_member == 'GOLD') {
-          $diskonMember = 10;
-        } else if ($cekMember->peringkat_member == 'PLATINUM') {
-          $diskonMember = 15;
-        } else if ($cekMember->peringkat_member == 'DIAMOND') {
-          $diskonMember = 20;
-        }
-      }
-    }
-
-    foreach ($this->cart->contents() as $items) {
-      $is_store = explode("-", $items['id_alamat']);
-      if ($is_store[0] == "G") {
-        $penerima_pengiriman = $this->ion_auth->user()->row()->first_name . ' ' . $this->ion_auth->user()->row()->last_name;
-        $pilihan_jasakirim = '';
-        $pengiriman_default = '';
-        foreach (get_store() as $store) {
-          if ($store['id_store'] == $is_store[1]) {
-            $alamat_pengiriman = $store['nama_store'];
-            break;
-          }
-          // Kalo ga ketemu storenya bakal apa ?
-        }
-      } else {
-        var_dump($this->Model_checkOngkir->getOngkir(''));
-        $dataAlamatPengiriman = $this->Model_alamatPengiriman->getById($items['id_alamat'])[0];
-        $id_subdistrict = $dataAlamatPengiriman->subdistrictId;
-        $penerima_pengiriman = $dataAlamatPengiriman->penerima;
-        $alamat_pengiriman = $dataAlamatPengiriman->alamat;
-        $pilihan_jasakirim = $this->Model_checkOngkir->getOngkir('')['rajaongkir']['results'];
-        $desiredCode = $pilihan_jasakirim[0]['code'];
-        $desiredService = $pilihan_jasakirim[0]['costs'][0]['service'];
-        $desiredCost = $pilihan_jasakirim[0]['costs'][0]['cost'][0]['value'];
-        $pengiriman_default = "$desiredCode,$desiredService,$desiredCost";
-      }
-
-      $diskonItems = 0;
-
-      $barang = $this->M_product->get_detailproduct($items['id']);
-      $cekDiskonItem = $this->db->where(['product_id' => $barang->id_product])->where(['exp_date >=' => date('Y-m-d')])
-        ->where(['start_date <=' => date('Y-m-d')])->get('discount_items')->row();
-      if ($cekDiskonItem) {
-        $diskonItems = $cekDiskonItem->jumlah;
-      }
-
-      if ($diskonMember < $diskonItems) {
-        $diskon = $diskonItems;
-        $totalDiskonPerbandingan = ($diskonItems / 100) * $barang->harga;
-        $hargaReal = $barang->harga - $totalDiskonPerbandingan;
-      } else {
-        $diskon = $diskonMember;
-        $totalDiskonPerbandingan = ($diskonMember / 100) *  $barang->harga;
-        $hargaReal = $barang->harga - $totalDiskonPerbandingan;
-      }
-
-      // if ($items['options']['Diskon'] != 0) {
-      // selalu update 
-
-      // $pengiriman = $items['options']['pengiriman'];
-
-      $update_data_cart = array(
-        'rowid' => $items['rowid'],
-        'price' => $hargaReal,
-        'id_alamat' => $items['id_alamat'],
-        'options' => [
-          'Size' => $items['options']['Size'],
-          'Color' => $items['options']['Color'],
-          'Diskon' => $diskon,
-          'Indent' => $items['options']['Indent'],
-          'alamat' => [
-            'alamat_pengiriman' => $alamat_pengiriman,
-            'penerima' => $penerima_pengiriman
-          ],
-          'pengiriman' => isset($items['options']['pengiriman']) ? $items['options']['pengiriman'] : $pengiriman_default,
-          'jasa_kirim' => $pilihan_jasakirim
-        ],
-      );
-      $this->cart->update($update_data_cart);
+    if (empty($this->cart->contents())) {
+      redirect(base_url('cart') . "?msg=Tidak Dapat Melakukan Checkout, Keranjang Kamu Masih Kosong !");
+    } else {
+      // $cekMember = $this->db->where(['user_id' => $this->ion_auth->user()->row()->id])->where("DATE_FORMAT(masaberlaku,'%Y-%m-%d') >=", date('Y-m-d'))->get('user_membership')->row();
+      // if ($cekMember) {
+      //   foreach ($this->cart->contents() as $items) {
+      //     $barang = $this->M_product->get_detailproduct($items['id']);
+      //     if ($items['options']['Diskon'] != 0) {
+      //       if ($cekMember->peringkat_member == 'GOLD') {
+      //         $diskon = 10;
+      //         $totalDiskon = ($diskon / 100) * $barang->harga;
+      //         $totalHarga = $barang->harga  - $totalDiskon;
+      //       } else if ($cekMember->peringkat_member == 'PLATINUM') {
+      //         $diskon = 15;
+      //         $totalDiskon = ($diskon / 100) * $barang->harga;
+      //         $totalHarga = $barang->harga  - $totalDiskon;
+      //       } else if ($cekMember->peringkat_member == 'DIAMOND') {
+      //         $diskon = 20;
+      //         $totalDiskon = ($diskon / 100) * $barang->harga;
+      //         $totalHarga = $barang->harga  - $totalDiskon;
+      //       }
+      //     } else {
+      //       $diskon = 0;
+      //       $totalHarga = $barang->harga;
+      //     }
+      //     $data = array(
+      //       'rowid' => $items['rowid'],
+      //       'price' => $totalHarga,
+      //       'options' => [
+      //         'Size' => $items['options']['Size'],
+      //         'Color' => $items['options']['Color'],
+      //         'Diskon' => $diskon,
+      //         'Indent' => $items['options']['Indent'],
+      //       ],
+      //     );
+      //     $this->cart->update($data);
+      //   }
       // }
+
+      $diskonMember = 0;
+      if ($this->ion_auth->logged_in()) {
+        $cekMember = $this->db->where(['user_id' => $this->ion_auth->user()->row()->id])->where("DATE_FORMAT(masaberlaku,'%Y-%m-%d') >=", date('Y-m-d'))->get('user_membership')->row();
+        if ($cekMember) {
+          if ($cekMember->peringkat_member == 'GOLD') {
+            $diskonMember = 10;
+          } else if ($cekMember->peringkat_member == 'PLATINUM') {
+            $diskonMember = 15;
+          } else if ($cekMember->peringkat_member == 'DIAMOND') {
+            $diskonMember = 20;
+          }
+        }
+      }
+
+      foreach ($this->cart->contents() as $items) {
+
+        // Jika alamat belum di pilih kembali ke halaman cart
+        if ($items['id_alamat'] == null) {
+          redirect(base_url('cart') . "?msg=Kamu Belum Memilih Alamat Pengiriman !");
+        }
+
+        $is_store = explode("-", $items['id_alamat']);
+
+        if ($is_store[0] == "G") {
+          $penerima_pengiriman = $this->ion_auth->user()->row()->first_name . ' ' . $this->ion_auth->user()->row()->last_name;
+          $pilihan_jasakirim = '';
+          $pengiriman_default = '';
+          foreach (get_store() as $store) {
+            if ($store['id_store'] == $is_store[1]) {
+              $alamat_pengiriman = $store['nama_store'];
+              break;
+            }
+            // Kalo ga ketemu storenya bakal apa ?
+          }
+        } else {
+          // var_dump($this->Model_checkOngkir->getOngkir(''));
+          $dataAlamatPengiriman = $this->Model_alamatPengiriman->getById($items['id_alamat'])[0];
+          $id_subdistrict = $dataAlamatPengiriman->subdistrictId;
+          $penerima_pengiriman = $dataAlamatPengiriman->penerima;
+          $alamat_pengiriman = $dataAlamatPengiriman->alamat;
+          $pilihan_jasakirim = $this->Model_checkOngkir->getOngkir('')['rajaongkir']['results'];
+          $desiredCode = $pilihan_jasakirim[0]['code'];
+          $desiredService = $pilihan_jasakirim[0]['costs'][0]['service'];
+          $desiredCost = $pilihan_jasakirim[0]['costs'][0]['cost'][0]['value'];
+          $pengiriman_default = "$desiredCode,$desiredService,$desiredCost";
+        }
+
+        $diskonItems = 0;
+
+        $barang = $this->M_product->get_detailproduct($items['id']);
+        $cekDiskonItem = $this->db->where(['product_id' => $barang->id_product])->where(['exp_date >=' => date('Y-m-d')])
+          ->where(['start_date <=' => date('Y-m-d')])->get('discount_items')->row();
+        if ($cekDiskonItem) {
+          $diskonItems = $cekDiskonItem->jumlah;
+        }
+
+        if ($diskonMember < $diskonItems) {
+          $diskon = $diskonItems;
+          $totalDiskonPerbandingan = ($diskonItems / 100) * $barang->harga;
+          $hargaReal = $barang->harga - $totalDiskonPerbandingan;
+        } else {
+          $diskon = $diskonMember;
+          $totalDiskonPerbandingan = ($diskonMember / 100) *  $barang->harga;
+          $hargaReal = $barang->harga - $totalDiskonPerbandingan;
+        }
+
+        // if ($items['options']['Diskon'] != 0) {
+        // selalu update 
+
+        // $pengiriman = $items['options']['pengiriman'];
+
+        $update_data_cart = array(
+          'rowid' => $items['rowid'],
+          'price' => $hargaReal,
+          'id_alamat' => $items['id_alamat'],
+          'options' => [
+            'Size' => $items['options']['Size'],
+            'Color' => $items['options']['Color'],
+            'Diskon' => $diskon,
+            'Indent' => $items['options']['Indent'],
+            'alamat' => [
+              'alamat_pengiriman' => $alamat_pengiriman,
+              'penerima' => $penerima_pengiriman
+            ],
+            'pengiriman' => isset($items['options']['pengiriman']) ? $items['options']['pengiriman'] : $pengiriman_default,
+            'jasa_kirim' => $pilihan_jasakirim
+          ],
+        );
+        $this->cart->update($update_data_cart);
+        // }
+      }
     }
+
     $this->template->load('template', 'cekout/v_cekout', $data);
   }
 
@@ -832,7 +837,7 @@ class CekOutController extends CI_Controller
     $i = 0;
     $arr_informasi_stock = [];
     foreach ($this->cart->contents() as $cart_item) {
-      
+
       // var_dump($this->input->post('qty')[$i]);
       // echo "<br>";
       $in_store_founded = false;
@@ -845,7 +850,7 @@ class CekOutController extends CI_Controller
       if ($id_alamat[0] == 'G') {
         // jika user memilih self pickup / ambil sendiri
         $stok_product = $this->query_check_stock($id_alamat[1], $id_product, $id_attribute_product);
-        
+
         if ($qty_request <= $stok_product) {
           $in_store_founded = true;
           //kondisi ketika barang ada / pas

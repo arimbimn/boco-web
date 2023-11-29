@@ -6,7 +6,16 @@
     </div> -->
 
     <div class="h-[65px] md:h-[90px] flex items-center">
-        <div class="container gap-4 flex items-center justify-between">
+        <div class="container gap-4 flex items-center md:justify-between">
+
+
+            <!-- Mobile Menu Toggle -->
+            <div class="block md:hidden">
+                <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5" />
+                </svg>
+            </div>
+
             <div class="flex gap-4 items-center">
                 <div class="max-h-[70px]">
                     <a href="<?= base_url() ?>">
@@ -16,8 +25,8 @@
             </div>
 
             <!-- Desktop Menu -->
-            <div class="gap-4 hidden md:flex">
-                <div class="">
+            <div class="gap-4 flex items-center ml-auto">
+                <div class="hidden md:block">
                     <div>
                         <button type="button" id="dropdownButton" class="inline-flex justify-center items-center p-2 hover:bg-gray-300 rounded-md">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
@@ -27,18 +36,23 @@
                     </div>
                 </div>
 
-                <?php $this->load->view('components/header_desktop_menu/notification_button') ?>
-                <?php $this->load->view('components/header_desktop_menu/cart_button') ?>
-                <?php $this->load->view('components/header_desktop_menu/account_button') ?>
-            </div>
+                <?php if ($this->ion_auth->logged_in()) : ?>
+                    <div class="block">
+                        <?php $this->load->view('components/header_desktop_menu/notification_button') ?>
+                    </div>
+                <?php endif; ?>
 
-            <!-- Mobile Menu Toggle -->
-            <div class="block md:hidden">
-                <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5" />
-                </svg>
-            </div>
+                <div class="block">
+                    <?php $this->load->view('components/header_desktop_menu/cart_button') ?>
+                </div>
 
+
+                <div class="hidden md:block">
+                    <?php $this->load->view('components/header_desktop_menu/account_button') ?>
+                </div>
+
+
+            </div>
         </div>
     </div>
 
@@ -60,6 +74,7 @@
                     </li>
                 </ul>
             </nav>
+
             <div class="flex items-center">
                 <div class="group relative">
                     <div class="flex gap-2 items-center hover:cursor-pointer font-bold">
