@@ -33,11 +33,7 @@ $url = substr($url, 0, (strlen($url) - strpos(strrev($url), "/")));
 $url = ((empty($_SERVER['HTTPS']) or $_SERVER['HTTPS'] === 'off') ? 'http' : 'https') . "://" . $_SERVER['HTTP_HOST'] . $url;
 $config['smn_baseurl'] = 'http://localhost/adm/'; //administrator link
 $config['script_baseurl'] = 'https://script.bocorocco-shoes.com/';
-<<<<<<< HEAD
 $config['base_url'] = 'http://localhost/web/';
-=======
-$config['base_url'] = 'http://localhost/boco-web/';
->>>>>>> 6a7b3667276e853fc833ca568a55208b44e21bc0
 // $config['base_url'] = 'https://bocorocco.graphie.co.id/web/';
 
 /*
