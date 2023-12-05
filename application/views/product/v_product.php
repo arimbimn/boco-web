@@ -63,7 +63,7 @@
              <div class="collection-mobile-back"><span class="filter-back !capitalize !font-normal"><i class="fa fa-angle-left" aria-hidden="true"></i> back</span></div>
              <div class="collection-collapse-block open">
                <br>
-               <input type="text" name='search' class="form-control search mt-1 p-1 border border-gray-300 rounded-md w-full focus:outline-none focus:ring focus:ring-[#cd212a] outline-0 text-center" placeholder="Search" <?php if (!empty($keyword)) { ?>value="<?= $keyword ?>" <?php } ?>>
+               <input type="text" name='search' class="form-control search mt-1 p-1 border border-gray-300 rounded-md w-full focus:outline-none focus:ring focus:ring-[#cd212a] outline-0 text-center" <?php if (!empty($keyword)) { ?>value="<?= $keyword ?>" <?php } ?>>
                <br>
                <button id='button_search' class="btn btn-outline-danger hover: outline-[#cd212a] py-1 text-[8] capitalize rounded-md">Search</button>
 
@@ -213,8 +213,9 @@
              </div>
            </div>
            <!-- silde-bar colleps block end here -->
+
            <!-- side-bar single product slider start -->
-           <div class="theme-card">
+           <!-- <div class="theme-card">
              <h5 class="title-border"><?= lang('new_products_home') ?></h5>
              <div class="offer-slider slide-1">
                <?php foreach (array_chunk($new_products, 4) as $new_even) { ?>
@@ -243,8 +244,9 @@
                  </div>
                <?php } ?>
              </div>
-           </div>
+           </div> -->
            <!-- side-bar single product slider end -->
+
            <!-- side-bar banner start here -->
            <div class="collection-sidebar-banner" style="display: none;">
              <a href="#"><img src="<?= base_url() ?>/assets/images/side-banner.png" class="img-fluid blur-up lazyload" alt=""></a>
@@ -307,7 +309,7 @@
 
  <!-- trial section start -->
 
- <section class="discount-badge-trial">
+ <!-- <section class="discount-badge-trial">
    <div class=" container pt-4 pb-4 bg-[#f4f2f2]">
      <div class="row">
        <div class="col-12">
@@ -317,8 +319,6 @@
              <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                <div class="col border p-2 group">
                  <span class="absolute text-white ml-1 mt-1 px-2 py-1 bg-[#cd212a] rounded-md">
-                   <!-- <div class="px-1" style="font-weight: bold; text-align: center; font-size: xx-small;"> Mega</div>
-                   <div class="bg-white rounded text-red-500 px-1 mr-0" style="color: red; text-align: center; font-weight: bold; font-size: xx-small;">Sale</div> -->
                    <div class="px-1 font-bold text-xs"> 20% off</div>
                  </span>
                  <img src="https://via.placeholder.com/300" alt="Gambar 1" class="mb-4 !w-full">
@@ -359,7 +359,7 @@
        </div>
      </div>
    </div>
- </section>
+ </section> -->
  <!-- trial section end -->
 
 

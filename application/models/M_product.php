@@ -412,7 +412,7 @@ class M_product extends CI_Model
 
           if (!empty($colorRelate)) {
             foreach ($colorRelate as $itemColor) {
-              $tambahan_9 .= '<li class="bg-light0" style="background-color:' . $itemColor->colour_picker . ';"><span style="color: #82817e; margin-left: 20px; margin-bottom: 20px"></span></li>';
+              $tambahan_9 .= '<li class="bg-light0" style="border-radius: 9999px;background-color:' . $itemColor->colour_picker . ';"><span style="color: #82817e; margin-left: 20px; margin-bottom: 20px"></span></li>';
             }
           }
 
@@ -422,7 +422,9 @@ class M_product extends CI_Model
               'nama_produk' => $item_product->nama_barang,
               'gambar_produk' => $tambahan_4,
               'gambar_produk_2' => $tambahan_6,
-              'harga_produk' => number_format($item_product->harga, 0, ',', '.'),
+              // 'harga_produk' => number_format($item_product->harga, 0, ',', '.'),
+              'harga_produk' => $item_product->harga,
+              'diskon' => $cekDiskon ? $cekDiskon->jumlah : 0,
               'color_variant_html' => $tambahan_9
             ]
           ];
