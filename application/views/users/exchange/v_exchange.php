@@ -29,8 +29,8 @@
   <div class="container">
     <div class="row">
       <div class="col-lg-3">
-        <div class="account-sidebar"><a class="popup-btn"> <i class="fa fa-bars"></i> <?= lang('MyAccount') ?></a></div>
-        <div class="dashboard-left">
+        <div class="account-sidebar w-50 rounded-full font-normal bg-[#cd212a] capitalize text-white text-center !text-xs"><a class="popup-btn"> <i class="fa fa-bars"></i> <?= lang('MyAccount') ?></a></div>
+        <div class="dashboard-left rounded-md bg-white">
           <div class="collection-mobile-back"><span class="filter-back"><i class="fa fa-angle-left" aria-hidden="true"></i><?= lang('back') ?></span></div>
           <div class="block-content">
             <?php $this->load->view('users/v_menu_user') ?>
@@ -39,7 +39,7 @@
       </div>
       <div class="col-lg-9">
         <div class="dashboard-right">
-          <div class="dashboard">
+          <div class="dashboard bg-white rounded-md">
             <div class="page-title">
               <h2><?= lang('title_exchange_user') ?></h2>
             </div>
@@ -132,8 +132,8 @@
         books = JSON.parse(books);
         $('#kode_barang').empty();
         books.forEach(function(book) {
-         // $('#kode_barang').append('<option  value="' + book.barcode + '" >' + book.barcode + ' | ' + book.nama_barang + '</option>');
-         $('#kode_barang').append('<option  value="' + book.product_id+'-'+book.id_product_attribute+ '" >' + book.product_id + ' | ' + book.nama_barang + ' | ' + book.size +'</option>');
+          // $('#kode_barang').append('<option  value="' + book.barcode + '" >' + book.barcode + ' | ' + book.nama_barang + '</option>');
+          $('#kode_barang').append('<option  value="' + book.product_id + '-' + book.id_product_attribute + '" >' + book.product_id + ' | ' + book.nama_barang + ' | ' + book.size + '</option>');
         })
       })
     })
