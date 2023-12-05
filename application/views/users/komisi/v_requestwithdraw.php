@@ -29,8 +29,8 @@
   <div class="container">
     <div class="row">
       <div class="col-lg-3">
-        <div class="account-sidebar"><a class="popup-btn"> <i class="fa fa-bars"></i> <?= lang('MyAccount') ?></a></div>
-        <div class="dashboard-left">
+        <div class="account-sidebar w-50 rounded-full font-normal bg-[#cd212a] capitalize text-white text-center !text-xs"><a class="popup-btn"> <i class="fa fa-bars"></i> <?= lang('MyAccount') ?></a></div>
+        <div class="dashboard-left rounded-md bg-white">
           <div class="collection-mobile-back"><span class="filter-back"><i class="fa fa-angle-left" aria-hidden="true"></i> <?= lang('back') ?></span></div>
           <div class="block-content">
             <?php $this->load->view('users/v_menu_user') ?>
@@ -39,7 +39,7 @@
       </div>
       <div class="col-lg-9">
         <div class="dashboard-right">
-          <div class="dashboard">
+          <div class="dashboard bg-white rounded-md">
             <div class="page-title">
               <h2>Request Withdraw</h2>
             </div>
@@ -49,7 +49,7 @@
             <section class="tab-product m-0">
               <div class="container">
                 <div class="row">
-                  <div class="col-sm-12 col-lg-12">
+                  <div class="col-sm-12 col-lg-12 pb-5">
                     <ul class="nav nav-tabs nav-material" id="top-tab" role="tablist">
                       <li class="nav-item"><a class="nav-link active" id="top-home-tab" href="<?= base_url('users/request') ?>" role="tab" aria-selected="true"><?= lang('new_moneyback_user') ?></a>
                         <div class="material-border"></div>
@@ -64,19 +64,20 @@
                         <br>
 
                         <div class="form-row">
-							<div class="col-md-12">
-							<p><small class="text-danger">Jumlah penarikan akan dipotong biaya admin Rp 10.000</small></p>
-							</div>
-                          <div class="col-md-6">
-                            <label for="name">Saldo tersedia</label>
-							<input type='hidden' name="jml_saldo" id="jml_saldo" value="<?= $total_saldo; ?>"></input>
-                            <input type="text" class="form-control" name="vjml_saldo" id="vjml_saldo" value="<?php echo ($total_saldo == '' ? 0 : number_format($total_saldo, 0, ',', '.')); ?>" readonly>
-                            <?= (isset($error) == '') ? '' : '<small class="text-danger">'.$error.'</small>'; ?>
-                          </div>
-                          <div class="col-md-6">
-                            <label for="email">Jumlah penarikan (Min: Rp. 50.000)</label>
-                            <input type="number" class="form-control" name="saldo_penarikan" id="saldo_penarikan" value="<?= set_value('saldo_penarikan') ?>" placeholder="<?= lang('example') ?> : 500000" required="">
-                            <?= form_error('saldo_penarikan', '<small class="text-danger">', '</small>') ?>
+                          <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 pt-5">
+                            <div class="relative flex-1 mb-3">
+                              <label class=" mb-0 ml-2 font-bold" for="name">Saldo tersedia</label>
+                              <p class=" text-xs text-[8] !text-red-500 py-2 px-1 italic">*Jumlah penarikan akan dipotong biaya admin Rp 10.000</p>
+                              <input type='hidden' name="jml_saldo" id="jml_saldo" value="<?= $total_saldo; ?>"></input>
+                              <input type="text" class="form-control rounded-full pb-1" name="vjml_saldo" id="vjml_saldo" value="<?php echo ($total_saldo == '' ? 0 : number_format($total_saldo, 0, ',', '.')); ?>" readonly>
+                              <?= (isset($error) == '') ? '' : '<small class="text-danger">' . $error . '</small>'; ?>
+                            </div>
+                            <div class="relative flex-1 mb-3">
+                              <label class=" mb-0 ml-2 font-bold" for="email">Jumlah penarikan</label>
+                              <p class=" text-xs text-[8] !text-red-500 py-2 px-1 italic">*Min. penarikkan: Rp. 50.000</p>
+                              <input type="number" class="form-control rounded-full" name="saldo_penarikan" id="saldo_penarikan" value="<?= set_value('saldo_penarikan') ?>" placeholder="<?= lang('example') ?> : 500000" required="">
+                              <?= form_error('saldo_penarikan', '<small class="text-danger">', '</small>') ?>
+                            </div>
                           </div>
 
                           <!--div class="col-md-12">
@@ -87,9 +88,9 @@
                           <br>
                           <br>
                           <div class="col-md-12">
-						   <div class="notification is-danger">
-							<?php echo validation_errors(); ?>
-							</div>
+                            <div class="notification is-danger">
+                              <?php echo validation_errors(); ?>
+                            </div>
                             <br>
                             <button class="btn btn-sm btn-solid" type="submit" onclick="this.form.submit(); this.disabled = true; this.value = 'Submitting the form';"><?= lang('kirim') ?></button>
                           </div>
