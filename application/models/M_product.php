@@ -390,13 +390,9 @@ class M_product extends CI_Model
 
 
           $tambahan_3 = base_url() . "product/detail/" . $item_product->id_product;
-
           $tambahan_4 = smn_baseurl() . "/uploads/product/" . $item_product->image_one;
-
           $tambahan_6 = smn_baseurl() . "/uploads/product/" . $item_product->image_two;
-
           $tambahan_7 = base_url() . "add_to_compare/" . $item_product->id_product;
-
           $tambahan_8 = "";
 
           $detail_rating = $this->db->select('AVG(rating) as avg_rating')->where('product_id', $item_product->id_product)->get('product_reviews')->row()->avg_rating;
@@ -457,6 +453,7 @@ class M_product extends CI_Model
         }
         //var_dump($output);exit();
         return $output;
+        // return $this->load->view('components/product_card');
       } else {
         $output = '<div class="col-xl-12 col-12 col-grid-box">
             <div class="product-box">
