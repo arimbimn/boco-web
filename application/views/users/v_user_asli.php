@@ -159,7 +159,7 @@
   <div class="container">
     <div class="row">
       <div class="col-lg-3">
-        <div class="account-sidebar rounded-full font-normal bg-[#cd212a] capitalize text-white text-center !text-xs"><a class="popup-btn"> <i class="fa fa-bars"></i> <?= lang('MyAccount') ?> <?= ($this->session->userdata('reseller') == '1' ? 'Entrepreneurship' : 'MEMBER') ?></a></div>
+        <div class="account-sidebar"><a class="popup-btn"> <i class="fa fa-bars"></i> <?= lang('MyAccount') ?> <?= ($this->session->userdata('reseller') == '1' ? 'ENTREPRENEURSHIP' : 'MEMBER') ?></a></div>
         <div class="dashboard-left rounded-md bg-white">
           <div class="collection-mobile-back"><span class="filter-back"><i class="fa fa-angle-left" aria-hidden="true"></i><?= lang('back') ?></span></div>
           <div class="block-content rounded-md">
@@ -171,31 +171,16 @@
         <div class="dashboard-right">
           <div class="dashboard bg-white rounded-md">
             <div class="page-title">
-              <h2 class=" font-bold text-xl py-4"><?= lang('title_dashboard_user') ?> <?= ($this->session->userdata('reseller') == '1' ? 'ENTREPRENEURSHIP' : 'MEMBER') ?></h2>
+              <h2 class=" font-bold text-xl text-center py-4"><?= lang('title_dashboard_user') ?> <?= ($this->session->userdata('reseller') == '1' ? 'ENTREPRENEURSHIP' : 'MEMBER') ?></h2>
             </div>
             <div class="welcome-msg">
-              <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <div class="grid grid-cols-1 md:grid-cols-4">
                 <div class=" col-12">
                   <img src="https://via.placeholder.com/100" alt="Gambar 1" class="mb-4 rounded-full pl-1">
-                  <a href="<?= base_url('usersedit/' . $this->ion_auth->user()->row()->id) ?>" class=" bg-[#008C45] text-white px-4 py-2 rounded-full focus:outline-none focus:shadow-outline-[#00461C]">
-                    Edit Profile
-                  </a>
                 </div>
                 <div class=" col-12 md:col-span-3">
-                  <p class=" mb-2">Hello, <strong> <?= $this->ion_auth->user()->row()->first_name ?> <?= $this->ion_auth->user()->row()->last_name ?> ! </strong></p>
-                  <p class=" mb-4"><?= lang('desc_dashboard_user') ?></p>
-                  <p class=" font-bold">
-                    <span class=" mr-2"><i class="fa fa-envelope"></i></span>
-                    <span class=" mr-2"><?= $this->ion_auth->user()->row()->email ?></span>
-                  </p>
-                  <p class=" font-bold">
-                    <span class=" mr-2"><i class="fa fa-phone"></i></span>
-                    <span class=" mr-2">*nomor hp user*</span>
-                  </p>
-                  <p class=" font-bold">
-                    <span class=" mr-2"><i class="fa fa-home"></i></span>
-                    <span class=" mr-2">*alamat user*</span>
-                  </p>
+                  <p>Hello, <strong> <?= $this->ion_auth->user()->row()->first_name ?> ! </strong></p>
+                  <p><?= lang('desc_dashboard_user') ?></p>
                 </div>
               </div>
               <?php if ($this->session->userdata('reseller') != "1") { ?>
@@ -225,22 +210,49 @@
               <?php } ?>
             </div>
             <div class="box-account box-info">
-              <div class="box-head mt-4">
-                <h2 class=" font-bold text-lg text-center py-5"><?= lang('account_information') ?></h2>
+              <div class="box-head">
+                <h2 class=" font-bold text-lg pb-4"><?= lang('account_information') ?></h2>
               </div>
               <div class="row">
-
+                <div class="col-sm-6">
+                  <div class="box">
+                    <div class="box-title">
+                      <h3><?= lang('contact_information') ?></h3><a href="<?= base_url('usersedit/' . $this->ion_auth->user()->row()->id) ?>">Edit</a>
+                    </div>
+                    <div class="box-content">
+                      <h6><?= $this->ion_auth->user()->row()->first_name ?> <?= $this->ion_auth->user()->row()->last_name ?></h6>
+                      <h6><?= $this->ion_auth->user()->row()->email ?></h6>
+                      <h6><a href="#"><?php echo lang('reset_password_heading'); ?></a></h6>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="box">
+                    <!-- <div class="box-title">
+                          <h3><?= lang('newsletters_user') ?></h3><a href="#">Edit</a>
+                        </div> -->
+                    <!-- <div class="box-content">
+                          <p><?= lang('not_newsletters_user') ?>.</p>
+                        </div> -->
+                  </div>
+                </div>
               </div>
               <div>
                 <div class="box">
                   <div class="box-title">
-                    <h3>Ubah Password</h3>
+                    <h3><?= lang('address_book_user') ?></h3>
                   </div>
                   <div class="row">
-                    <div class="col-sm-6 my-4">
-                      <a href="<?= base_url('ubahpassword') ?>" class=" bg-[#008C45] text-white px-4 py-2 rounded-full focus:outline-none focus:shadow-outline-[#00461C]">
-                        Ubah Password
-                      </a>
+                    <div class="col-sm-6">
+                      <h6><?= lang('address_default_user') ?> </h6>
+                      <?php if ($this->ion_auth->user()->row()->address == null) { ?>
+                        <address><?= lang('not_set_address') ?><br><a href="<?= base_url('usersedit/' . $this->ion_auth->user()->row()->id) ?>">Edit
+                            <?= lang('address_user') ?></a></address>
+                      <?php  } else { ?>
+                        <address><?= $this->ion_auth->user()->row()->address  ?><br><a href="<?= base_url('usersedit/' . $this->ion_auth->user()->row()->id) ?>">Edit
+                            <?= lang('address_user') ?></a></address>
+                      <?php } ?>
+
                     </div>
                   </div>
                 </div>
@@ -280,6 +292,7 @@
               </div>
             </div>
           </div>
+
           <div id="canvas"></div>
         </div>
       </div>
