@@ -1,28 +1,4 @@
 <!-- Tambahan Arimbi -->
-<style>
-  .text-white {
-    font-size: 20px;
-    /* Ganti dengan ukuran yang diinginkan */
-    border-radius: 12px;
-    padding: 8px;
-  }
-
-  .text-dark {
-    font-size: 16px;
-    /* Ganti dengan ukuran yang diinginkan */
-    border-radius: 12px;
-    padding: 5px;
-  }
-
-  .popup-btn {
-    font-size: 12px;
-    padding: 8px;
-  }
-
-  .account-sidebar {
-    border-radius: 8px;
-  }
-</style>
 
 <!-- breadcrumb start -->
 <div class="breadcrumb-section">
@@ -52,13 +28,13 @@
   <div class="container">
     <div class="row">
       <div class="col-lg-3">
-        <div class="account-sidebar">
+        <div class="account-sidebar w-50 rounded-full font-normal bg-[#cd212a] capitalize text-white text-center !text-xs">
           <a class="popup-btn">
             <i class="fa fa-bars"></i>
             <?= lang('MyAccount') ?>
           </a>
         </div>
-        <div class="dashboard-left">
+        <div class="dashboard-left rounded-md bg-white">
           <div class="collection-mobile-back"><span class="filter-back"><i class="fa fa-angle-left" aria-hidden="true"></i><?= lang('back') ?></span></div>
           <div class="block-content">
             <?php $this->load->view('users/v_menu_user') ?>
@@ -67,12 +43,12 @@
       </div>
       <div class="col-lg-9">
         <div class="dashboard-right">
-          <div class="dashboard">
+          <div class="dashboard bg-white rounded-md">
             <!-- product-tab starts -->
             <section class="tab-product m-0">
               <div class="container">
                 <div class="row">
-                  <div class="col-lg-5 col-xs-5 mb-4">
+                  <div class="col-lg-5 col-xs-5 pr-0 pl-1">
                     <!--h4>Keagenan:--> <!--?= $peringkat ?--><!--/h4-->
                     <?php
                     $vsts_royalty = 'OFF';
@@ -90,19 +66,19 @@
                                     }*/
                     }
                     ?>
-                    <h4>Royalty: <span class='<?= $vclass ?>'><?= $vsts_royalty ?></span></h4>
+                    <h4>Royalty: <span class='<?= $vclass ?> rounded-xl py-1 px-2 font-bold'><?= $vsts_royalty ?></span></h4>
                     <?php if ($vsts_royalty == 'ON') { ?>
-                      <h4>Expired Royalty: <span class='<?= $vclass_2 ?>'><?= $vexp ?></span></h4>
+                      <h4>Expired Royalty: <span class='<?= $vclass_2 ?> rounded-xl py-1 px-2 font-bold'><?= $vexp ?></span></h4>
                     <?php } ?>
                   </div>
 
                   <!-- Tambahan Arimbi -->
                   <div class="vertical-line"></div>
-                  <div class="col-lg-5 col-xs-5">
-                    <h2> Live Comition</h2>
-                    <h3 class="bg-success text-white"> IDR 10.000.000, -
+                  <div class="col-lg-5 col-xs-5 px-0">
+                    <h2 class=" px-1 py-1"> Live Comition</h2>
+                    <h3 class="bg-success text-white text-lg py-1 px-2 rounded-xl"> IDR 10.000.000, -
                       <span>
-                        <strong>/ Day 1</strong>
+                        <strong class=" text-lg font-bold">/ Day 1</strong>
                       </span>
                     </h3>
                   </div>
