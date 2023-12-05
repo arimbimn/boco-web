@@ -197,3 +197,6 @@ $route['id/(:any)'] = 'ReferLinkController/linkReffer/$1';
 
 
 $route['percobaan'] = 'UserMemberCekController/percobaan';
+
+// Ubah password tambahan arimbi
+$route['ubahpassword'] = 'UserController/ubah_password';

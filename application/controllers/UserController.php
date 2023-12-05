@@ -71,8 +71,8 @@ class UserController extends CI_Controller
         $cek_email = $this->db->where(['email' => $email])->or_where(['username' => $email])->get('users')->row();
 
         if ($cek_email) {
-			//==add ebe
-			/*if($cek_email->reseller == '1'){
+          //==add ebe
+          /*if($cek_email->reseller == '1'){
 				$this->db->where('id',$this->ion_auth->user()->row()->id);
 				$this->db->update('users', ['reseller' => $cek_email->id]);
 				$session_data = [
@@ -83,7 +83,7 @@ class UserController extends CI_Controller
 				];
 				$this->session->set_userdata($session_data);
 			}*/
-			//==end ebe
+          //==end ebe
           $dataSave = [
             'user_id' => $this->ion_auth->user()->row()->id,
             'refertouser_id' => $cek_email->id,
@@ -170,5 +170,15 @@ class UserController extends CI_Controller
     } else {
       redirect(base_url() . 'wishlist', 'refresh');
     }
+  }
+
+  // View ubah password tambahan arimbi
+  public function ubah_password()
+  {
+    $data = [
+      'title' => 'Ubah Password | Bocorocco Pillow Concept',
+    ];
+
+    $this->template->load('template', 'users/v_ubah_password', $data);
   }
 }
