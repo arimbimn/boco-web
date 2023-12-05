@@ -60,7 +60,7 @@
            <!-- side-bar colleps block stat -->
            <div class="collection-filter-block rounded-md">
              <!-- brand filter start -->
-             <div class="collection-mobile-back"><span class="filter-back !capitalize"><i class="fa fa-angle-left" aria-hidden="true"></i> back</span></div>
+             <div class="collection-mobile-back"><span class="filter-back !capitalize !font-normal"><i class="fa fa-angle-left" aria-hidden="true"></i> back</span></div>
              <div class="collection-collapse-block open">
                <br>
                <input type="text" name='search' class="form-control search mt-1 p-1 border border-gray-300 rounded-md w-full focus:outline-none focus:ring focus:ring-[#cd212a] outline-0 text-center" placeholder="Search" <?php if (!empty($keyword)) { ?>value="<?= $keyword ?>" <?php } ?>>

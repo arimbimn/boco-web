@@ -247,27 +247,29 @@ class CartController extends CI_Controller
   // set default alamat ke cart session
   public function set_default_address()
   {
-    $user_id = ($this->session->userdata['user_id']);
-    $query = $this->db->query("
-        SELECT * 
-        FROM tb_alamat_pengiriman
-        WHERE user_id = '{$user_id}' AND main_address = 1
-        ")->result();
+    $user_id = isset($this->session->userdata['user_id']) ? $this->session->userdata['user_id'] : null;
+    if ($user_id != null) {
+      $query = $this->db->query("
+          SELECT * 
+          FROM tb_alamat_pengiriman
+          WHERE user_id = '{$user_id}' AND main_address = 1
+          ")->result();
 
-    // Jika Ada alamat default maka set ke dalam session
-    if (!empty($query)) {
-      foreach ($this->cart->contents() as $cart_item) {
-        if ($cart_item['id_alamat'] == null) {
-          $data = array(
-            'rowid' => $cart_item['rowid'],
-            'id_alamat' => $query[0]->id,
-          );
-          $this->cart->update($data);
+      // Jika Ada alamat default maka set ke dalam session
+      if (!empty($query)) {
+        foreach ($this->cart->contents() as $cart_item) {
+          if ($cart_item['id_alamat'] == null) {
+            $data = array(
+              'rowid' => $cart_item['rowid'],
+              'id_alamat' => $query[0]->id,
+            );
+            $this->cart->update($data);
+          }
         }
       }
     }
   }
-  
+
   // set available store ke cart session
   public function set_available_store()
   {
