@@ -357,6 +357,8 @@ class M_product extends CI_Model
 
         $output = "";
 
+        $html_content = "";
+
         foreach ($query as $item_product) {
           // $member = 'UMUM';
           // if ($this->ion_auth->logged_in()) {
@@ -390,13 +392,9 @@ class M_product extends CI_Model
 
 
           $tambahan_3 = base_url() . "product/detail/" . $item_product->id_product;
-
           $tambahan_4 = smn_baseurl() . "/uploads/product/" . $item_product->image_one;
-
           $tambahan_6 = smn_baseurl() . "/uploads/product/" . $item_product->image_two;
-
           $tambahan_7 = base_url() . "add_to_compare/" . $item_product->id_product;
-
           $tambahan_8 = "";
 
           $detail_rating = $this->db->select('AVG(rating) as avg_rating')->where('product_id', $item_product->id_product)->get('product_reviews')->row()->avg_rating;
@@ -417,6 +415,19 @@ class M_product extends CI_Model
               $tambahan_9 .= '<li class="bg-light0" style="background-color:' . $itemColor->colour_picker . ';"><span style="color: #82817e; margin-left: 20px; margin-bottom: 20px"></span></li>';
             }
           }
+
+          $data = [
+            'data' => [
+              'url' => $tambahan_3,
+              'nama_produk' => $item_product->nama_barang,
+              'gambar_produk' => $tambahan_4,
+              'gambar_produk_2' => $tambahan_6,
+              'harga_produk' => number_format($item_product->harga, 0, ',', '.'),
+              'color_variant_html' => $tambahan_9
+            ]
+          ];
+
+          $html_content .= $this->load->view('components/product/product_card', $data, TRUE);
 
           $output .= '  <div class="col-xl-3 col-6 col-grid-box">
                   <div class="product-box">
@@ -456,9 +467,10 @@ class M_product extends CI_Model
                 </div>';
         }
         //var_dump($output);exit();
-        return $output;
+        return $html_content;
+        // return $this->load->view('components/product_card');
       } else {
-        $output = '<div class="col-xl-12 col-12 col-grid-box">
+        $html_content = '<div class="col-xl-12 col-12 col-grid-box">
             <div class="product-box">
               <p class="text-muted">
                 <i class="fa fa-info-circle"></i>
@@ -467,7 +479,7 @@ class M_product extends CI_Model
             </div>
           </div>';
 
-        return $output;
+        return $html_content;
       }
     }
   }

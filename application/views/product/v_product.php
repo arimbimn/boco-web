@@ -263,7 +263,7 @@
                  <div class="collection-product-wrapper">
 
                    <div class="product-wrapper-grid">
-                     <div class="row margin-res" id="tampilkan">
+                     <div class="row margin-res grid grid-cols-2 md:grid-cols-4 gap-3" id="tampilkan">
                      </div>
                    </div>
 
