@@ -37,9 +37,14 @@
     <div class="container">
         <div class="row">
             <div class="mt-2 px-5 w-full">
+                <img class="mx-auto h-10 w-18 justify-center items-center mb-4" src="<?= base_url('assets/images/icon/logo.png') ?>" alt="Bocorocco">
                 <h2 class="text-base font-bold leading-7 text-gray-900 text-center">Registration Form</h2>
                 <p class="mt-1 text-sm leading-6 text-gray-600 text-center">Harap lengkapi data dibawah ini untuk membuat akun.</p>
+
+                <!-- form start -->
                 <form class="space-y-6" action="#" method="POST">
+
+                    <!-- baris 1 -->
                     <div class=" grid grid-cols-1 md:grid-cols-2 gap-x-2 pt-5">
                         <div class="relative flex-1 mb-3">
                             <input type="text" id="firstname" name="firstname" autocomplete="firstname" required class=" text-sm block w-full px-4 py-2 border-b-2 text-gray-900 shadow-sm border-gray-300 rounded-md focus:outline-none focus:border-[#008C45] placeholder-transparent text-center">
@@ -54,6 +59,8 @@
                             </label>
                         </div>
                     </div>
+
+                    <!-- baris 2 -->
                     <div class=" grid grid-cols-1 md:grid-cols-2 gap-x-2 mt-1">
                         <div class="relative flex-1 mb-3">
                             <input type="text" id="username" name="username" autocomplete="username" required class=" text-sm block w-full px-4 py-2 border-b-2 text-gray-900 shadow-sm border-gray-300 rounded-md focus:outline-none focus:border-[#008C45] placeholder-transparent text-center">
@@ -68,6 +75,46 @@
                             </label>
                         </div>
                     </div>
+
+                    <!-- baris 3 -->
+                    <div class=" grid grid-cols-1 md:grid-cols-2 gap-x-2 mt-1">
+                        <div class="relative flex-1 mb-3">
+                            <input type="number" id="nik" name="nik" autocomplete="nik" required class=" text-sm block w-full px-4 py-2 border-b-2 text-gray-900 shadow-sm border-gray-300 rounded-md focus:outline-none focus:border-[#008C45] placeholder-transparent text-center">
+                            <label for="nik" class="absolute top-3 left-4 px-2 text-sm text-gray-600 transition-transform transform origin-top-left scale-75 pointer-events-none">
+                                NIK (Nomor Induk Kependudukan)
+                            </label>
+                        </div>
+                        <div class="relative flex-1 mb-3">
+                            <input type="number" id="npwp" name="npwp" autocomplete="npwp" required class=" text-sm block w-full px-4 py-2 border-b-2 text-gray-900 shadow-sm border-gray-300 rounded-md focus:outline-none focus:border-[#008C45] placeholder-transparent text-center">
+                            <label for="npwp" class="absolute top-3 left-4 px-2 text-sm text-gray-600 transition-transform transform origin-top-left scale-75 pointer-events-none">
+                                NPWP
+                            </label>
+                        </div>
+                    </div>
+
+
+                    <!-- baris 4 -->
+                    <div class=" grid grid-cols-1 md:grid-cols-2 gap-x-2 mt-1">
+                        <div class="relative flex-1 mb-3">
+                            <select id="bank" name="bank" autocomplete="bank" required class=" text-sm block w-full px-4 py-2 border-b-2 text-gray-900 shadow-sm border-gray-300 rounded-md focus:outline-none focus:border-[#008C45] placeholder-transparent text-center">
+                                <option value="" disabled selected>Select Bank</option>
+                                <option value="bank1">Bank 1</option>
+                                <option value="bank2">Bank 2</option>
+                                <option value="bank3">Bank 3</option>
+                            </select>
+                            <label for="bank" class="absolute top-3 left-4 px-2 text-sm text-gray-600 transition-transform transform origin-top-left scale-75 pointer-events-none">
+                                Nama Bank
+                            </label>
+                        </div>
+                        <div class="relative flex-1 mb-3">
+                            <input type="number" id="rekening" name="rekening" autocomplete="rekening" required class=" text-sm block w-full px-4 py-2 border-b-2 text-gray-900 shadow-sm border-gray-300 rounded-md focus:outline-none focus:border-[#008C45] placeholder-transparent text-center">
+                            <label for="rekening" class="absolute top-3 left-4 px-2 text-sm text-gray-600 transition-transform transform origin-top-left scale-75 pointer-events-none">
+                                Nomor Rekening
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- baris 5 -->
                     <div class=" grid grid-cols-1 md:grid-cols-2 gap-x-2 mt-1">
                         <div class="relative flex-1 mb-3">
                             <input type="date" id="birthdate" name="birthdate" autocomplete="birthdate" required class=" text-sm block w-full px-4 py-2 border-b-2 text-gray-900 shadow-sm border-gray-300 rounded-md focus:outline-none focus:border-[#008C45] placeholder-transparent text-center">
@@ -82,6 +129,8 @@
                             </label>
                         </div>
                     </div>
+
+                    <!-- baris 6 -->
                     <div class=" grid grid-cols-1 md:grid-cols-2 gap-x-2 mt-1">
                         <div class="relative flex-1 mb-3">
                             <input type="password" id="password" name="password" autocomplete="current-password" required class="block w-full px-3 py-2 border-b-2 text-gray-900 shadow-sm text-xs border-gray-300 rounded-md focus:outline-none focus:border-[#008C45] placeholder-transparent text-center">
@@ -106,15 +155,19 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- button form -->
                     <div class="mt-6 flex items-center justify-end gap-x-6">
-                        <button type="button" class="text-sm font-semibold leading-6 bg-transparent border border-[#008C45] hover:bg-[#008C45] hover:text-gray-400 focus:outline-none focus:border-[#00461C] transition-all px-4 py-2 rounded-md text-gray-900">
+                        <button type="button" class="text-sm font-semibold leading-6 bg-transparent border border-[#008C45] hover:bg-[#008C45] hover:text-gray-400 focus:outline-none focus:border-[#00461C] transition-all px-4 py-2 rounded-full text-gray-900">
                             Cancel
                         </button>
-                        <button type="submit" class="rounded-md bg-[#008C45] px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-[#00461C] focus:outline-none focus:ring focus:border-[#00461C] focus-visible:ring-[#00461C]">
+                        <button type="submit" class="rounded-full bg-[#008C45] px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-[#00461C] focus:outline-none focus:ring focus:border-[#00461C] focus-visible:ring-[#00461C]">
                             Create Account
                         </button>
                     </div>
                 </form>
+
+                <!-- form end -->
             </div>
         </div>
     </div>
@@ -122,29 +175,50 @@
 </section>
 
 <script>
+    // baris 1
     const firstnameInput = document.getElementById('firstname');
     const firstnameLabel = document.querySelector('label[for="firstname"]');
+
 
     const lastnameInput = document.getElementById('lastname');
     const lastnameLabel = document.querySelector('label[for="lastname"]');
 
+    //baris 2
     const usernameInput = document.getElementById('username');
     const usernameLabel = document.querySelector('label[for="username"]');
+
 
     const phonenumberInput = document.getElementById('phonenumber');
     const phonenumberLabel = document.querySelector('label[for="phonenumber"]');
 
+    //baris 3
+    const nikInput = document.getElementById('nik');
+    const nikLabel = document.querySelector('label[for="nik"]');
+
+    const npwpInput = document.getElementById('npwp');
+    const npwpLabel = document.querySelector('label[for="npwp"]');
+
+    //baris 4
+    const bankInput = document.getElementById('bank');
+    const bankLabel = document.querySelector('label[for="bank"]');
+
+    const rekeningInput = document.getElementById('rekening');
+    const rekeningLabel = document.querySelector('label[for="rekening"]');
+
+    //baris 5
     const birthdateInput = document.getElementById('birthdate');
     const birthdateLabel = document.querySelector('label[for="birthdate"]');
 
     const emailInput = document.getElementById('email');
     const emailLabel = document.querySelector('label[for="email"]');
 
+    //baris 6
     const passwordInput = document.getElementById('password');
     const passwordLabel = document.querySelector('label[for="password"]');
 
     const confirmpasswordInput = document.getElementById('confirmpassword');
     const confirmpasswordLabel = document.querySelector('label[for="confirmpassword"]');
+
 
     const eyeIcon = document.getElementById('eyeIcon');
     const confirmpasswordEyeIcon = document.getElementById('confirmEyeIcon');
@@ -241,7 +315,6 @@
     });
 
     // input phone number
-
     phonenumberInput.addEventListener('focus', () => {
         phonenumberLabel.classList.add('label-focus');
     });
@@ -257,6 +330,82 @@
             phonenumberLabel.classList.add('label-focus');
         } else {
             phonenumberLabel.classList.remove('label-focus');
+        }
+    });
+
+    // input nik
+    nikInput.addEventListener('focus', () => {
+        nikLabel.classList.add('label-focus');
+    });
+
+    nikInput.addEventListener('blur', () => {
+        if (!nikInput.value) {
+            nikLabel.classList.remove('label-focus');
+        }
+    });
+
+    nikInput.addEventListener('input', () => {
+        if (nikInput.value) {
+            nikLabel.classList.add('label-focus');
+        } else {
+            nikLabel.classList.remove('label-focus');
+        }
+    });
+
+    // input npwp
+    npwpInput.addEventListener('focus', () => {
+        npwpLabel.classList.add('label-focus');
+    });
+
+    npwpInput.addEventListener('blur', () => {
+        if (!npwpInput.value) {
+            npwpLabel.classList.remove('label-focus');
+        }
+    });
+
+    npwpInput.addEventListener('input', () => {
+        if (npwpInput.value) {
+            npwpLabel.classList.add('label-focus');
+        } else {
+            npwpLabel.classList.remove('label-focus');
+        }
+    });
+
+    // input bank
+    bankInput.addEventListener('focus', () => {
+        bankLabel.classList.add('label-focus');
+    });
+
+    bankInput.addEventListener('blur', () => {
+        if (!bankInput.value) {
+            bankLabel.classList.remove('label-focus');
+        }
+    });
+
+    bankInput.addEventListener('input', () => {
+        if (bankInput.value) {
+            bankLabel.classList.add('label-focus');
+        } else {
+            bankLabel.classList.remove('label-focus');
+        }
+    });
+
+    // input rekening
+    rekeningInput.addEventListener('focus', () => {
+        rekeningLabel.classList.add('label-focus');
+    });
+
+    rekeningInput.addEventListener('blur', () => {
+        if (!rekeningInput.value) {
+            rekeningLabel.classList.remove('label-focus');
+        }
+    });
+
+    rekeningInput.addEventListener('input', () => {
+        if (rekeningInput.value) {
+            rekeningLabel.classList.add('label-focus');
+        } else {
+            rekeningLabel.classList.remove('label-focus');
         }
     });
 
