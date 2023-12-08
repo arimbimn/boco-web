@@ -14,8 +14,9 @@ $CI = &get_instance();
         <div onclick="clickBanner('<?= $v_baner->url_link ?>');">
           <div class="home text-center">
             <!--img src="<!?= smn_baseurl() ?>uploads/banners/<!?= $v_baner->image_banner ?>" alt="" class="bg-img blur-up lazyload"-->
-            <img src="<?= $CI->base64_encode_image(smn_baseurl() . 'uploads/banners/' . $v_baner->image_banner) ?>" alt="" class="bg-img blur-up lazyload">
-            <div class="container">
+            <img data-src="<?= smn_baseurl() . 'uploads/banners/' . $v_baner->image_banner ?>" alt="" class=" image-lazyload !block">
+
+            <!-- <div class="container">
               <div class="row">
                 <div class="col">
                   <div class="slider-contain">
@@ -26,7 +27,7 @@ $CI = &get_instance();
                   </div>
                 </div>
               </div>
-            </div>
+            </div> -->
           </div>
         </div>
       <?php } else { ?>
@@ -44,8 +45,10 @@ $CI = &get_instance();
       <?php if ($v_baner->slider_type == 'image') { ?>
         <div onclick="clickBanner('<?= $v_baner->url_link ?>');">
           <div class="home text-center">
-            <!--img src="<!?= smn_baseurl() ?>uploads/banners/banner_mobile/<!?= $v_baner->image_banner_mobile ?>" alt="" class="bg-img blur-up lazyload"-->
-            <amp-img src="<?= $CI->base64_encode_image(smn_baseurl() . 'uploads/banners/banner_mobile/' . $v_baner->image_banner_mobile) ?>" alt="" class="bg-img blur-up lazyload"></amp-img>
+            <img data-src="<?= smn_baseurl() . 'uploads/banners/banner_mobile' . $v_baner->image_banner_mobile ?>" class=" bg-img image-lazyload !block">
+            <!-- <img loading="lazy" data-src="<?= smn_baseurl() ?>uploads/banners/banner_mobile/<!?= $v_baner->image_banner_mobile ?>" alt="" class="bg-img blur-up lazyload"> -->
+            <!-- <amp-img src="<?php //echo $CI->base64_encode_image(smn_baseurl() . 'uploads/banners/banner_mobile/' . $v_baner->image_banner_mobile) 
+                                ?>" alt="" class="bg-img blur-up lazyload"></amp-img> -->
             <div class="container">
               <div class="row">
                 <div class="col">
@@ -78,14 +81,16 @@ $CI = &get_instance();
 <?php if ($banner_secondary) { ?>
   <section class="pb-0 ratio2_1 banner-ganti1">
     <div class="desktop-version">
-      <div class="container container-type">
+      <div class="container pl-0">
         <div class="row partition2">
           <?php foreach ($banner_secondary as $v_baner_secondary) { ?>
             <div class="col-md-6">
               <a href="<?= $v_baner_secondary->url_link ?>">
                 <div class="collection-banner p-right text-center">
                   <div class="img-part">
-                    <img src="<?= $CI->base64_encode_image(smn_baseurl() . 'uploads/banners/' . $v_baner_secondary->image_banner) ?>" class="img-fluid blur-up lazyload bg-img" alt="">
+                    <img data-src="<?= smn_baseurl() . 'uploads/banners/' . $v_baner_secondary->image_banner ?>" class="image-lazyload !block">
+
+                    <!-- <img src="<?= $CI->base64_encode_image(smn_baseurl() . 'uploads/banners/' . $v_baner_secondary->image_banner) ?>" class="img-fluid blur-up lazyload bg-img" alt=""> -->
                   </div>
                   <div class="contain-banner">
                     <div>
@@ -101,25 +106,29 @@ $CI = &get_instance();
       </div>
     </div>
     <div class="mobile-version">
-      <div class="container container-type">
+      <div class="container pl-0">
         <div class="row partition2">
-          <?php foreach ($banner_secondary as $v_baner_secondary) { ?>
-            <div class="col-md-6">
-              <a href="<?= $v_baner_secondary->url_link ?>">
-                <div class="collection-banner p-right text-center">
-                  <div class="img-part">
-                    <amp-img src="<?= $CI->base64_encode_image(smn_baseurl() . 'uploads/banners/banner_mobile/' . $v_baner_secondary->image_banner_mobile) ?>" class="img-fluid blur-up lazyload bg-img" alt=""></amp-img>
-                  </div>
-                  <div class="contain-banner">
-                    <div>
-                      <h4><?= $v_baner_secondary->sub_title  ?></h4>
-                      <h2><?= $v_baner_secondary->title  ?></h2>
+          <div class="col-12">
+            <?php foreach ($banner_secondary as $v_baner_secondary) { ?>
+              <div class="col-md-6">
+                <a href="<?= $v_baner_secondary->url_link ?>">
+                  <div class="collection-banner p-right text-center">
+                    <div class="img-part">
+                      <img data-src="<?= smn_baseurl() . 'uploads/banners/banner_mobile/' . $v_baner_secondary->image_banner_mobile ?>" class="image-lazyload !block">
+
+                      <!-- <amp-img src="<?= $CI->base64_encode_image(smn_baseurl() . 'uploads/banners/banner_mobile/' . $v_baner_secondary->image_banner_mobile) ?>" class="img-fluid blur-up lazyload bg-img" alt=""></amp-img> -->
+                    </div>
+                    <div class="contain-banner">
+                      <div>
+                        <h4><?= $v_baner_secondary->sub_title  ?></h4>
+                        <h2><?= $v_baner_secondary->title  ?></h2>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </a>
-            </div>
-          <?php } ?>
+                </a>
+              </div>
+            <?php } ?>
+          </div>
         </div>
       </div>
     </div>
@@ -145,9 +154,24 @@ $CI = &get_instance();
 </div>
 <!-- Paragraph end -->
 
+<div class="recomended-product mb-20">
+  <div class="container">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <?php foreach ($recommended as $recomen) { ?>
+        <?php
+        $data = [
+          'data' => $recomen
+        ];
+
+        $this->load->view("components/product/product_card_home", $data);
+        ?>
+      <?php } ?>
+    </div>
+  </div>
+</div>
 
 <!-- Product slider -->
-<section class="section-b-space p-t-0 ratio_asos">
+<!-- <section class="section-b-space p-t-0 ratio_asos">
   <div class="container">
     <div class="row">
       <div class="col">
@@ -161,12 +185,12 @@ $CI = &get_instance();
                 <div class="back">
                   <a href="<?= base_url() ?>product/detail/<?= $recomen->id_product ?>"><amp-img src="<?= smn_baseurl() ?>uploads/product/<?= $recomen->image_two ?>" class="img-fluid blur-up lazyload bg-img" alt=""></amp-img></a>
                 </div>
-                <div class="cart-info cart-wrap">
-                  <!-- <a href="javascript:void(0)" title="Add to Wishlist">
+                <div class="cart-info cart-wrap"> -->
+<!-- <a href="javascript:void(0)" title="Add to Wishlist">
                      <i class="ti-heart" aria-hidden="true"></i>
                    </a> -->
 
-                  <a href="<?= base_url() ?>add_to_compare/<?= $recomen->id_product ?>" title="Compare"><i class="ti-reload" aria-hidden="true"></i></a>
+<!-- <a href="<?= base_url() ?>add_to_compare/<?= $recomen->id_product ?>" title="Compare"><i class="ti-reload" aria-hidden="true"></i></a>
                 </div>
               </div>
               <div class="product-detail">
@@ -193,7 +217,7 @@ $CI = &get_instance();
       </div>
     </div>
   </div>
-</section>
+</section> -->
 <!-- Product slider end -->
 
 
@@ -231,6 +255,28 @@ $CI = &get_instance();
 
 <!-- Parallax banner end -->
 
+<?php if ($fiture) { ?>
+  <!-- service layout -->
+  <div class="container bg-[#cd212a]">
+    <section class="service border-section small-section">
+      <div class="row">
+        <?php foreach ($fiture as $item_fiture) { ?>
+          <div class="col-md-4 service-block">
+            <div class="media">
+              <img src="<?= smn_baseurl() ?>uploads/fiture/<?= $item_fiture->image ?>" alt="" width="20%">
+              <div class="media-body">
+                <h4><?= $item_fiture->title ?></h4>
+                <p><?= $item_fiture->sub_title ?></p>
+              </div>
+            </div>
+          </div>
+        <?php } ?>
+      </div>
+    </section>
+  </div>
+  <!-- service layout  end -->
+<?php } ?>
+
 
 <!-- Tab product -->
 <?php $productstitle = $this->db->select('primary_title,secondary_title,desc')->where(['id_home_title' => 2])->get('home_title')->row(); ?>
@@ -248,8 +294,10 @@ $CI = &get_instance();
     </div>
   </div>
 </div>
-<section class="section-b-space p-t-0 ratio_asos">
-  <div class="container">
+
+
+<section class="section-b-space p-0 ratio_asos ">
+  <div class="container bg-white mb-20">
     <div class="row">
       <div class="col">
         <div class="theme-tab">
@@ -261,7 +309,23 @@ $CI = &get_instance();
           <div class="tab-content-cls">
             <div id="tab-4" class="tab-content active default">
               <div class="no-slider row">
-                <?php if ($products) { ?>
+                <div class="container">
+                  <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <?php if ($products) { ?>
+                      <?php foreach ($products as $item_product) { ?>
+                        <?php
+                        $data = [
+                          'data' => $item_product
+                        ];
+
+                        $this->load->view("components/product/product_card_home", $data);
+                        ?>
+                      <?php } ?>
+                    <?php } ?>
+                  </div>
+                </div>
+
+                <?php if (!$products) { ?>
                   <?php foreach ($products as $item_product) { ?>
                     <div class="product-box">
                       <div class="img-wrapper">
@@ -272,6 +336,7 @@ $CI = &get_instance();
                           <a href="<?= base_url('product/detail/' . $item_product->id_product) ?>"><img src="<?= smn_baseurl() ?>/uploads/product/<?= $item_product->image_two ?>" class="img-fluid blur-up lazyload bg-img" alt=""></a>
                         </div>
                         <div class="cart-info cart-wrap">
+
                           <?php //echo form_open('cart/add');
                           // echo form_hidden('id',  $item_product->id_product);
                           // echo form_hidden('qty',  1);
@@ -323,8 +388,6 @@ $CI = &get_instance();
                         </div>
                       </div>
                     </div>
-
-
                   <?php } ?>
                 <?php } ?>
 
@@ -332,57 +395,77 @@ $CI = &get_instance();
             </div>
             <div id="tab-5" class="tab-content">
               <div class="no-slider row">
-                <?php
-                $featured = $this->db->select('id_product,image_one,image_two,image_three,nama_barang,harga,colour_picker')->where('is_featured', 1)->order_by('id_product', 'DESC')->limit(8)->get('product')->result();
-                foreach ($featured as $feature) {
-                ?>
-                  <div class="product-box">
-                    <div class="img-wrapper">
-                      <div class="front">
-                        <a href="<?= base_url() ?>product/detail/<?= $feature->id_product ?>"><img src="<?= smn_baseurl() ?>uploads/product/<?= $feature->image_one ?>" class="img-fluid blur-up lazyload bg-img" alt=""></a>
-                      </div>
-                      <div class="back">
-                        <a href="<?= base_url() ?>product/detail/<?= $feature->id_product ?>"><img src="<?= smn_baseurl() ?>uploads/product/<?= $feature->image_two ?>" class="img-fluid blur-up lazyload bg-img" alt=""></a>
-                      </div>
-                      <div class="cart-info cart-wrap">
-                        <!-- <button data-toggle="modal" data-target="#addtocart" title="Add to cart"><i class="ti-shopping-cart"></i></button> <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart" aria-hidden="true"></i></a>  -->
-                        <a href="<?= base_url() ?>add_to_compare/<?= $feature->id_product ?>" title="Compare"><i class="ti-reload" aria-hidden="true"></i></a>
-                        <a href="#" data-toggle="modal" data-target="#quick-view" title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
-                      </div>
-                    </div>
-                    <div class="product-detail">
-                      <div class="rating three-star">
-                        <?php
-                        $feature_rating = $this->db->select('AVG(rating) as avg_rating')->where('product_id', $feature->id_product)->get('product_reviews')->row()->avg_rating;
-                        for ($usrating = 1; $usrating <= 5; $usrating++) { ?>
-                          <i class="fa fa-star <?php if ($usrating <= $feature_rating) {
-                                                  echo "active";
-                                                } ?>"></i>
-                        <?php } ?>
-                      </div>
-                      <a href="<?= base_url() ?>product/detail/<?= $feature->id_product ?>">
-                        <h6><?= $feature->nama_barang ?></h6>
-                      </a>
-                      <h4>Rp. <?= number_format($feature->harga, 0) ?></h4>
-                      <ul class="color-variant">
-                        <li class="bg-light0" style="background-color:<?= $feature->colour_picker ?>;"></li>
-                      </ul>
+                <div class="container">
+                  <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <?php
+                    $featured = $this->db->select('id_product,image_one,image_two,image_three,nama_barang,harga,colour_picker')->where('is_featured', 1)->order_by('id_product', 'DESC')->limit(8)->get('product')->result();
+                    foreach ($featured as $feature) {
+                    ?>
                       <?php
-                      // echo form_open('cart/add');
-                      // echo form_hidden('id',  $feature->id_product);
-                      // echo form_hidden('qty',  1);
-                      // echo form_hidden('price',  $feature->harga);
-                      // echo form_hidden('name',  $feature->nama_barang);
-                      // echo form_hidden('redirect_page', str_replace('', '', current_url()));
+                      $data = [
+                        'data' => $feature
+                      ];
+
+                      $this->load->view("components/product/product_card_home", $data);
                       ?>
-                      <!-- <div class="product-buttons mt-30">
+                    <?php } ?>
+                  </div>
+                </div>
+                <?php
+                // Biar ga jalan
+                if (false) {
+
+                  $featured = $this->db->select('id_product,image_one,image_two,image_three,nama_barang,harga,colour_picker')->where('is_featured', 1)->order_by('id_product', 'DESC')->limit(8)->get('product')->result();
+                  foreach ($featured as $feature) {
+                ?>
+                    <div class="product-box">
+                      <div class="img-wrapper">
+                        <div class="front">
+                          <a href="<?= base_url() ?>product/detail/<?= $feature->id_product ?>"><img src="<?= smn_baseurl() ?>uploads/product/<?= $feature->image_one ?>" class="img-fluid blur-up lazyload bg-img" alt=""></a>
+                        </div>
+                        <div class="back">
+                          <a href="<?= base_url() ?>product/detail/<?= $feature->id_product ?>"><img src="<?= smn_baseurl() ?>uploads/product/<?= $feature->image_two ?>" class="img-fluid blur-up lazyload bg-img" alt=""></a>
+                        </div>
+                        <div class="cart-info cart-wrap">
+                          <!-- <button data-toggle="modal" data-target="#addtocart" title="Add to cart"><i class="ti-shopping-cart"></i></button> <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart" aria-hidden="true"></i></a>  -->
+                          <a href="<?= base_url() ?>add_to_compare/<?= $feature->id_product ?>" title="Compare"><i class="ti-reload" aria-hidden="true"></i></a>
+                          <a href="#" data-toggle="modal" data-target="#quick-view" title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+                        </div>
+                      </div>
+                      <div class="product-detail">
+                        <div class="rating three-star">
+                          <?php
+                          $feature_rating = $this->db->select('AVG(rating) as avg_rating')->where('product_id', $feature->id_product)->get('product_reviews')->row()->avg_rating;
+                          for ($usrating = 1; $usrating <= 5; $usrating++) { ?>
+                            <i class="fa fa-star <?php if ($usrating <= $feature_rating) {
+                                                    echo "active";
+                                                  } ?>"></i>
+                          <?php } ?>
+                        </div>
+                        <a href="<?= base_url() ?>product/detail/<?= $feature->id_product ?>">
+                          <h6><?= $feature->nama_barang ?></h6>
+                        </a>
+                        <h4>Rp. <?= number_format($feature->harga, 0) ?></h4>
+                        <ul class="color-variant">
+                          <li class="bg-light0" style="background-color:<?= $feature->colour_picker ?>;"></li>
+                        </ul>
+                        <?php
+                        // echo form_open('cart/add');
+                        // echo form_hidden('id',  $feature->id_product);
+                        // echo form_hidden('qty',  1);
+                        // echo form_hidden('price',  $feature->harga);
+                        // echo form_hidden('name',  $feature->nama_barang);
+                        // echo form_hidden('redirect_page', str_replace('', '', current_url()));
+                        ?>
+                        <!-- <div class="product-buttons mt-30">
                          <button data-toggle="modal" class="btn_save btn btn-solid" type="submit" data-target="#addtocart" title="Add to cart">Add To Cart</button>
                        </div> -->
-                      <?php //echo form_close() 
-                      ?>
+                        <?php //echo form_close() 
+                        ?>
+                      </div>
                     </div>
-                  </div>
-                <?php } ?>
+                <?php }
+                } ?>
               </div>
             </div>
             <div id="tab-6" class="tab-content">
@@ -450,27 +533,6 @@ $CI = &get_instance();
 <!-- Tab product end -->
 
 
-<?php if ($fiture) { ?>
-  <!-- service layout -->
-  <div class="container container-service">
-    <section class="service border-section small-section">
-      <div class="row">
-        <?php foreach ($fiture as $item_fiture) { ?>
-          <div class="col-md-4 service-block">
-            <div class="media">
-              <img src="<?= smn_baseurl() ?>uploads/fiture/<?= $item_fiture->image ?>" alt="" width="20%">
-              <div class="media-body">
-                <h4><?= $item_fiture->title ?></h4>
-                <p><?= $item_fiture->sub_title ?></p>
-              </div>
-            </div>
-          </div>
-        <?php } ?>
-      </div>
-    </section>
-  </div>
-  <!-- service layout  end -->
-<?php } ?>
 
 
 <?php if ($blogs) { ?>

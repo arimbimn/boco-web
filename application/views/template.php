@@ -17,7 +17,7 @@
 
   <!-- Icons -->
   <!-- link rel="stylesheet" type="text/css" href="<!?= base_url() ?>assets/css/fontawesome.css"> -->
-	
+
   <!--Slick slider css-->
   <!-- <link rel="stylesheet" type="text/css" href="<!?= base_url() ?>assets/css/slick.css"> -->
   <!-- <link rel="stylesheet" type="text/css" href="<!?= base_url() ?>assets/css/slick-theme.css"> -->
@@ -38,7 +38,10 @@
   <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"> -->
 
   <!-- Latest jQuery -->
-  <script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js?ver=6.1.1' id='eget_js_jquery-js'></script>
+  <!-- <script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js?ver=6.1.1' id='eget_js_jquery-js'></script> -->
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+
 
   <!-- Custom Styles or Scripts -->
   <style>
@@ -587,6 +590,46 @@
 
   <?php print_r(isset($footer_script) ? $footer_script : '')  ?>
 
+
+  <script>
+    window.addEventListener("DOMContentLoaded", (event) => {
+      fadeEntryContent()
+      $(window).scroll(function() {
+        fadeEntryContent()
+      });
+
+      $("noscript").remove();
+    });
+
+    function fadeEntryContent() {
+      $('.background-lazyload').each(function(i) {
+
+        // if ($(this).attr('data-src') && $(this).offset().top < ($(window).scrollTop() + $(window).height() + 100)) {
+        if ($(this).attr('data-src') && $(this).offset().top < ($(window).scrollTop() + $(window).height() + 100)) {
+
+          var imageUrl = $(this).attr('data-src');
+          $(this).css('background-image', 'url(' + imageUrl + ')');
+          $(this).animate({
+            'opacity': '1'
+          }, 900);
+          $(this).removeAttr('data-src');
+        }
+      })
+      $('img.image-lazyload').each(function(i) {
+        // $.each($('img.image-lazyload'), function() {
+        // if ($(this).attr('data-src') && $(this).offset().top < ($(window).scrollTop() + $(window).height() + 100)) {
+        if ($(this).attr('data-src') && $(this).offset().top < ($(window).scrollTop() + $(window).height() + 100)) {
+
+          var imageUrl = $(this).attr('data-src');
+          $(this).attr("src", imageUrl);
+          $(this).animate({
+            'opacity': '1'
+          }, 900);
+          $(this).removeAttr('data-src');
+        }
+      })
+    }
+  </script>
 
 </body>
 
