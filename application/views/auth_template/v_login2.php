@@ -75,7 +75,7 @@
                                 </button>
                             </div>
                         </div>
-                        <button type="submit" class=" btn bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600 focus:outline-none focus:ring focus:border-red-300 w-full mb-1">
+                        <button type="submit" class=" btn bg-red-500 text-white py-2 px-4 rounded-full hover:bg-red-600 focus:outline-none focus:ring focus:border-red-300 w-full mb-1">
                             Login
                         </button>
                     </form>
