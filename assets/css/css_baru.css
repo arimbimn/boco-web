@@ -76,13 +76,6 @@
   object-fit: cover !important;
 }
 
-.container-service {
-  background-color: #cd212a;
-  margin-right: 0px;
-  margin-left: 0px;
-  display: table-row-group;
-}
-
 .media img {
   filter: grayscale(100%) contrast(100%) brightness(45.5) !important;
   display: inline-block;

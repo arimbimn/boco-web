@@ -3,9 +3,9 @@
 @tailwind utilities;
 
 body {
-    font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 button.btn-solid.btn {
-    @apply border-none bg-[#3ba840] hover:bg-[#2e7e32] text-white rounded-full font-bold py-[7px] px-[21px]
+  @apply border-none bg-[#3ba840] hover:bg-[#2e7e32] text-white rounded-full font-bold py-[7px] px-[21px];
 }

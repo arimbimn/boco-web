@@ -684,6 +684,11 @@ video {
   margin-bottom: 0.5rem !important;
 }
 
+.mx-2 {
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+}
+
 .mx-auto {
   margin-left: auto;
   margin-right: auto;
@@ -704,11 +709,6 @@ video {
   margin-bottom: 1rem;
 }
 
-.mx-2 {
-  margin-left: 0.5rem;
-  margin-right: 0.5rem;
-}
-
 .mb-0 {
   margin-bottom: 0px;
 }
@@ -723,6 +723,10 @@ video {
 
 .mb-2 {
   margin-bottom: 0.5rem;
+}
+
+.mb-20 {
+  margin-bottom: 5rem;
 }
 
 .mb-3 {
@@ -803,6 +807,10 @@ video {
 
 .box-content {
   box-sizing: content-box;
+}
+
+.\!block {
+  display: block !important;
 }
 
 .block {
@@ -1263,11 +1271,6 @@ video {
   fill: red;
 }
 
-.object-contain {
-  -o-object-fit: contain;
-     object-fit: contain;
-}
-
 .object-cover {
   -o-object-fit: cover;
      object-fit: cover;
@@ -1413,6 +1416,10 @@ video {
   padding-bottom: 1.25rem;
 }
 
+.pl-0 {
+  padding-left: 0px;
+}
+
 .pl-1 {
   padding-left: 0.25rem;
 }
@@ -1555,6 +1562,10 @@ video {
 
 .font-bold {
   font-weight: 700;
+}
+
+.font-light {
+  font-weight: 300;
 }
 
 .font-normal {
@@ -1765,7 +1776,7 @@ video {
 }
 
 body {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 button.btn-solid.btn {

@@ -17938,9 +17938,9 @@ header.marketplace .top-header .header-dropdown li a i {
 .small-slider .home-slider .home .slider-contain h1 {
   color: #000;
 }
-.height-100 .home-slider .home {
+/* .height-100 .home-slider .home {
   height: 100vh;
-}
+} */
 .height-100 .home-slider .slider-contain {
   height: calc(99vh + 80px);
 }
