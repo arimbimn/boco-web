@@ -107,6 +107,31 @@
 
 <div class="mobile-menu fixed top-0 left-0 w-full h-screen z-30 backdrop-blur-sm bg-[#00000034]">
     <div class="bg-white w-full max-w-[300px] h-full p-4">
+
+        <?php if ($this->ion_auth->logged_in()) { ?>
+            <a href="<?= base_url('users') ?>">
+                <div class="flex gap-3">
+                    <div>
+                        <img src="https://via.placeholder.com/50" alt="Gambar 1" class="mb-4 rounded-full pl-1">
+                    </div>
+                    <div>
+                        <p class=" mb-2"><?= $this->ion_auth->user()->row()->first_name ?> <?= $this->ion_auth->user()->row()->last_name ?></p>
+                    </div>
+
+                </div>
+
+            </a>
+
+        <?php } else { ?>
+            <a href="<?= base_url('login') ?>" class="px-4 py-2 bg-[#416A25] font-bold text-white rounded-full">
+                Masuk / Daftar
+            </a>
+            <!-- <li><a href="<?= base_url('login') ?>" data-lng="en"><?= lang('login') ?></a></li> -->
+            <!-- <li><a href="<?= base_url('register') ?>" data-lng="en"><?= lang('register') ?></a></li> -->
+        <?php  } ?>
+
+        <hr class="my-4">
+
         <nav class=" uppercase">
             <ul class="flex flex-col gap-[20px] py-3">
                 <li>
