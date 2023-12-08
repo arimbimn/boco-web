@@ -13,7 +13,7 @@
             ?>
             <img src="<?php echo $url_gambar; ?>" alt="<?php echo $data['nama_produk']; ?>" class="w-full h-full object-cover object-center">
         </div>
-        <hr>
+        <hr class=" mt-2">
         <h3 class=" font-bold text-black text-center text-sm py-1"><?php echo $data['nama_produk']  ?></h3>
         <?php
         $harga_item = $data['harga_produk'];
