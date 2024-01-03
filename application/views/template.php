@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" translate="no">
 
+
 <head>
   <!-- Meta tags -->
   <meta name="viewport" content="width=device-width, initial-scale=1" />
