@@ -22,7 +22,7 @@
     <!-- breadcrumb End -->
 
     <!-- section start -->
-    <section class="section-b-space">
+    <section class="section-b-space bg-white">
       <div class="container">
         <div class="row">
           <div class="col-lg-3">
@@ -48,17 +48,28 @@
                           Bank code:
                           <span class=" font-bold"> <?= $this->ion_auth->user()->row()->bank ?> </span> <br>
                           <!--&nbsp;Account holder name: <!?= $this->ion_auth->user()->row()->first_name.' '.$this->ion_auth->user()->row()->last_name ?> <br/-->
-                          Account number:
-                          <span class=" font-bold"><?= $this->ion_auth->user()->row()->norek ?> </span> <br />
+                          <div class="  flex flex-col md:flex-row items-left">
+                            Account number:
+                            <h4>
+                              <span class=" font-bold leading-5 ml-1">
+                                <?= $this->ion_auth->user()->row()->norek ?>
+                              </span>
+                            </h4>
+                          </div>
                         </div>
                       </div>
                       <div class="relative flex-1 mb-3 mt-1">
-                        <div class="  row-span-1 md:row-span-3 flex flex-row items-center">
-                          <h4 class=" mr-2">Saldo tersedia: </h4>
-                          <h4><span class=" border border-green-600 rounded-md text-sm p-2 font-bold text-green-600">Rp.<?= ($total_saldo == '' ? 0 : number_format($total_saldo, 0, ',', '.')); ?></span></h4><br />
-                          <br /><!--a href="<!?= base_url('users/request') ?>" class="btn btn-info" id="mc-submit">Withdraw</a-->
+                        <div class="  flex flex-col md:flex-row items-start">
+                          <h4 class=" mr-2 mb-3">Saldo tersedia: </h4>
+                          <h4>
+                            <span class=" border border-green-600 rounded-md text-sm p-2 font-bold text-green-600 mb-3">
+                              Rp.<?= ($total_saldo == '' ? 0 : number_format($total_saldo, 0, ',', '.')); ?>
+                            </span>
+                          </h4>
+                          <br class="hidden md:block" />
+                          <!--a href="<!?= base_url('users/request') ?>" class="btn btn-info" id="mc-submit">Withdraw</a-->
                         </div>
-                        <button class="rounded-full bg-[#008C45] px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-[#00461C] focus:outline-none focus:ring focus:border-[#00461C] focus-visible:ring-[#00461C]" type="submit">Withdraw</button>
+                        <button class=" mt-4 rounded-full bg-[#008C45] px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-[#00461C] focus:outline-none focus:ring focus:border-[#00461C] focus-visible:ring-[#00461C]" type="submit">Withdraw</button>
                       </div>
                     </div>
                   </div>
@@ -82,7 +93,7 @@
                       <div class="tab-content nav-material" id="top-tabContent">
                         <div class="tab-pane fade show active" id="top-home" role="tabpanel" aria-labelledby="top-home-tab">
                           <br>
-                          <h3>History Withdraw </h3>
+                          <h3 class=" mb-2 mt-4">History Withdraw </h3>
                           <form name="form_adjustment_stok" id="form_adjustment_stok" action="<?= base_url('administrator/reseller/index'); ?>">
                             <!--?php if ($order_proses) { ?-->
                             <div class="table-responsive">

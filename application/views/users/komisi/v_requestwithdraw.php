@@ -25,7 +25,7 @@
 
 
 <!-- section start -->
-<section class="section-b-space">
+<section class="section-b-space bg-white">
   <div class="container">
     <div class="row">
       <div class="col-lg-3">
