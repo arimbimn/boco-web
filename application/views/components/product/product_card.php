@@ -1,6 +1,6 @@
 <a href="<?php echo $data['url'];  ?> ">
     <div class="col border p-2 group bg-white rounded-md h-full">
-        <?php if (!$data['diskon']) :
+        <?php if ($data['diskon']) :
         ?>
             <span class="absolute text-white ml-1 mt-1 px-2 py-1 bg-[#cd212a] rounded-md">
                 <div class="px-1 font-bold text-xs"> 20% off</div>
@@ -18,7 +18,7 @@
         <?php
         $harga_item = $data['harga_produk'];
         ?>
-        <?php if (!$data['diskon']) :
+        <?php if ($data['diskon']) :
         ?>
             <?php
             $harga_item = $data['harga_produk'] - ($data['harga_produk'] * $data['diskon']);

@@ -217,11 +217,50 @@
                       if ($productSize) {  ?>
                         <h6 class="product-title size-text"><?= lang('available_size_produk') ?> <span><a href="" style="display:none" data-toggle="modal" data-target="#sizemodal">size
                               chart</a></span></h6>
-
                         <br>
 
                         <div class="container-outer">
                           <div class="container-inner">
+
+                            <!-- tambahan arimbi start -->
+                            <div class="flex flex-wrap">
+                              <?php
+                              foreach ($productSize as $key => $size) {  ?>
+                                <?php
+                                $this->db->select('sum(jumlah_stok) as jumlah_stok');
+                                $this->db->from('product_stok');
+                                $this->db->join('store', 'product_stok.id_store = store.id_store');
+                                $this->db->where(['store.act !=' => 0]);
+                                $this->db->where(['product_stok.id_store' => 100]);
+                                $this->db->where(['id_product' => $detail_product->id_product]);
+                                $this->db->where(['id_product_attribute' => $size->id_product_attribute]);
+                                $cekTotal = $this->db->get()->row();
+                                //echo $this->db->last_query();
+                                //exit();
+                                ?>
+                                <?php
+                                //  var_dump($cekTotal)
+                                ?>
+
+                                <div class="flex flex-row items-center mr-1 mb-1">
+                                  <input type="radio" name="size" value="<?= $size->id_product_attribute ?>" <?php if ($detail_product->indent == 2) {  ?> <?php } else if ($cekTotal->jumlah_stok < 1) { ?> disabled <?php  } ?> class=" !hidden">
+                                  <label for="radioButton" class="cursor-pointer border border-gray-400 p-2 rounded-md flex items-center">
+                                    <span data-id="<?= $size->id_product_attribute ?>" data-indent="<?= $detail_product->indent ?>" class="<?php if ($detail_product->indent == 2) {  ?> custom-radio-button <?php } else if ($cekTotal->jumlah_stok < 1) { ?> custom-radio-button-no-stock <?php  } else { ?>  custom-radio-button <?php } ?> radio-<?= str_replace(['.', ' '], '-', $size->size)  ?> w-4 h-4 border border-gray-400 rounded-md mr-2 hidden"></span>
+                                    <span class="text-gray-700 my-0 mx-3 text-lg"><?= str_replace(['.', ' '], '-', $size->size)  ?></span>
+                                  </label>
+                                </div>
+
+                                <?php if ($cekTotal->jumlah_stok >= 1) {  ?>
+                                  <?php $totalStok = $totalStok + $cekTotal->jumlah_stok ?>
+                                  <input type="hidden" value='<?= $cekTotal->jumlah_stok ?>' class='stok-<?= $size->id_product_attribute ?>'>
+                                <?php } elseif ($detail_product->indent == 2) {  ?>
+                                  <input type="hidden" value='0' class='stok-<?= $size->id_product_attribute ?>'>
+
+                                <?php } ?>
+                              <?php  } ?>
+                            </div>
+                            <!-- tambahan arimbi end -->
+
                             <?php
                             foreach ($productSize as $key => $size) {  ?>
                               <?php
@@ -239,9 +278,9 @@
                               <?php
                               //  var_dump($cekTotal)
                               ?>
-                              <label class="custom-radio-button-container" style="margin-left:0px;margin-right:10px;">
+                              <label class="custom-radio-button-container" style="margin-left:0px;margin-right:8px;">
                                 <input type="radio" name="size" value="<?= $size->id_product_attribute ?>" <?php if ($detail_product->indent == 2) {  ?> <?php } else if ($cekTotal->jumlah_stok < 1) { ?> disabled <?php  } ?>>
-                                <span data-id="<?= $size->id_product_attribute ?>" data-indent="<?= $detail_product->indent ?>" class="<?php if ($detail_product->indent == 2) {  ?> custom-radio-button <?php } else if ($cekTotal->jumlah_stok < 1) { ?> custom-radio-button-no-stock <?php  } else { ?>  custom-radio-button <?php } ?> radio-<?= str_replace(['.', ' '], '-', $size->size)  ?>"></span>
+                                <span data-id="<?= $size->id_product_attribute ?>" data-indent="<?= $detail_product->indent ?>" class="<?php if ($detail_product->indent == 2) {  ?> custom-radio-button <?php } else if ($cekTotal->jumlah_stok < 1) { ?> custom-radio-button-no-stock <?php  } else { ?>  custom-radio-button <?php } ?> radio-<?= str_replace(['.', ' '], '-', $size->size)  ?> h-10 w-12 text-center"></span>
                               </label>
                               <?php if ($cekTotal->jumlah_stok >= 1) {  ?>
                                 <?php $totalStok = $totalStok + $cekTotal->jumlah_stok ?>
@@ -271,8 +310,32 @@
                         echo form_hidden('redirect_page', str_replace('', '', current_url()));
                         ?>
 
-                        <div class="input-group"><span class="input-group-prepend"><button type="button" class="btn quantity-left-minus" data-type="minus" data-field=""><i class="ti-angle-left"></i></button> </span>
-                          <input type="number" name="qty" id="input-number" min="1" class="form-control input-number" <?php if ($totalStok >= 1) {  ?> <?php } else if ($detail_product->indent == 1) { ?> <?php } else {  ?> max="<?= $totalStok ?>" <?php } ?> required value="1"> <span class="input-group-prepend"><button type="button" class="btn quantity-right-plus" data-type="plus" data-field=""><i class="ti-angle-right"></i></button></span>
+                        <!-- <div class="input-group">
+                          <span class="input-group-prepend">
+                            <button type="button" class="btn quantity-left-minus" data-type="minus" data-field="">
+                              <i class="ti-angle-left"></i>
+                            </button>
+                          </span>
+                          <input type="number" name="qty" id="input-number" min="1" class="form-control input-number" <?php if ($totalStok >= 1) {  ?> <?php } else if ($detail_product->indent == 1) { ?> <?php } else {  ?> max="<?= $totalStok ?>" <?php } ?> required value="1">
+                          <span class="input-group-prepend">
+                            <button type="button" class="btn quantity-right-plus" data-type="plus" data-field="">
+                              <i class="ti-angle-right"></i>
+                            </button>
+                          </span>
+                        </div> -->
+
+                        <div class="flex w-full">
+                          <span class="flex items-center border">
+                            <button type="button" class="btn quantity-left-minus" data-type="minus" data-field="">
+                              <i class="ti-angle-left"></i>
+                            </button>
+                          </span>
+                          <input type="number" name="qty" id="input-number" min="1" class="form-control input-number !text-center" <?php if ($totalStok >= 1) {  ?> <?php } else if ($detail_product->indent == 1) { ?> <?php } else {  ?> max="<?= $totalStok ?>" <?php } ?> required value="1">
+                          <span class="flex items-center border">
+                            <button type="button" class="btn quantity-right-plus" data-type="plus" data-field="">
+                              <i class="ti-angle-right"></i>
+                            </button>
+                          </span>
                         </div>
 
 
@@ -292,7 +355,7 @@
                     <?php } ?>
 
                     <div>
-                      <button type="submit" id='button-addtocart' <?= $isdisabled ?> data-toggle="modal" data-target="#addtocart" class="btn btn-solid mb-4"><?= lang('add_to_cart_produk') ?></button>
+                      <button type="submit" id='button-addtocart' <?= $isdisabled ?> data-toggle="modal" data-target="#addtocart" class="btn btn-solid w-full mb-4"><?= lang('add_to_cart_produk') ?></button>
                     </div>
                     <?php echo form_close() ?>
                     <div class="border-product">
@@ -543,14 +606,31 @@
 
       <!-- Paragraph end -->
 
-      <?php if ($new_products) {  ?>
-        <!-- Product slider -->
-        <section class="section-b-space p-t-0 ratio_asos">
-          <div class="container">
-            <div class="row">
+      <!-- Product slider -->
+      <section class="section-b-space p-t-0 ratio_asos">
+        <div class="container">
+
+          <!-- tambahan arimbi start -->
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <?php if ($new_products) {  ?>
+              <?php foreach ($new_products as $new) { ?>
+                <?php
+                $data = [
+                  'data' => $new
+                ];
+                $this->load->view("components/product/product_card_detail", $data);
+                ?>
+              <?php } ?>
+            <?php } ?>
+          </div>
+        </div>
+      </section>
+      <!-- tambahan arimbi end -->
+
+      <!-- <div class="row">
               <div class="col">
                 <div class="product-4 product-m no-arrow">
-                  <?php foreach ($new_products as $new) { ?>
+                <?php foreach ($new_products as $new) { ?>
                     <div class="product-box">
                       <div class="img-wrapper">
                         <div class="front">
@@ -559,11 +639,11 @@
                         <div class="back">
                           <a href="<?= base_url() ?>product/detail/<?= $new->id_product ?>"><img src="<?= smn_baseurl() ?>uploads/product/<?= $new->image_two ?>" class="img-fluid blur-up lazyload bg-img" alt=""></a>
                         </div>
-                        <div class="cart-info cart-wrap">
-                          <!-- <a href="javascript:void(0)" title="Add to Wishlist">
+                        <div class="cart-info cart-wrap"> -->
+      <!-- <a href="javascript:void(0)" title="Add to Wishlist">
                      <i class="ti-heart" aria-hidden="true"></i>
                    </a> -->
-                          <a href="<?= base_url() ?>add_to_compare/<?= $new->id_product ?>" title="Compare"><i class="ti-reload" aria-hidden="true"></i></a>
+      <!-- <a href="<?= base_url() ?>add_to_compare/<?= $new->id_product ?>" title="Compare"><i class="ti-reload" aria-hidden="true"></i></a>
                         </div>
                       </div>
                       <div class="product-detail">
@@ -581,16 +661,12 @@
                         </a>
                         <h4>Rp. <?= number_format($new->harga, 0) ?></h4>
                       </div>
-                    </div>
-                  <?php } ?>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-        <!-- Product slider end -->
+                    </div> -->
+      <!-- <?php } ?> -->
 
-      <?php } ?>
+      <!-- </div>
+      </section> -->
+      <!-- Product slider end -->
 
 
 
@@ -612,7 +688,20 @@
         <!-- Product slider -->
         <section class="section-b-space p-t-0 ratio_asos">
           <div class="container">
-            <div class="row">
+            <!-- tambahan arimbi start -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <?php foreach ($relate as $item_relate) { ?>
+                <?php
+                $data = [
+                  'data' => $item_relate
+                ];
+                $this->load->view("components/product/product_card_detail", $data);
+                ?>
+              <?php } ?>
+            </div>
+            <!-- tambahan arimbi end-->
+
+            <!-- <div class="row">
               <div class="col">
                 <div class="product-4 product-m no-arrow">
                   <?php foreach ($relate as $item_relate) { ?>
@@ -624,11 +713,11 @@
                         <div class="back">
                           <a href="<?= base_url() ?>product/detail/<?= $item_relate->id_product ?>"><img src="<?= smn_baseurl() ?>uploads/product/<?= $item_relate->image_two ?>" class="img-fluid blur-up lazyload bg-img" alt=""></a>
                         </div>
-                        <div class="cart-info cart-wrap">
-                          <!-- <a href="javascript:void(0)" title="Add to Wishlist">
+                        <div class="cart-info cart-wrap"> -->
+            <!-- <a href="javascript:void(0)" title="Add to Wishlist">
                      <i class="ti-heart" aria-hidden="true"></i>
                    </a> -->
-                          <a href="<?= base_url() ?>add_to_compare/<?= $item_relate->id_product ?>" title="Compare"><i class="ti-reload" aria-hidden="true"></i></a>
+            <!-- <a href="<?= base_url() ?>add_to_compare/<?= $item_relate->id_product ?>" title="Compare"><i class="ti-reload" aria-hidden="true"></i></a>
                         </div>
                       </div>
                       <div class="product-detail">
@@ -650,7 +739,7 @@
                   <?php } ?>
                 </div>
               </div>
-            </div>
+            </div> -->
           </div>
         </section>
         <!-- Product slider end -->

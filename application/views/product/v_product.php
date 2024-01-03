@@ -46,7 +46,7 @@
 
 
  <!-- section start -->
- <section class="section-b-space ratio_asos">
+ <section class="section-b-space ratio_asos bg-white">
    <div class="collection-wrapper">
      <div class="container">
        <div class="row">
