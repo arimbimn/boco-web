@@ -24,7 +24,7 @@
 <!-- breadcrumb End -->
 
 <!-- section start -->
-<section class="section-b-space">
+<section class="section-b-space bg-white">
   <div class="container">
     <div class="row">
       <div class="col-lg-3">
@@ -47,7 +47,7 @@
             <!-- product-tab starts -->
             <section class="tab-product m-0">
               <div class="container">
-                <div class="row">
+                <div class="row gap-y-3">
                   <div class="col-lg-5 col-xs-5 pr-0 pl-1">
                     <!--h4>Keagenan:--> <!--?= $peringkat ?--><!--/h4-->
                     <?php
@@ -73,7 +73,7 @@
                   </div>
 
                   <!-- Tambahan Arimbi -->
-                  <div class="vertical-line"></div>
+                  <!-- <div class="vertical-line"></div>
                   <div class="col-lg-5 col-xs-5 px-0">
                     <h2 class=" px-1 py-1"> Live Comition</h2>
                     <h3 class="bg-success text-white text-lg py-1 px-2 rounded-xl"> IDR 10.000.000, -
@@ -81,7 +81,7 @@
                         <strong class=" text-lg font-bold">/ Day 1</strong>
                       </span>
                     </h3>
-                  </div>
+                  </div> -->
 
 
                 </div>
