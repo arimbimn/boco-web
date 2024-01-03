@@ -5652,7 +5652,7 @@
   left: 0;
   height: 28px;
   width: 45px;
-  border-radius: 5px;
+  border-radius: 8px;
   transition: background 350ms;
   background-color: #fff;
   border: 1px solid gray;
@@ -5664,7 +5664,7 @@
   left: 0;
   height: 28px;
   width: 45px;
-  border-radius: 5px;
+  border-radius: 8px;
   transition: background 350ms;
   background-color: #eee;
   border: 1px solid #d9d9d9;
@@ -5885,10 +5885,12 @@
 .custom-radio-button-container .custom-radio-button:after {
   top: 3px;
   left: 7px;
+  text-align: center;
 }
 .custom-radio-button-container .custom-radio-button-no-stock:after {
   top: 3px;
   left: 7px;
+  text-align: center;
 }
 .custom-radio-button-container:hover input ~ .custom-radio-button {
   background-color: #ffaa80;

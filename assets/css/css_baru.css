@@ -1,3 +1,44 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+/* Custom styles for the accordion menu */
+.accordion {
+  max-width: 400px; /* Adjust as needed */
+}
+
+.accordion-item {
+  border-bottom: 1px solid #ddd; /* Add a border between accordion items */
+}
+
+.accordion-item-input {
+  display: none;
+}
+
+.accordion-item-header {
+  display: block;
+  padding: 1rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.accordion-item-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.accordion-item-input:checked
+  + .accordion-item-header
+  + .accordion-item-content {
+  max-height: 1000px; /* Adjust as needed */
+}
+
+/* Styling for sub-accordion (nested accordion) */
+.sub-accordion {
+  margin-left: 1rem; /* Adjust as needed for indentation */
+}
+
 .brand-logo {
   margin-bottom: 24px !important;
 }
@@ -54,17 +95,31 @@
   background-color: #f4f2f2;
 }
 
+.service-block h4 {
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: #fff;
+}
+
+.pixelstrap li a {
+  font-weight: normal !important;
+}
+
+.service-block p {
+  text-transform: capitalize;
+  margin-bottom: 0;
+  color: #fff !important;
+  font-weight: lighter;
+}
+
 .filter-main-btn span {
   border-radius: 8px !important;
   background-color: #cd212a !important;
 }
 
 .sm-horizontal .mobile-back {
-  font-weight: lighter !important;
-}
-
-.pixelstrap li a {
-  font-weight: lighter !important;
+  font-weight: normal !important;
 }
 
 .img-wrapper {
@@ -81,28 +136,11 @@
   display: inline-block;
 }
 
-/* .account-sidebar {
-  font-size: 12px !important;
-  font-weight: lighter !important;
-  border-radius: 8px !important;
-} */
-
 @media (max-width: 768px) {
   .collection-product-wrapper .product-wrapper-grid .product-box {
     max-height: 290px;
   }
 }
-
-/* trial discount badge */
-/* .discount-badge-trial .container-discount {
-  margin-top: 10px;
-  background-color: #f4f2f2;
-  padding-top: 20px;
-  padding-bottom: 20px;
-}
-.discount-badge-trial .container-discount .gambar-statis {
-  margin-top: 20px;
-} */
 
 .wave {
   display: inline-block;
