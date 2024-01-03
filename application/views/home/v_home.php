@@ -6,6 +6,15 @@
 }*/
 $CI = &get_instance();
 ?>
+
+<!-- tambahan glide arimbi -->
+<!-- <style>
+  .glide__slide {
+    max-width: calc(100% - 6rem);
+    box-sizing: border-box;
+  }
+</style> -->
+
 <!-- Home slider -->
 <section class="p-0 banner-ganti">
   <div class="slide-1 home-slider desktop-version">
@@ -154,15 +163,40 @@ $CI = &get_instance();
 </div>
 <!-- Paragraph end -->
 
+
+<!-- Tambahan glide arimbi -->
+<!-- <div class="recomended-product mb-20">
+  <div class="container">
+
+    <div class="glide">
+      <div class="glide__track" data-glide-el="track">
+        <ul class="glide__slides grid grid-cols-2 md:grid-cols-4 gap-4">
+          <?php foreach ($recommended as $recomen) { ?>
+            <?php
+            $data = [
+              'data' => $recomen
+            ];
+            $this->load->view("components/product/product_card_home", $data);
+            ?>
+          <?php } ?>
+        </ul>
+      </div>
+      <div class="glide__arrows" data-glide-el="controls">
+        <button class="glide__arrow glide__arrow--left" data-glide-dir="<">prev</button>
+        <button class="glide__arrow glide__arrow--right" data-glide-dir=">">next</button>
+      </div>
+    </div>
+  </div>
+</div> -->
+
 <div class="recomended-product mb-20">
   <div class="container">
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+    <div class=" grid grid-cols-2 md:grid-cols-4 gap-4 no-arrow">
       <?php foreach ($recommended as $recomen) { ?>
         <?php
         $data = [
           'data' => $recomen
         ];
-
         $this->load->view("components/product/product_card_home", $data);
         ?>
       <?php } ?>
@@ -296,7 +330,7 @@ $CI = &get_instance();
 </div>
 
 
-<section class="section-b-space p-0 ratio_asos ">
+<section class="section-b-space p-0 ratio_asos bg-white">
   <div class="container bg-white mb-20">
     <div class="row">
       <div class="col">
@@ -470,10 +504,29 @@ $CI = &get_instance();
             </div>
             <div id="tab-6" class="tab-content">
               <div class="no-slider row">
-                <?php
-                $best_sellers = $this->M_product->BestSellerProduct();
-                foreach ($best_sellers as $best_seller) {
-                ?>
+                <!-- tambahan arimbi start -->
+                <div class="container">
+                  <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <?php
+                    $best_sellers = $this->M_product->BestSellerProduct();
+                    foreach ($best_sellers as $best_seller) {
+                    ?>
+                      <?php
+                      $data = [
+                        'data' => $best_seller
+                      ];
+
+                      $this->load->view("components/product/product_card_home", $data);
+                      ?>
+                    <?php } ?>
+                  </div>
+                </div>
+
+                <!-- tambahan arimbi end -->
+                <!-- <?php
+                      $best_sellers = $this->M_product->BestSellerProduct();
+                      foreach ($best_sellers as $best_seller) {
+                      ?>
                   <div class="product-box">
                     <div class="img-wrapper">
                       <div class="front">
@@ -482,9 +535,9 @@ $CI = &get_instance();
                       <div class="back">
                         <a href="<?= base_url() ?>product/detail/<?= $best_seller->id_product ?>"><img src="<?= smn_baseurl() ?>uploads/product/<?= $best_seller->image_two ?>" class="img-fluid blur-up lazyload bg-img" alt=""></a>
                       </div>
-                      <div class="cart-info cart-wrap">
-                        <!-- <button data-toggle="modal" data-target="#addtocart" title="Add to cart"><i class="ti-shopping-cart"></i></button> <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart" aria-hidden="true"></i></a> -->
-                        <a href="<?= base_url() ?>add_to_compare/<?= $best_seller->id_product ?>" title="Compare"><i class="ti-reload" aria-hidden="true"></i></a>
+                      <div class="cart-info cart-wrap"> -->
+                <!-- <button data-toggle="modal" data-target="#addtocart" title="Add to cart"><i class="ti-shopping-cart"></i></button> <a href="javascript:void(0)" title="Add to Wishlist"><i class="ti-heart" aria-hidden="true"></i></a> -->
+                <!-- <a href="<?= base_url() ?>add_to_compare/<?= $best_seller->id_product ?>" title="Compare"><i class="ti-reload" aria-hidden="true"></i></a>
                         <a href="#" data-toggle="modal" data-target="#quick-view" title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
                       </div>
                     </div>
@@ -496,32 +549,32 @@ $CI = &get_instance();
                           <i class="fa fa-star <?php if ($usrating <= $best_seller_rating) {
                                                   echo "active";
                                                 } ?>"></i>
-                        <?php } ?>
-                      </div>
-                      <a href="<?= base_url() ?>product/detail/<?= $best_seller->id_product ?>">
+                        <?php } ?> -->
+                <!-- </div> -->
+                <!-- <a href="<?= base_url() ?>product/detail/<?= $best_seller->id_product ?>">
                         <h6><?= $best_seller->nama_barang ?></h6>
                         <p>Total Pembelian <?= $best_seller->ttl_qty ?></p>
                       </a>
                       <h4>Rp. <?= number_format($best_seller->harga, 0) ?></h4>
                       <ul class="color-variant">
                         <li class="bg-light0" style="background-color:<?= $best_seller->colour_picker ?>;"></li>
-                      </ul>
-                      <?php
-                      // echo form_open('cart/add');
-                      // echo form_hidden('id',  $best_seller->id_product);
-                      // echo form_hidden('qty',  1);
-                      // echo form_hidden('price',  $best_seller->harga);
-                      // echo form_hidden('name',  $best_seller->nama_barang);
-                      // echo form_hidden('redirect_page', str_replace('', '', current_url()));
-                      ?>
-                      <!-- <div class="product-buttons mt-30">
+                      </ul> -->
+                <!-- <?php
+                        // echo form_open('cart/add');
+                        // echo form_hidden('id',  $best_seller->id_product);
+                        // echo form_hidden('qty',  1);
+                        // echo form_hidden('price',  $best_seller->harga);
+                        // echo form_hidden('name',  $best_seller->nama_barang);
+                        // echo form_hidden('redirect_page', str_replace('', '', current_url()));
+                      ?>-->
+                <!-- <div class="product-buttons mt-30">
                          <button data-toggle="modal" class="btn_save btn btn-solid" type="submit" data-target="#addtocart" title="Add to cart">Add To Cart</button>
                        </div> -->
-                      <?php //echo form_close() 
-                      ?>
-                    </div>
+                <?php //echo form_close() 
+                ?>
+                <!-- </div>
                   </div>
-                <?php } ?>
+                <?php } ?> -->
               </div>
             </div>
           </div>
@@ -637,4 +690,20 @@ $CI = &get_instance();
     console.log(val);
     window.location.replace(val);
   }
+
+  //  tambahan glide arimbi
+  // document.addEventListener('DOMContentLoaded', function() {
+  //   var glide = new Glide('.glide', {
+  //     type: 'carousel',
+  //     startAt: 0,
+  //     perView: 4,
+  //     breakpoints: {
+  //       768: {
+  //         perView: 2
+  //       }
+  //     }
+  //   });
+
+  //   glide.mount();
+  // });
 </script>

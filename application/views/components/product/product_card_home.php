@@ -2,7 +2,8 @@
 // var_dump($data);
 ?>
 
-<a href="">
+
+<a href=" ">
     <div class="col border p-2 group bg-white rounded-md h-full">
         <div class="aspect-square bg-[#00000020] rounded-lg overflow-hidden">
             <?php
@@ -22,10 +23,8 @@
                 <li class="bg-light0" style="background-color:<?= $data->colour_picker ?>;"></li>
             </ul>
         </div>
-
         <?php
         // var_dump($data);
         ?>
     </div>
-
 </a>
