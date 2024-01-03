@@ -25,7 +25,7 @@
 
 
     <!-- section start -->
-    <section class="section-b-space">
+    <section class="section-b-space bg-white">
       <div class="container">
         <div class="row">
           <div class="col-lg-3">
@@ -43,6 +43,8 @@
                 <!-- product-tab starts -->
                 <section class="tab-product m-0">
                   <div class="container">
+                    <h2 class=" capitalize text-2xl font-bold mb-4 text-center">My Family & Single Package Information</h2>
+                    <hr class=" mb-4">
                     <div class="row">
 
                       <!--div class="col-sm-6 col-lg-6">
@@ -54,6 +56,7 @@
                         <h4 class=" my-2 font-bold py-2 text-lg">Saldo Family Package & Single Package: </h4>
                         <h4><span class=" bg-red-500 rounded-md px-2 font-bold py-1 text-white">Rp.<?= ($total_deposit == '' ? 0 : number_format($total_deposit, 0, ',', '.')); ?></span></h4>
                       </div>
+
                       <!--div class="col-sm-6 col-lg-6"-->
                       <?php if ($total_deposit > 0) {
                         $cek_sp = $this->db->where(['user_id' => $this->ion_auth->user()->row()->id])->where(['voucher_id' => 170])->get('voucher_used')->row();
@@ -111,7 +114,8 @@
                         <div class="tab-content nav-material" id="top-tabContent">
                           <div class="tab-pane fade show active" id="top-home" role="tabpanel" aria-labelledby="top-home-tab">
                             <br>
-                            <h3>History Pemakaian Saldo Family Package & Single Package</h3>
+                            <hr class=" my-4">
+                            <h3 class=" mb-2 mt-4">History Pemakaian Saldo Family Package & Single Package</h3>
                             <form name="form_adjustment_stok" id="form_adjustment_stok" action="<?= base_url('administrator/reseller/index'); ?>">
                               <!--?php if ($order_proses) { ?-->
                               <div class="table-responsive">
