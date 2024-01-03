@@ -12,7 +12,7 @@
 </style>
 
 <!-- breadcrumb start -->
-<div class="breadcrumb-section">
+<!-- <div class="breadcrumb-section">
     <div class="container">
         <div class="row">
             <div class="col-sm-6">
@@ -30,13 +30,13 @@
             </div>
         </div>
     </div>
-</div>
+</div> -->
 <!-- breadcrumb End -->
 
 <!-- section login -->
 
 <section class="login-page">
-    <div class="container items-center justify-center px-6 py-12 lg:px-4 sm:px-2">
+    <div class="container items-center justify-center px-6 py-6 lg:px-4 sm:px-2">
 
         <?php if ($message) { ?>
             <div class="alert alert-warning">
@@ -45,9 +45,9 @@
         <?php } ?>
 
         <div class="flex justify-center">
-            <div class=" bg-white p-4 rounded-md shadow-lg w-96">
+            <div class=" bg-white p-4 rounded-md shadow-md border w-96">
                 <div class=" sm:mx-auto sm:w-full sm:max-w-sm">
-                    <img class="mx-auto h-10 w-18" src="<?= base_url('assets/images/icon/logo.png') ?>" alt="Bocorocco">
+                    <!-- <img class="mx-auto h-10 w-18" src="<?= base_url('assets/images/icon/logo.png') ?>" alt="Bocorocco"> -->
                     <h2 class="mt-4 text-center text-lg font-bold leading-9 tracking-tight text-gray-900 mb-10">
                         Sign in to your account
                     </h2>

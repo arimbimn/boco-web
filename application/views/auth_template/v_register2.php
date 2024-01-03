@@ -37,7 +37,7 @@
     <div class="container">
         <div class="row">
             <div class="mt-2 px-5 w-full">
-                <img class="mx-auto h-10 w-18 justify-center items-center mb-4" src="<?= base_url('assets/images/icon/logo.png') ?>" alt="Bocorocco">
+                <!-- <img class="mx-auto h-10 w-18 justify-center items-center mb-4" src="<?= base_url('assets/images/icon/logo.png') ?>" alt="Bocorocco"> -->
                 <h2 class="text-base font-bold leading-7 text-gray-900 text-center">Registration Form</h2>
                 <p class="mt-1 text-sm leading-6 text-gray-600 text-center">Harap lengkapi data dibawah ini untuk membuat akun.</p>
 
