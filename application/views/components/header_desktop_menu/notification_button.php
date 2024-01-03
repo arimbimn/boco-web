@@ -107,20 +107,3 @@ $is_have_notif = $notifCount > 0 ? true : false;
         $('.tab-content[data-tab="order"]').removeClass('hidden');
     });
 </script>
-
-<script>
-    // document.addEventListener('DOMContentLoaded', function() {
-    //     const notificationButton = document.getElementById('notification_button');
-    //     const notificationContent = document.getElementById('notificationContent');
-
-    //     notificationButton.addEventListener('click', function() {
-    //         notificationContent.classList.toggle('hidden');
-    //     });
-
-    //     document.addEventListener('click', function(event) {
-    //         if (!event.target.closest('#notification_button') && !event.target.closest('#notificationContent')) {
-    //             notificationContent.classList.add('hidden');
-    //         }
-    //     });
-    // });
-</script>
