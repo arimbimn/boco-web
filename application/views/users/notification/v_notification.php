@@ -11,7 +11,7 @@
             <nav aria-label="breadcrumb" class="theme-breadcrumb">
               <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="<?= base_url('/') ?>"><?= lang('beranda') ?></a></li>
-                <li class="breadcrumb-item"><a href="<?= base_url('/users') ?>"><?=lang('my_account')?></a></li>
+                <li class="breadcrumb-item"><a href="<?= base_url('/users') ?>"><?= lang('my_account') ?></a></li>
                 <li class="breadcrumb-item active" aria-current="page"><?= lang('title_pemberitahuan_user') ?> </li>
               </ol>
             </nav>
@@ -25,13 +25,13 @@
 
 
     <!-- section start -->
-    <section class="section-b-space">
+    <section class="section-b-space bg-white">
       <div class="container">
         <div class="row">
           <div class="col-lg-3">
-          <div class="account-sidebar"><a class="popup-btn"> <i class="fa fa-bars"></i> <?= lang('MyAccount') ?></a></div>
-            <div class="dashboard-left">
-              <div class="collection-mobile-back"><span class="filter-back"><i class="fa fa-angle-left" aria-hidden="true"></i><?=lang('back')?></span></div>
+            <div class="account-sidebar w-50 rounded-full font-normal bg-[#cd212a] capitalize text-white text-center !text-xs"><a class="popup-btn"> <i class="fa fa-bars"></i> <?= lang('MyAccount') ?></a></div>
+            <div class="dashboard-left rounded-md bg-white">
+              <div class="collection-mobile-back"><span class="filter-back"><i class="fa fa-angle-left" aria-hidden="true"></i><?= lang('back') ?></span></div>
               <div class="block-content">
                 <?php $this->load->view('users/v_menu_user') ?>
               </div>
@@ -39,7 +39,7 @@
           </div>
           <div class="col-lg-9">
             <div class="dashboard-right">
-              <div class="dashboard">
+              <div class="dashboard bg-white rounded-md">
                 <div class="page-title">
                   <h2><?= lang('title_pemberitahuan_user') ?></h2>
                 </div>
