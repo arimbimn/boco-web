@@ -44,13 +44,13 @@
       <?php } ?>
       <div class="mt-2 px-3 w-full">
 
-        <img class="mx-auto h-10 w-18 justify-center items-center mb-4" src="<?= base_url('assets/images/icon/logo.png') ?>" alt="Bocorocco">
+        <!-- <img class="mx-auto h-10 w-18 justify-center items-center mb-4" src="<?= base_url('assets/images/icon/logo.png') ?>" alt="Bocorocco"> -->
         <h2 class=" text-base font-bold leading-7 text-gray-900 text-center"><?= lang('edit_profile') ?></h2>
         <p class="mt-1 text-sm leading-6 text-gray-600 text-center mb-3">Harap masukkan data anda dengan benar.</p>
         <!-- <?php echo form_open(uri_string()); ?> -->
 
-        <div class=" bg-white p-2 rounded-md shadow-sm w-full">
-          <h2 class=" text-base font-bold leading-7 text-gray-900 text-left my-4">Profile Section</h2>
+        <div class=" bg-white p-2 rounded-md shadow-sm w-full border">
+          <h2 class=" text-base font-bold leading-7 text-gray-900 text-left my-4 pl-4">Profile Section</h2>
 
           <form class="space-y-6" action="#" method="POST">
 
@@ -62,9 +62,9 @@
                   <img class="object-cover rounded-full" src="https://via.placeholder.com/100" alt="Current profile photo" />
                 </div>
                 <div class=" col-span-1 md:col-span-3 flex flex-col justify-center items-left">
-                  <label class="block">
+                  <label class="block w-fit">
                     <span class="sr-only">Choose profile photo</span>
-                    <input type="file" class="block w-full text-sm text-slate-500
+                    <input type="file" class="block w-fit text-sm text-slate-500
       file:mr-4 file:py-2 file:px-4
       file:rounded-full file:border-0
       file:text-sm file:font-semibold
@@ -148,8 +148,8 @@
               </div>
             </div>
         </div>
-        <div class=" bg-white p-2 rounded-md shadow-sm w-full mt-3">
-          <h2 class=" text-base font-bold leading-7 text-gray-900 text-left my-4">Address Section</h2>
+        <div class=" bg-white p-2 rounded-md shadow-sm w-full mt-3 border">
+          <h2 class=" text-base font-bold leading-7 text-gray-900 text-left my-4 pl-4">Address Section</h2>
           <!-- baris 5 -->
           <div class=" grid grid-cols-1 md:grid-cols-2 gap-x-2 mt-1">
             <div class="relative flex-1 mb-3">

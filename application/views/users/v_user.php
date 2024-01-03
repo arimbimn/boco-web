@@ -126,7 +126,7 @@
 
 
 <!-- section start -->
-<section class="section-b-space">
+<section class="section-b-space bg-white">
   <div class="count">
     <div class="container-countdown">
       <h4 id="headline">Voucher Family Package akan segera berakhir!</h4>
