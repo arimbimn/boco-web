@@ -1,5 +1,5 @@
   <!-- header start -->
-  <header class="">
+  <header>
       <div class="mobile-fix-option"></div>
       <div class="top-header">
           <div class="container">
@@ -33,7 +33,7 @@
                                   <?php } else { ?>
                                       Register
                                       <li><a href="<?= base_url('login') ?>" data-lng="en"><?= lang('login') ?></a></li>
-                                      <li><a href="<?= base_url('register') ?>" data-lng="en"><?= lang('register') ?></a></li>
+                                      <!--li><a href="<!?= base_url('register') ?>" data-lng="en"><!?= lang('register') ?></a></li-->
                                   <?php  } ?>
                                   <p class="mt-2">Change language</p>
                                   <li class="langswitch"><a href="<?= base_url('LanguageSwitcher/switchLang/indonesian') ?>">ID</a></li>
@@ -54,22 +54,22 @@
                   <div class="main-menu">
                       <div class="menu-left">
                           <div class="brand-logo">
-                              <a class=" !mb-[20]" href="<?= base_url() ?>"><img src="<?= base_url('assets/images/icon/logo.png') ?>" class="img-fluid blur-up lazyload" alt=""></a>
+                              <a href="<?= base_url() ?>"><img src="<?= base_url('assets/images/icon/logo.png') ?>" class="img-fluid blur-up lazyload" alt=""></a>
                           </div>
                       </div>
                       <div class="menu-right pull-right">
                           <div>
                               <nav id="main-nav">
-                                  <div class="toggle-nav"><i class="fa fa-bars sidebar-bar text-black"></i></div>
+                                  <div class="toggle-nav"><i class="fa fa-bars sidebar-bar"></i></div>
                                   <ul id="main-menu" class="sm pixelstrap sm-horizontal">
                                       <li>
-                                          <div class="mobile-back text-right !font-normal"><?= lang('back') ?><i class="fa fa-angle-right pl-2" aria-hidden="true"></i></div>
+                                          <div class="mobile-back text-right"><?= lang('back') ?><i class="fa fa-angle-right pl-2" aria-hidden="true"></i></div>
                                       </li>
                                       <li>
-                                          <a class=" !font-normal" href="<?= base_url('/') ?>"><?= lang('beranda') ?></a>
+                                          <a href="<?= base_url('/') ?>"><?= lang('beranda') ?></a>
                                       </li>
                                       <li>
-                                          <a class=" !font-normal" href="<?= base_url('/product') ?>"><?= lang('produk') ?></a>
+                                          <a href="<?= base_url('/product') ?>"><?= lang('produk') ?></a>
                                           <ul>
                                               <?php $category = $this->M_product->get_categoryproduct();
                                                 // var_dump($category);
@@ -77,14 +77,14 @@
                                               <?php if ($category) { ?>
                                                   <?php foreach ($category as $item_category) { ?>
                                                       <li>
-                                                          <a class=" !font-normal" href="<?= base_url('/product?category=' . $item_category->id_product_kategori) ?>"><?= $item_category->nama_kategori ?></a>
+                                                          <a href="<?= base_url('/product?category=' . $item_category->id_product_kategori) ?>"><?= $item_category->nama_kategori ?></a>
                                                           <?php
                                                             $cek_subcategory = $this->db->where('kategori_id', $item_category->id_product_kategori)->where(['is_active' => 1])->order_by('subcategory_order', 'ASC')->get('product_subkategori')->result();
                                                             if (!empty($cek_subcategory)) {
                                                             ?>
                                                               <ul>
                                                                   <?php foreach ($cek_subcategory as $subcategory) { ?>
-                                                                      <li><a class=" !font-normal" href="<?= base_url() ?>product?subcategory=<?= $subcategory->id ?>"><?= $subcategory->nama_subkategori ?></a></li>
+                                                                      <li><a href="<?= base_url() ?>product?subcategory=<?= $subcategory->id ?>"><?= $subcategory->nama_subkategori ?></a></li>
                                                                   <?php } ?>
                                                               </ul>
                                                           <?php } ?>
@@ -97,17 +97,17 @@
                       <a href="<!?= base_url('/blog') ?>">Blog</a>
                     </li-->
                                       <li>
-                                          <a class=" !font-normal" href="<?= base_url('/gallery') ?>"><?= lang('gallery') ?></a>
+                                          <a href="<?= base_url('/gallery') ?>"><?= lang('gallery') ?></a>
                                       </li>
                                       <li>
-                                          <a class=" !font-normal" href="<?= base_url('/store') ?>"><?= lang('toko') ?></a>
+                                          <a href="<?= base_url('/store') ?>"><?= lang('toko') ?></a>
                                       </li>
                                       <?php if ($this->session->userdata('user_id') == '') { ?>
                                           <li>
-                                              <a class=" !font-normal" href="<?= base_url('/reseller') ?>">Entrepreneurship</a>
+                                              <a href="<?= base_url('/reseller') ?>">Entrepreneurship</a>
                                               <ul>
                                                   <li>
-                                                      <a class=" !font-normal" href="<?= base_url('/login_reseller') ?>">Login Entrepreneurship</a>
+                                                      <a href="<?= base_url('/login_reseller') ?>">Login Entrepreneurship</a>
                                                   </li>
                                                   <!--li>
 								<a href="<!?= base_url('/reg_reseller') ?>">Daftar Entrepreneurship</a>
@@ -117,7 +117,7 @@
                                       <?php } ?>
                                       <?php if ($this->ion_auth->logged_in()) { ?>
                                           <li>
-                                              <a class=" !font-normal" href="#"><small style="color: red;">Already login as <?= $this->session->userdata('username_nya') ?></small></a>
+                                              <a href="#"><small style="color: red;">Already login as <?= $this->session->userdata('username_nya') ?></small></a>
                                           </li>
                                       <?php } ?>
                                   </ul>
@@ -138,7 +138,7 @@
                                                                   <div class="form-group">
                                                                       <input type="text" name="q" class="form-control" id="exampleInputPassword1" placeholder="Search a Product">
                                                                   </div>
-                                                                  <button type="submit" class="btn btn-solid"><i class="fa fa-search"></i></button>
+                                                                  <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
                                                                   <?= form_close() ?>
                                                               </div>
                                                           </div>
