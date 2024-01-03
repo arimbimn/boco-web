@@ -150,7 +150,7 @@
                         </div>
                         <div class="form-group">
                           <label for="editAlamat">Alamat Tujuan</label>
-                          <input type="text" class="form-control" id="editAlamat" name="alamat">
+                          <textarea type="text" class="form-control" id="editAlamat" name="alamat"> </textarea>
                         </div>
                       </form>
                     </div>
@@ -188,13 +188,13 @@
                   </div>
                   <div class="form-group">
                     <label for="alamatpenerima">Alamat Tujuan</label>
-                    <input type="text" class="form-control" id="alamatpenerima" placeholder="Masukkan Alamat Tujuan">
+                    <textarea type="text" class="form-control" id="alamatpenerima" placeholder="Masukkan Alamat Tujuan"></textarea>
                   </div>
                 </form>
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-                <button type="button" class="btn btn-danger" id="simpanData">Simpan</button>
+                <button type="button" class=" bg-slate-500 text-white rounded-full" data-dismiss="modal">Tutup</button>
+                <button type="button" class=" bg-red-500 text-white rounded-full" id="simpanData">Simpan</button>
               </div>
             </div>
           </div>
