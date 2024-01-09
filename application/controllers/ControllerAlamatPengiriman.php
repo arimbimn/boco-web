@@ -38,10 +38,11 @@ class ControllerAlamatPengiriman extends CI_Controller
                 'user_id' => $user_id,
                 'label_alamat' => $_POST['label'],
                 'penerima' => $_POST['receiver'],
-                'provinceId' => $_POST['province'],
-                'cityId' => $_POST['city'],
-                'subDistrictId' => $_POST['subdistrict'],
+                'provinsi_id' => $_POST['province'],
+                'kota_id' => $_POST['city'],
+                'kecamatan_id' => $_POST['subdistrict'],
                 'detailAlamat' => $_POST['detail_address'],
+                'kode_pos' => $_POST['postal_code'],
                 'alamat' => $_POST['detail_address'] . ', Kec.' . $_POST['subdistrict_name'] . ', ' . $_POST['city_name'] . ', ' . $_POST['province_name'],
             );
             if (count($query) == 0) {

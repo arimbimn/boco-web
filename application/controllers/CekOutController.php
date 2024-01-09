@@ -129,7 +129,7 @@ class CekOutController extends CI_Controller
         } else {
           // var_dump($this->Model_checkOngkir->getOngkir(''));
           $dataAlamatPengiriman = $this->Model_alamatPengiriman->getById($items['id_alamat'])[0];
-          $id_subdistrict = $dataAlamatPengiriman->subdistrictId;
+          $id_subdistrict = $dataAlamatPengiriman->kota_id;
           $penerima_pengiriman = $dataAlamatPengiriman->penerima;
           $alamat_pengiriman = $dataAlamatPengiriman->alamat;
           $pilihan_jasakirim = $this->Model_checkOngkir->getOngkir('')['rajaongkir']['results'];
