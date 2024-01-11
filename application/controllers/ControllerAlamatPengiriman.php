@@ -54,6 +54,24 @@ class ControllerAlamatPengiriman extends CI_Controller
         echo false;
     }
 
+    function edit()
+    {
+        $user_id = ($this->session->userdata['user_id']);
+        $alamatId = $this->input->post('id');
+        $data_detail = array(
+            'user_id' => $user_id,
+            'label_alamat' => $_POST['labelEdit'],
+            'penerima' => $_POST['receiverEdit'],
+            'provinsi_id' => $_POST['provinceEdit'],
+            'kota_id' => $_POST['cityEdit'],
+            'kecamatan_id' => $_POST['subdistrictEdit'],
+            'detailAlamat' => $_POST['detail_addressEdit'],
+            'kode_pos' => $_POST['postal_codeEdit'],
+            'alamat' => $_POST['detail_addressEdit'] . ', Kec.' . $_POST['subdistrict_name'] . ', ' . $_POST['city_name'] . ', ' . $_POST['province_name'],
+        );
+        $this->M_product->update_data_alamat($alamatId, $data_detail);
+    }
+
     function delete()
     {
         $id = $this->input->post('id');

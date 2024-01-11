@@ -14,9 +14,13 @@ class Model_alamatPengiriman extends CI_Model
     public function getAll()
     {
         // $this->db->where('user_id', $this->userId);
-        $this->db->limit(3); // Batasan jumlah hasil menjadi maksimal 3
-        $query = $this->db->get('tb_alamat_pengiriman');
-        return $query->result();
+        // Jika Login Untuk Mendapatkan user_id
+        if ($this->ion_auth->logged_in()) {
+            $this->userId = ($this->session->userdata['user_id']);
+            $this->db->limit(3); // Batasan jumlah hasil menjadi maksimal 3
+            $query = $this->db->get_where('tb_alamat_pengiriman', array('user_id' => $this->userId));
+            return $query->result();
+        }
     }
 
     public function getByID($id)

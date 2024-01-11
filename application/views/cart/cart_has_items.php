@@ -249,6 +249,7 @@
                                         </a>
                                     <?php endif ?>
                                     <div class=" cursor-pointer aspect-square w-[30px] bg-[red] text-white flex items-center justify-center delete-card rounded-md"><i class="fa fa-trash-o fa-lg"></i></div>
+                                    <div class=" cursor-pointer aspect-square w-[30px] bg-[green] text-white flex items-center justify-center edit-card rounded-md"><i class="fa fa-pencil fa-lg"></i></div>
                                 </div>
                             </div>
                         </div>
@@ -263,11 +264,10 @@
                 </div>
                 <!-- END - List Alamat -->
 
-                <!-- Form Edit -->
-                <div class="onEdit d-none" style="display:flex; flex-direction:column; gap:10px">
+                <!-- Form Tambah -->
+                <div class="onTambah d-none" style="display:flex; flex-direction:column; gap:10px">
                     <form id="inputAlamat" method="post">
                         <div class="row" style="margin:0;gap:10px">
-                            <input type="hidden" class="form-control" id="apID" name="id">
                             <div class="col p-0">
                                 <label for="apLabel">Label</label>
                                 <input type="text" class="form-control" id="apLabel" name="label">
@@ -304,6 +304,59 @@
                         <div>
                             <label for="apDetailAlamat">Detail Alamat</label>
                             <textarea class="form-control" id="apDetailAlamat" name="detail_address"></textarea>
+                        </div>
+
+                        <div>
+                            <button type="submit" class="btn btn-outline-primary ">Simpan Alamat</button>
+                            <div type="button" class="btn btn-outline-danger cancel-tambah-card" data-toggle="modal" data-target="#tambahCardModal">Batal</div>
+                        </div>
+                    </form>
+
+
+                </div>
+                <!-- END - Form Tambah -->
+
+                <!-- Form Edit -->
+                <div class="onEdit d-none" style="display:flex; flex-direction:column; gap:10px">
+                    <form id="editAlamat" method="post">
+                        <div class="row" style="margin:0;gap:10px">
+                            <input type="hidden" class="form-control" id="apID" name="id">
+                            <div class="col p-0">
+                                <label for="apLabelEdit">Label</label>
+                                <input type="text" class="form-control" id="apLabelEdit" name="labelEdit">
+                            </div>
+                            <div>
+                                <label for="apPenerimaEdit">Penerima</label>
+                                <input type="text" class="form-control" id="apPenerimaEdit" name="receiverEdit">
+                            </div>
+                        </div>
+                        <div>
+                            <label for="provinsiDropdownEdit">Provinsi</label>
+                            <select id="provinsiDropdownEdit" class="form-control" name="provinceEdit">
+                                <option value="">Pilih Provinsi</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="cityDropdownEdit">Kab/Kota</label>
+                            <select id="cityDropdownEdit" class="form-control" name="cityEdit">
+                                <option value="">Pilih Kab/Kota</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="subdisctrictDropdownEdit">Kecamatan</label>
+                            <select id="subdisctrictDropdownEdit" class="form-control" name="subdistrictEdit">
+                                <option value="">Pilih Kecamatan</option>
+                            </select>
+                        </div>
+                        <div class="row" style="margin:0;">
+                            <div style="width: 50%;">
+                                <label for="apKodeposEdit">Kode Pos</label>
+                                <input type="text" class="form-control" id="apKodeposEdit" name="postal_codeEdit">
+                            </div>
+                        </div>
+                        <div>
+                            <label for="apDetailAlamatEdit">Detail Alamat</label>
+                            <textarea class="form-control" id="apDetailAlamatEdit" name="detail_addressEdit"></textarea>
                         </div>
 
                         <div>
@@ -376,9 +429,27 @@
         }
     });
 
+    $('#provinsiDropdownEdit').change(function() {
+        var selectedProvinceIdEdit = $(this).val();
+        if (selectedProvinceIdEdit) {
+            getCity(selectedProvinceIdEdit);
+        } else {
+            $('#cityDropdownEdit').empty();
+            $('#subdisctrictDropdownEdit').empty();
+        }
+    });
+    $('#cityDropdownEdit').change(function() {
+        var selectedCityIdEdit = $(this).val();
+        if (selectedCityIdEdit) {
+            getSubDistrict(selectedCityIdEdit);
+        } else {
+            $('#subdisctrictDropdownEdit').empty();
+        }
+    });
+
     $('.onList .add-card').on('click', function() {
         $('.onList').addClass('d-none');
-        $('.onEdit').removeClass('d-none');
+        $('.onTambah').removeClass('d-none');
     });
 
     $('.onList .edit-card').on('click', function() {
@@ -407,6 +478,11 @@
         $('.onEdit').addClass('d-none');
     });
 
+    $('.cancel-tambah-card').on('click', function() {
+        $('.onList').removeClass('d-none');
+        $('.onTambah').addClass('d-none');
+    });
+
     $('#inputAlamat').submit(function(e) {
         e.preventDefault(); // Mencegah perilaku default dari form submit
 
@@ -418,8 +494,8 @@
 
         var extraData = {
             'province_name': $form.find('#provinsiDropdown').find(':selected').text(),
-            'city_name': $form.find('#provinsiDropdown').find(':selected').text(),
-            'subdistrict_name': $form.find('#provinsiDropdown').find(':selected').text(),
+            'city_name': $form.find('#cityDropdown').find(':selected').text(),
+            'subdistrict_name': $form.find('#subdisctrictDropdown').find(':selected').text(),
         };
 
         $.ajax({
@@ -442,6 +518,41 @@
         });
     });
 
+    $('#editAlamat').submit(function(e) {
+        e.preventDefault(); // Mencegah perilaku default dari form submit
+
+        var $form = $(this);
+        var $submitButton = $form.find('button[type="submit"]');
+        $submitButton.prop('disabled', true); // Menonaktifkan tombol submit
+
+        var formData = $(this).serialize(); // Mengambil data form     
+
+        var extraData = {
+            'province_name': $form.find('#provinsiDropdownEdit').find(':selected').text(),
+            'city_name': $form.find('#cityDropdownEdit').find(':selected').text(),
+            'subdistrict_name': $form.find('#subdisctrictDropdownEdit').find(':selected').text(),
+        };
+
+        $.ajax({
+            type: 'POST',
+            url: 'ControllerAlamatPengiriman/edit',
+            data: formData + '&' + $.param(extraData),
+            success: function(response) {
+                console.log(response);
+                alert('Berhasil edit alamat.')
+                window.location.reload();
+
+            },
+            error: function() {
+                console.log('Error submitting form');
+            },
+            complete: function() {
+                $submitButton.prop('disabled', false); // Mengaktifkan kembali tombol submit
+
+            }
+        });
+    });
+
     function getAlamatPengirimanByID(id) {
         $.ajax({
             type: 'GET',
@@ -449,12 +560,14 @@
             dataType: 'json',
             success: function(response) {
                 response = (response)[0]
-                $('#apLabel').val(response.label_alamat)
-                $('#apPenerima').val(response.penerima)
-                // $('#apProvinsi').val(response.id)
-                // $('#apKabKota').val(response.id)
-                // $('#apKec').val(response.id)
-                // $('#apKodepos').val(response.id)
+                $('#apID').val(response.id)
+                $('#apLabelEdit').val(response.label_alamat)
+                $('#apPenerimaEdit').val(response.penerima)
+                // $('#provinsiDropdownEdit').val(response.provinsi_id)
+                // $('#cityDropdownEdit').val(response.kota_id)
+                // $('#subdisctrictDropdownEdit').val(response.kecamatan_id)
+                $('#apKodeposEdit').val(response.kode_pos)
+                $('#apDetailAlamatEdit').val(response.detailAlamat)
             },
         });
     }
@@ -470,6 +583,7 @@
             success: function(response) {
                 // console.log(response);
                 alert('Berhasil menghapus alamat.')
+                window.location.reload();
             },
         });
     }
@@ -487,6 +601,13 @@
                 dropdown.append($('<option>').val('').text('Pilih Provinsi'));
                 $.each(response, function(key, item) {
                     dropdown.append($('<option>').val(item.province_id).text(item.province));
+                });
+
+                var dropdownEdit = $('#provinsiDropdownEdit');
+                dropdownEdit.empty();
+                dropdownEdit.append($('<option>').val('').text('Pilih Provinsi'));
+                $.each(response, function(key, item) {
+                    dropdownEdit.append($('<option>').val(item.province_id).text(item.province));
                 });
             },
             error: function() {
@@ -509,6 +630,13 @@
                 $.each(response, function(key, item) {
                     dropdown.append($('<option>').val(item.city_id).text(`${item.type} ${item.city_name}`));
                 });
+
+                var dropdownEdit = $('#cityDropdownEdit');
+                dropdownEdit.empty();
+                dropdownEdit.append($('<option>').val('').text('Pilih Kab/Kota'));
+                $.each(response, function(key, item) {
+                    dropdownEdit.append($('<option>').val(item.city_id).text(`${item.type} ${item.city_name}`));
+                });
             },
             error: function() {
                 // console.log('Error fetching data');
@@ -529,6 +657,13 @@
                 dropdown.append($('<option>').val('').text('Pilih Kecamatan'));
                 $.each(response, function(key, item) {
                     dropdown.append($('<option>').val(item.subdistrict_id).text(item.subdistrict_name));
+                });
+
+                var dropdownEdit = $('#subdisctrictDropdownEdit');
+                dropdownEdit.empty();
+                dropdownEdit.append($('<option>').val('').text('Pilih Kecamatan'));
+                $.each(response, function(key, item) {
+                    dropdownEdit.append($('<option>').val(item.subdistrict_id).text(item.subdistrict_name));
                 });
             },
             error: function() {
